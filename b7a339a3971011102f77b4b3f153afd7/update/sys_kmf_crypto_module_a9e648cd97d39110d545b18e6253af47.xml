@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_kmf_crypto_module">
+    <sys_kmf_crypto_module action="INSERT_OR_UPDATE">
+        <actual_module_access_policy_result>track</actual_module_access_policy_result>
+        <alias>pxp_record_encryption</alias>
+        <crypto_module_lifecycle_state>published</crypto_module_lifecycle_state>
+        <crypto_spec_template display_value="Default template">af44335953103300cd1eddeeff7b1285</crypto_spec_template>
+        <default_module_access_policy_value>track</default_module_access_policy_value>
+        <internal_module>false</internal_module>
+        <name>x_376096_pxp.pxp_record_encryption</name>
+        <parent_crypto_module/>
+        <short_name>pxp_record_encryption</short_name>
+        <signature_data/>
+        <sys_class_name>sys_kmf_crypto_module</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-11-19 08:28:34</sys_created_on>
+        <sys_id>a9e648cd97d39110d545b18e6253af47</sys_id>
+        <sys_name>pxp_record_encryption</sys_name>
+        <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
+        <sys_update_name>sys_kmf_crypto_module_a9e648cd97d39110d545b18e6253af47</sys_update_name>
+    </sys_kmf_crypto_module>
+</record_update>

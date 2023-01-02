@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_kmf_crypto_caller_policy">
+    <sys_kmf_crypto_caller_policy action="DELETE">
+        <active>true</active>
+        <approval_type/>
+        <check_script_hash>false</check_script_hash>
+        <crypto_module display_value="pxp_record_encryption">a9e648cd97d39110d545b18e6253af47</crypto_module>
+        <crypto_spec/>
+        <granular_operation/>
+        <identity_group_alias/>
+        <impersonation>false</impersonation>
+        <instance_recipient/>
+        <owner>2ca27526dbf6491042b321c405961935</owner>
+        <policy_name>AutoGen-script-c7bb90c197579110d545b18e6253aff2-x_376096_pxp.pxp_record_encryption</policy_name>
+        <result>reject</result>
+        <script_hash>kxQzzyCCNheideLEO5v1wYVlDFRPsA+rPSWZn0xGZn0=</script_hash>
+        <script_table>sys_script_include</script_table>
+        <signature_data/>
+        <specify_purpose>false</specify_purpose>
+        <sys_class_name>sys_kmf_crypto_caller_policy</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-11-19 21:35:54</sys_created_on>
+        <sys_id>3d8cb6cd979f9110d545b18e6253af7e</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name/>
+        <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
+        <sys_update_name>sys_kmf_crypto_caller_policy_3d8cb6cd979f9110d545b18e6253af7e</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2022-11-19 21:35:54</sys_updated_on>
+        <target_role/>
+        <target_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</target_scope>
+        <target_script>c7bb90c197579110d545b18e6253aff2</target_script>
+        <type>1</type>
+        <used>false</used>
+    </sys_kmf_crypto_caller_policy>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</application>
+        <file_path/>
+        <instance_id>2ca27526dbf6491042b321c405961935</instance_id>
+        <instance_name>dev126060</instance_name>
+        <name>sys_kmf_crypto_caller_policy_3d8cb6cd979f9110d545b18e6253af7e</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_kmf_crypto_caller_policy"><sys_kmf_crypto_caller_policy action="INSERT_OR_UPDATE"><active>true</active><approval_type/><check_script_hash>false</check_script_hash><crypto_module display_value="pxp_record_encryption">a9e648cd97d39110d545b18e6253af47</crypto_module><crypto_spec/><granular_operation/><identity_group_alias/><impersonation>false</impersonation><instance_recipient/><owner>2ca27526dbf6491042b321c405961935</owner><policy_name>AutoGen-script-c7bb90c197579110d545b18e6253aff2-x_376096_pxp.pxp_record_encryption</policy_name><result>reject</result><script_hash>kxQzzyCCNheideLEO5v1wYVlDFRPsA+rPSWZn0xGZn0=</script_hash><script_table>sys_script_include</script_table><signature_data/><specify_purpose>false</specify_purpose><sys_class_name>sys_kmf_crypto_caller_policy</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2022-11-19 21:35:54</sys_created_on><sys_id>3d8cb6cd979f9110d545b18e6253af7e</sys_id><sys_mod_count>0</sys_mod_count><sys_name/><sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package><sys_policy/><sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope><sys_update_name>sys_kmf_crypto_caller_policy_3d8cb6cd979f9110d545b18e6253af7e</sys_update_name><sys_updated_by>admin</sys_updated_by><sys_updated_on>2022-11-19 21:35:54</sys_updated_on><target_role/><target_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</target_scope><target_script>c7bb90c197579110d545b18e6253aff2</target_script><type>1</type><used>false</used></sys_kmf_crypto_caller_policy></record_update>]]></payload>
+        <payload_hash>795476011</payload_hash>
+        <record_name/>
+        <reverted_from/>
+        <source>39d9d8a897171110d545b18e6253af0d</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-11-19 21:35:54</sys_created_on>
+        <sys_id>fd8cf6cd979f9110d545b18e6253af47</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>18491d1c59d0000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2022-11-19 21:35:54</sys_updated_on>
+        <type>Module Access Policy</type>
+        <update_guid>398cf6cd189f9110bbeb2a3d11796d47</update_guid>
+        <update_guid_history>398cf6cd189f9110bbeb2a3d11796d47:795476011</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-11-19 21:39:31</sys_created_on>
+        <sys_db_object display_value="" name="sys_kmf_crypto_caller_policy">sys_kmf_crypto_caller_policy</sys_db_object>
+        <sys_id>56533d3b6a6a4951a4eed486f59c0641</sys_id>
+        <sys_metadata>3d8cb6cd979f9110d545b18e6253af7e</sys_metadata>
+        <sys_name/>
+        <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
+        <sys_scope_delete display_value="">ca2094845f944cfc9638dcb203038e10</sys_scope_delete>
+        <sys_update_name>sys_kmf_crypto_caller_policy_3d8cb6cd979f9110d545b18e6253af7e</sys_update_name>
+        <sys_update_version display_value="sys_kmf_crypto_caller_policy_3d8cb6cd979f9110d545b18e6253af7e">fd8cf6cd979f9110d545b18e6253af47</sys_update_version>
+    </sys_metadata_delete>
+</record_update>

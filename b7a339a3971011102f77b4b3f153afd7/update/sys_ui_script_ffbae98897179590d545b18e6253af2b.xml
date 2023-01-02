@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_script">
+    <sys_ui_script action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <description/>
+        <global>false</global>
+        <ignore_in_now_experience>false</ignore_in_now_experience>
+        <name>x_376096_pxp.sputil_interceptors</name>
+        <script><![CDATA[var x_376096_pxp = x_376096_pxp || {};
+x_376096_pxp.sputil_interceptors = (function() {
+	"use strict";
+	/* global setTimeout */
+	/* eslint no-undef: "error" */
+	
+	if (x_376096_pxp.sputil_interceptors) {
+		return x_376096_pxp.sputil_interceptors;
+	}
+	
+	var interceptors = [];
+	setTimeout(function () {
+		var minTimeBetweenUpdates = 100; // minimum time between updates in [ms]
+		var lastUpdate;
+		
+		var $window = this;
+		$window.angular
+			.module('sn.$sp')
+			.config(['$provide, $timeout, $q', function ($provide, $timeout, $q) {
+				$provide.decorator('spUtil', function (spUtil) {
+					var custom = $window.angular.copy(spUtil);
+					custom.update = function ($scope) {
+						var deferred = $q.defer();
+						
+						var now = new Date();
+						lastUpdate = now;
+						
+						$timeout(function () {
+							if (now == lastUpdate) {
+								for (var i = 0, length = interceptors.length; i < length; i++) {
+									var interceptor = interceptors[i];
+
+									// if interceptor were deregistered, defragment the array
+									if (!interceptor) {
+										interceptors.splice(i, 1);
+										i--;
+										length--;
+										continue;
+									}
+
+									if (interceptor.scope == $scope) {
+										return spUtil.get($scope).then(function (result) {
+											var data = result.data;
+											return interceptor
+												.callback(data)['finally'](function () {
+													$window.angular.extend($scope.data, data);
+													deferred.resolve(data);
+												})
+											;
+										});
+									}
+								}
+								
+								return spUtil.update.apply(spUtil, arguments);
+							} else {
+								deferred.reject();
+							}
+						}, minTimeBetweenUpdates);
+						
+						return deferred.promise;
+					};
+				});
+			}])
+		;
+	});
+
+	return {
+		register: function($scope, cb) {
+			if (interceptors.some(function (i) { return i.scope == $scope; })) {
+				throw new Error('$scope ' + $scope + ' already has an interceptor registered');
+			} else {
+				var obj = { scope: $scope, callback: cb };
+				return function deregister() {
+					var index = interceptors.indexOf(obj);
+					if (index !== -1) {
+						// prevent memory leaks!
+						delete interceptors[index];
+					}
+				};
+			}
+		},
+		
+		type: 'sputil_interceptors'
+	};
+})();
+]]></script>
+        <script_name>sputil_interceptors</script_name>
+        <sys_class_name>sys_ui_script</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-11-16 13:04:40</sys_created_on>
+        <sys_id>ffbae98897179590d545b18e6253af2b</sys_id>
+        <sys_name>x_376096_pxp.sputil_interceptors</sys_name>
+        <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
+        <sys_update_name>sys_ui_script_ffbae98897179590d545b18e6253af2b</sys_update_name>
+        <ui_type>1</ui_type>
+        <use_scoped_format>true</use_scoped_format>
+    </sys_ui_script>
+</record_update>

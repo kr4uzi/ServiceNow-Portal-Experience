@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_ui_section caption="Portal" section_id="23683bce9783dd50d545b18e6253af6a" sys_domain="global" table="sys_ui_style" version="3" view="">
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>x_376096_pxp_enabled</element>
+            <position>0</position>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2022-11-11 11:11:43</sys_created_on>
+            <sys_id>e8f0235297431190d545b18e6253af2b</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="Portal" display_value="Portal" name="sys_ui_style" sys_domain="global" view="Default view">23683bce9783dd50d545b18e6253af6a</sys_ui_section>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2022-11-11 11:11:43</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>x_376096_pxp_css_class</element>
+            <position>1</position>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2022-11-11 11:11:43</sys_created_on>
+            <sys_id>e0f0235297431190d545b18e6253af2c</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="Portal" display_value="Portal" name="sys_ui_style" sys_domain="global" view="Default view">23683bce9783dd50d545b18e6253af6a</sys_ui_section>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2022-11-11 11:11:43</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>x_376096_pxp_style</element>
+            <position>2</position>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2022-11-11 11:11:43</sys_created_on>
+            <sys_id>e4f0235297431190d545b18e6253af2c</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="Portal" display_value="Portal" name="sys_ui_style" sys_domain="global" view="Default view">23683bce9783dd50d545b18e6253af6a</sys_ui_section>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2022-11-11 11:11:43</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_section action="INSERT_OR_UPDATE">
+            <caption>Portal</caption>
+            <header>false</header>
+            <name>sys_ui_style</name>
+            <roles/>
+            <sys_class_name>sys_ui_section</sys_class_name>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2022-11-10 18:15:51</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>23683bce9783dd50d545b18e6253af6a</sys_id>
+            <sys_name>sys_ui_style</sys_name>
+            <sys_overrides/>
+            <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
+            <sys_update_name>sys_ui_section_23683bce9783dd50d545b18e6253af6a</sys_update_name>
+            <sys_user/>
+            <title>false</title>
+            <view display_value="Default view" name="NULL">Default view</view>
+            <view_name/>
+        </sys_ui_section>
+    </sys_ui_section>
+</record_update>

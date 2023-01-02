@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_documentation element="x_376096_pxp_list_label" label="List label" language="en" table="sys_ui_action">
+        <sys_documentation action="INSERT_OR_UPDATE">
+            <element>x_376096_pxp_list_label</element>
+            <help/>
+            <hint/>
+            <label>List label</label>
+            <language>en</language>
+            <name>sys_ui_action</name>
+            <plural>List labels</plural>
+            <sys_class_name>sys_documentation</sys_class_name>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2022-07-01 08:13:20</sys_created_on>
+            <sys_name>List label</sys_name>
+            <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
+            <sys_update_name>sys_documentation_sys_ui_action_x_376096_pxp_list_label_en</sys_update_name>
+            <url/>
+            <url_target/>
+        </sys_documentation>
+    </sys_documentation>
+</record_update>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_scoped_cache_table_pair">
+    <sys_scoped_cache_table_pair action="DELETE">
+        <columns/>
+        <pair_type>table</pair_type>
+        <scoped_cache display_value="x_376096_pxp_view_cache">5ae09ef797d35d10d545b18e6253afc8</scoped_cache>
+        <sys_class_name>sys_scoped_cache_table_pair</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-11-28 07:42:20</sys_created_on>
+        <sys_id>0304debb97d35d10d545b18e6253aff0</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name/>
+        <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
+        <sys_update_name>sys_scoped_cache_table_pair_0304debb97d35d10d545b18e6253aff0</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2022-11-28 07:42:20</sys_updated_on>
+        <table>sys_ui_section</table>
+    </sys_scoped_cache_table_pair>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</application>
+        <file_path/>
+        <instance_id>2ca27526dbf6491042b321c405961935</instance_id>
+        <instance_name>dev126060</instance_name>
+        <name>sys_scoped_cache_table_pair_0304debb97d35d10d545b18e6253aff0</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_scoped_cache_table_pair"><sys_scoped_cache_table_pair action="INSERT_OR_UPDATE"><columns/><pair_type>table</pair_type><scoped_cache display_value="x_376096_pxp_view_cache">5ae09ef797d35d10d545b18e6253afc8</scoped_cache><sys_class_name>sys_scoped_cache_table_pair</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2022-11-28 07:42:20</sys_created_on><sys_id>0304debb97d35d10d545b18e6253aff0</sys_id><sys_mod_count>0</sys_mod_count><sys_name/><sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package><sys_policy/><sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope><sys_update_name>sys_scoped_cache_table_pair_0304debb97d35d10d545b18e6253aff0</sys_update_name><sys_updated_by>admin</sys_updated_by><sys_updated_on>2022-11-28 07:42:20</sys_updated_on><table>sys_ui_section</table></sys_scoped_cache_table_pair></record_update>]]></payload>
+        <payload_hash>1140932172</payload_hash>
+        <record_name/>
+        <reverted_from/>
+        <source>d6b4339997dfd110d545b18e6253af92</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-11-28 07:42:20</sys_created_on>
+        <sys_id>8304debb97d35d10d545b18e6253aff2</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>184bd2fd88a0000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2022-11-28 07:42:20</sys_updated_on>
+        <type>Scoped Cache Table Pair</type>
+        <update_guid>cb04debbc1d35d1046e10936d35de2f1</update_guid>
+        <update_guid_history>cb04debbc1d35d1046e10936d35de2f1:1140932172</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-11-28 07:43:00</sys_created_on>
+        <sys_db_object display_value="" name="sys_scoped_cache_table_pair">sys_scoped_cache_table_pair</sys_db_object>
+        <sys_id>4bbe84e0830642d49dd3fc0c376b0d89</sys_id>
+        <sys_metadata>0304debb97d35d10d545b18e6253aff0</sys_metadata>
+        <sys_name/>
+        <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
+        <sys_scope_delete display_value="">ca2094845f944cfc9638dcb203038e10</sys_scope_delete>
+        <sys_update_name>sys_scoped_cache_table_pair_0304debb97d35d10d545b18e6253aff0</sys_update_name>
+        <sys_update_version display_value="sys_scoped_cache_table_pair_0304debb97d35d10d545b18e6253aff0">8304debb97d35d10d545b18e6253aff2</sys_update_version>
+    </sys_metadata_delete>
+</record_update>

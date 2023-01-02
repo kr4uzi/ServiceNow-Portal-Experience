@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_376096_pxp.PortalListUtilClient</api_name>
+        <caller_access/>
+        <client_callable>true</client_callable>
+        <description/>
+        <name>PortalListUtilClient</name>
+        <script><![CDATA[/* global Class, global, x_376096_pxp, gs */
+/* global GlideScopedEvaluator, GlideTableHierarchy, GlideRecord, GlideStringUtil */
+/* eslint no-undef: "error" */
+var PortalListUtilClient = Class.create();
+PortalListUtilClient.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
+	
+	initialize: function () {
+		global.AbstractAjaxProcessor.prototype.initialize.apply(this, arguments);
+		
+		this.util = new x_376096_pxp.PortalListUtil();
+		this.pxpUtil = this.util.getPXPUtil();
+	},
+	
+	loadTableStyles: function () {
+		var result = {
+			status: 'error',
+			message: ''
+		};
+		
+		var table = this.getParameter('table');
+		var fields = this.getParameter('fields');
+		if (table && fields != null) {
+			result.styles = [];
+			
+			try {
+				fields = fields ? fields.split(',') : [];
+				result.styles = this.util.loadTableStyles(table, fields);
+				result.status = 'success';
+			} catch (e) {
+				delete result.styles;
+				
+				result.status = 'error';
+			
+				if (gs.hasRole('admin')) {
+					result.message += e;
+
+					if (e.stack) {
+						result.message += '\n' + e.stack;
+					}
+				}
+			}
+		} else {
+			result.message = gs.getMessage('x_376096_pxp_invalid_parameters');
+		}
+		
+		return JSON.stringify(result);
+	},
+	
+	loadItemStyles: function () {
+		var result = {
+			status: 'error',
+			message: ''
+		};
+		
+		var table = this.getParameter('table');
+		var fields = this.getParameter('fields');
+		var items = this.getParameter('items');
+		if (table && fields != null && items != null) {
+			try {
+				fields = fields.split(',');
+				items = items.split(',');
+
+				result.item_styles = this.util.loadItemStyles(table, fields, items);
+				result.status = 'success';
+			} catch (e) {
+				delete result.item_styles;
+				
+				result.status = 'error';
+			
+				if (gs.hasRole('admin')) {
+					result.message += e;
+
+					if (e.stack) {
+						result.message += '\n' + e.stack;
+					}
+				}
+			}
+		} else {
+			result.message = gs.getMessage('x_376096_pxp_invalid_parameters');
+		}
+		
+		return JSON.stringify(result);
+	},
+	
+	loadTableUIActions: function () {
+		var result = {
+			status: 'error',
+			message: ''
+		};
+		
+		try {
+			var table = this.getParameter('table');
+			var view = this.getParameter('view');
+			var type = this.getParameter('type'); // REL, 12M, M2M
+			var relatedList = this.getParameter('related_list'); // table.field or REL:<sys_id_of_relationship>
+			var query = this.getParameter('query'); // query must be contained in the options, but is allowed to be empty
+			var referringUrl = this.getParameter('referring_url'); // the loading page's url
+			var urlParameters = this.getParameter('url_parameters'); // the loading page's url parameters
+			var parentTable = this.getParameter('parent_table');
+			var parentSysID = this.getParameter('parent_sys_id');
+			var parentEncryptedRecord = this.getParameter('parent_encrypted_record');
+			if (table && view != null && type != null && relatedList != null && query != null && referringUrl && urlParameters) {
+				urlParameters = JSON.parse(urlParameters);
+				
+				var parent;
+				if (parentTable) {
+					if (parentSysID != '-1' && GlideStringUtil.isEligibleSysID(parentSysID)) {
+						var extensionPoint = this.pxpUtil.getExtensionPointForTable(parentTable);
+						var parentGr = extensionPoint.queryRecords(parentTable, 'sys_id=' + parentSysID);
+						if (parentGr.next()) {
+							parent = parentGr;
+						} else {
+							throw new Error(gs.getMessage('x_376096_pxp_record_unauthorized_or_invalid_record'));
+						}
+					} else if (parentEncryptedRecord) {
+						parent = this.pxpUtil.decryptRecord(parentEncryptedRecord);
+					} else {
+						throw new Error(gs.getMessage('x_376096_pxp_invalid_parameters'));
+					}
+				}
+				
+				var rp = this.util.createFakeRP(table, view, type, relatedList, query, referringUrl, urlParameters);
+				
+				result.ui_actions = this.util.loadTableUIActions(table, view, rp, parent);
+				result.status = 'success';
+			} else {
+				result.message = gs.getMessage('x_376096_pxp_invalid_parameters');
+			}
+		} catch (e) {
+			delete result.ui_actions;
+			
+			result.status = 'error';
+			if (gs.hasRole('admin')) {
+				result.message += e;
+				
+				if (e.stack) {
+					result.message += '\n' + e.stack;
+				}
+			}
+		}
+		
+		return JSON.stringify(result);
+	},
+	
+	loadRowUIActions: function () {
+		var result = {
+			status: 'error',
+			message: ''
+		};
+		
+		try {
+			var table = this.getParameter('table');
+			var view = this.getParameter('view');
+			var items = this.getParameter('items');
+			var type = this.getParameter('type'); // REL, 12M, M2M
+			var relatedList = this.getParameter('related_list'); // table.field or REL:<sys_id_of_relationship>
+			var query = this.getParameter('query'); // query must be contained in the options, but is allowed to be empty
+			var referringUrl = this.getParameter('referring_url'); // the loading page's url
+			var urlParameters = this.getParameter('url_parameters'); // the loading page's url parameters
+			var parentTable = this.getParameter('parent_table');
+			var parentSysID = this.getParameter('parent_sys_id');
+			var parentEncryptedRecord = this.getParameter('parent_encrypted_record');
+			if (table && view != null && type != null && items != null && relatedList != null && query != null && referringUrl && urlParameters) {				
+				if (items) {
+					items = items.split(',').filter(function (itemSysID) { return GlideStringUtil.isEligibleSysID(itemSysID); });
+					urlParameters = JSON.parse(urlParameters);
+					
+					var parent;
+					if (parentTable) {
+						if (parentSysID != '-1' && GlideStringUtil.isEligibleSysID(parentSysID)) {
+							var extensionPoint = this.pxpUtil.getExtensionPointForTable(parentTable);
+							var parentGr = extensionPoint.queryRecords(parentTable, 'sys_id=' + parentSysID);
+							if (parentGr.next()) {
+								parent = parentGr;
+							} else {
+								throw new Error(gs.getMessage('x_376096_pxp_record_unauthorized_or_invalid_record'));
+							}
+						} else if (parentEncryptedRecord) {
+							parent = this.pxpUtil.decryptRecord(parentEncryptedRecord);
+						} else {
+							throw new Error(gs.getMessage('x_376096_pxp_invalid_parameters'));
+						}
+					}
+
+					var rp = this.util.createFakeRP(table, view, type, relatedList, query, referringUrl, urlParameters);
+					result.ui_actions = this.util.loadRowUIActions(table, view, items, rp, parent);
+				} else {
+					result.ui_actions = [];
+				}
+				
+				result.status = 'success';
+			} else {
+				result.message = gs.getMessage('x_376096_pxp_invalid_parameters');
+			}
+		} catch (e) {
+			delete result.ui_actions;
+			
+			result.status = 'error';
+			
+			if (gs.hasRole('admin')) {
+				result.message += e;
+				
+				if (e.stack) {
+					result.message += '\n' + e.stack;
+				}
+			}
+		}
+		
+		return JSON.stringify(result);
+	},
+
+    type: 'PortalListUtilClient'
+});]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-07-01 07:44:18</sys_created_on>
+        <sys_id>6d0675a7971011102f77b4b3f153afa9</sys_id>
+        <sys_name>PortalListUtilClient</sys_name>
+        <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
+        <sys_update_name>sys_script_include_6d0675a7971011102f77b4b3f153afa9</sys_update_name>
+    </sys_script_include>
+</record_update>

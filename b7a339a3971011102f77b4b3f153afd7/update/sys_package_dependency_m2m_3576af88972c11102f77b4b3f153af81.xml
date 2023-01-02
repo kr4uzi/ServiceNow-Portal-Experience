@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_package_dependency_m2m">
+    <sys_package_dependency_m2m action="INSERT_OR_UPDATE">
+        <dependency display_value="System (apps/system_ui)" source="apps/system_ui">c370a733753011108c8b143dd0c59f78</dependency>
+        <min_version/>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-07-01 08:12:11</sys_created_on>
+        <sys_id>3576af88972c11102f77b4b3f153af81</sys_id>
+        <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
+    </sys_package_dependency_m2m>
+</record_update>

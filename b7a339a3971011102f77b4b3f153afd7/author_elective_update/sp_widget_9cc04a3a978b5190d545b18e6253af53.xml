@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="DELETE">
+        <category>custom</category>
+        <client_script><![CDATA[api.controller=function($scope, $uibModalStack) {
+	$scope.clearFocusListCache = function() {
+		$uibModalStack.clearFocusListCache();
+	};
+};]]></client_script>
+        <controller_as>c</controller_as>
+        <css/>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description>Based on sp-modal.html (this is statically loaded and can be found via code-search).&#13;
+&#13;
+Example call:&#13;
+var inputOptions = {&#13;
+  message: 'CONFIRM MESSAGE',&#13;
+  text: '',&#13;
+  textPlaceholder: 'Enter a text',&#13;
+  required: true&#13;
+};&#13;
+spModal.open({&#13;
+  title: 'MODAL TITLE',&#13;
+  widget: 'x_376096_pxp_prompt',&#13;
+  shared: inputOptions,&#13;
+  backdrop: false, // disable close by click&#13;
+  onSubmit: function () {&#13;
+    if (inputOptions.required || inputOptions.text) {&#13;
+      return $q.resolve({ status: true });&#13;
+    }&#13;
+&#13;
+    return $q.resolve({ status: false, errorMessage: 'Please enter a text' });&#13;
+  }&#13;
+});</description>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>x_376096_pxp_prompt</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {
+  
+}]]></link>
+        <name>PXP Prompt</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+  /* populate the 'data' object */
+  /* e.g., data.table = $sp.getValue('table'); */
+
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-11-12 19:33:55</sys_created_on>
+        <sys_id>9cc04a3a978b5190d545b18e6253af53</sys_id>
+        <sys_mod_count>14</sys_mod_count>
+        <sys_name>PXP Prompt</sys_name>
+        <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
+        <sys_update_name>sp_widget_9cc04a3a978b5190d545b18e6253af53</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2022-11-13 20:32:53</sys_updated_on>
+        <template><![CDATA[<div class="form-group">
+  <label for="pxp_confirm_text" ng-if="options.shared.message">
+    <span class="field-decorations">
+      <span ng-if="options.shared.required" class="fa fa-asterisk mandatory" ng-class="{ 'mandatory-filled': options.shared.text.length }" title="Required" style="padding-right: .25em"></span>
+      {{options.shared.message}}
+    </span>
+  </label>
+  <input id="pxp_confirm_text" type="text" class="form-control" placeholder="{{options.shared.textPlaceholder}}"
+	autocomplete="off" aria-invalid="{{options.shared.required && !options.shared.text.length}"
+    ng-model="options.shared.text" ng-required="options.shared.required" ng-blur="clearFocusListCache()" />
+</div>]]></template>
+    </sp_widget>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</application>
+        <file_path/>
+        <instance_id>2ca27526dbf6491042b321c405961935</instance_id>
+        <instance_name>dev126060</instance_name>
+        <name>sp_widget_9cc04a3a978b5190d545b18e6253af53</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sp_widget"&gt;&lt;sp_widget action="INSERT_OR_UPDATE"&gt;&lt;category&gt;custom&lt;/category&gt;&lt;client_script&gt;&lt;![CDATA[api.controller=function($scope, $uibModalStack) {
+	$scope.clearFocusListCache = function() {
+		$uibModalStack.clearFocusListCache();
+	};
+};]]&gt;&lt;/client_script&gt;&lt;controller_as&gt;c&lt;/controller_as&gt;&lt;css/&gt;&lt;data_table&gt;sp_instance&lt;/data_table&gt;&lt;demo_data/&gt;&lt;description&gt;Based on sp-modal.html (this is statically loaded and can be found via code-search).&amp;#13;
+&amp;#13;
+Example call:&amp;#13;
+var inputOptions = {&amp;#13;
+  message: 'CONFIRM MESSAGE',&amp;#13;
+  text: '',&amp;#13;
+  textPlaceholder: 'Enter a text',&amp;#13;
+  required: true&amp;#13;
+};&amp;#13;
+spModal.open({&amp;#13;
+  title: 'MODAL TITLE',&amp;#13;
+  widget: 'x_376096_pxp_prompt',&amp;#13;
+  shared: inputOptions,&amp;#13;
+  backdrop: false, // disable close by click&amp;#13;
+  onSubmit: function () {&amp;#13;
+    if (inputOptions.required || inputOptions.text) {&amp;#13;
+      return $q.resolve({ status: true });&amp;#13;
+    }&amp;#13;
+&amp;#13;
+    return $q.resolve({ status: false, errorMessage: 'Please enter a text' });&amp;#13;
+  }&amp;#13;
+});&lt;/description&gt;&lt;docs/&gt;&lt;field_list/&gt;&lt;has_preview&gt;false&lt;/has_preview&gt;&lt;id&gt;x_376096_pxp_prompt&lt;/id&gt;&lt;internal&gt;false&lt;/internal&gt;&lt;link&gt;&lt;![CDATA[function link(scope, element, attrs, controller) {
+  
+}]]&gt;&lt;/link&gt;&lt;name&gt;PXP Prompt&lt;/name&gt;&lt;option_schema/&gt;&lt;public&gt;false&lt;/public&gt;&lt;roles/&gt;&lt;script&gt;&lt;![CDATA[(function() {
+  /* populate the 'data' object */
+  /* e.g., data.table = $sp.getValue('table'); */
+
+})();]]&gt;&lt;/script&gt;&lt;servicenow&gt;false&lt;/servicenow&gt;&lt;sys_class_name&gt;sp_widget&lt;/sys_class_name&gt;&lt;sys_created_by&gt;admin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2022-11-12 19:33:55&lt;/sys_created_on&gt;&lt;sys_id&gt;9cc04a3a978b5190d545b18e6253af53&lt;/sys_id&gt;&lt;sys_mod_count&gt;14&lt;/sys_mod_count&gt;&lt;sys_name&gt;PXP Prompt&lt;/sys_name&gt;&lt;sys_package display_value="Portal Experience" source="x_376096_pxp"&gt;b7a339a3971011102f77b4b3f153afd7&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Portal Experience"&gt;b7a339a3971011102f77b4b3f153afd7&lt;/sys_scope&gt;&lt;sys_update_name&gt;sp_widget_9cc04a3a978b5190d545b18e6253af53&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;admin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2022-11-13 20:32:53&lt;/sys_updated_on&gt;&lt;template&gt;&lt;![CDATA[&lt;div class="form-group"&gt;
+  &lt;label for="pxp_confirm_text" ng-if="options.shared.message"&gt;
+    &lt;span class="field-decorations"&gt;
+      &lt;span ng-if="options.shared.required" class="fa fa-asterisk mandatory" ng-class="{ 'mandatory-filled': options.shared.text.length }" title="Required" style="padding-right: .25em"&gt;&lt;/span&gt;
+      {{options.shared.message}}
+    &lt;/span&gt;
+  &lt;/label&gt;
+  &lt;input id="pxp_confirm_text" type="text" class="form-control" placeholder="{{options.shared.textPlaceholder}}"
+	autocomplete="off" aria-invalid="{{options.shared.required &amp;&amp; !options.shared.text.length}"
+    ng-model="options.shared.text" ng-required="options.shared.required" ng-blur="clearFocusListCache()" /&gt;
+&lt;/div&gt;]]&gt;&lt;/template&gt;&lt;/sp_widget&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>1182869470</payload_hash>
+        <record_name>PXP Prompt</record_name>
+        <reverted_from/>
+        <source>394b22a187d6151021d6fcc5dabb35f4</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-11-13 20:32:53</sys_created_on>
+        <sys_id>109477839703d190d545b18e6253af68</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>18472b1ecba0000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2022-11-13 20:32:53</sys_updated_on>
+        <type>Widget</type>
+        <update_guid>589477839d03d190f3cedbfb8451d367</update_guid>
+        <update_guid_history>589477839d03d190f3cedbfb8451d367:1182869470,ca2233037103d19063f7bb5f648ce3e5:1130836064,002b674b6dcf91909b9e4c055157dc86:-445444484,3c0be34b71cf91905400c16f1939240d:123709692,1aa5db83458f91905f8a9dd7bc9c7ed9:-1827783012,da54d3c3938f9190bda30c56ea0427dd:-1788610974,e77357c7fd4f9190ee5afb8acb07c0d0:-1179720105,c7d2db875b4f9190ccd0b47cdf727ef4:1822739316,3e421f43358f919080e694ae57eb8c8c:-1707140927,f725954bc7879190d17839c397beff55:1342788780,879b6aba690f5190beaef8fb05912332:-1247962511,7382263aec0f51908e6bcfbd93ffe8a3:-26885131,0aeeda365d0f51907bbb39e21876c4fc:306361157,8a1e1a764bcb519099283312cf2b8ec4:309769178,fe7d9ebe1fcb51901577fa5733154333:-1941304124</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="PXP Prompt">371eb75597931510d545b18e6253af75</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-11-20 21:00:58</sys_created_on>
+        <sys_db_object display_value="" name="sp_widget">sp_widget</sys_db_object>
+        <sys_id>20f9c840a7614a9ca4b9ea2d719dff11</sys_id>
+        <sys_metadata>9cc04a3a978b5190d545b18e6253af53</sys_metadata>
+        <sys_name>PXP Prompt</sys_name>
+        <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
+        <sys_scope_delete display_value="">ca2094845f944cfc9638dcb203038e10</sys_scope_delete>
+        <sys_update_name>sp_widget_9cc04a3a978b5190d545b18e6253af53</sys_update_name>
+        <sys_update_version display_value="sp_widget_9cc04a3a978b5190d545b18e6253af53">109477839703d190d545b18e6253af68</sys_update_version>
+    </sys_metadata_delete>
+</record_update>

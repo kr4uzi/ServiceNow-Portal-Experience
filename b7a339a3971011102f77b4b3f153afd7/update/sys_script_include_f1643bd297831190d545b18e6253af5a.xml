@@ -1,0 +1,447 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_376096_pxp.PortalListUtil</api_name>
+        <caller_access/>
+        <client_callable>false</client_callable>
+        <description/>
+        <name>PortalListUtil</name>
+        <script><![CDATA[/* global Class, GlideTableHierarchy, GlideRecord, GlideScriptedExtensionPoint, GlideScopedEvaluator */
+/* global gs, x_376096_pxp, sn_scoped_cache */
+/* eslint no-undef: "error" */
+var PortalListUtil = Class.create();
+PortalListUtil.prototype = {
+    initialize: function() {
+		this.util = new x_376096_pxp.PXPUtil();
+    },
+	
+	getPXPUtil: function () { return this.util; },
+	
+	/*
+	 * @typedef TableFieldStyle
+	 * @property {string} sys_id
+	 * @property {string} field - a field name
+	 * @property {string} css - style attributes (valid css)
+	 * @property {string} css_class - a css class
+	 */
+	/**
+	 * Loads the Field Styles (sys_ui_style) for the given table and fields.
+	 * Base Table Fields are also loaded if not overwritten by higher tables.
+	 *
+	 * @param {string} table - the table's name
+	 * @param {string[]} fields - the fields to load
+	 * @returns {TableFieldStyle[]}
+	 */
+	loadTableStyles: function (table, fields) {
+		var cacheKey = table + '.' + fields.join(',');
+		var styles = sn_scoped_cache.ScopedCacheManager.get('x_376096_pxp_field_styles', cacheKey);
+		if (styles) {
+			styles = JSON.parse(styles);
+		} else {
+			styles = [];
+
+			var tables = new GlideTableHierarchy(table).getTables();
+			for (var i = 0; i < tables.length ; i++) {
+				var styleGr = new GlideRecord('sys_ui_style');
+				styleGr.addQuery('x_376096_pxp_enabled', true);
+				styleGr.addQuery('name', tables[i]);
+				styleGr.addQuery('element', 'IN', fields);
+				styleGr.orderByDesc('sys_updated_on');
+				styleGr.query();
+				while (styleGr.next()) {
+					styles.push({
+						sys_id: styleGr.getUniqueValue(),
+						field: styleGr.element.toString(),
+						css: parseCSSText(styleGr.x_376096_pxp_style.toString()),
+						css_class: styleGr.x_376096_pxp_css_class.toString()
+					});
+				}
+			}
+			
+			sn_scoped_cache.ScopedCacheManager.put('x_376096_pxp_field_styles', cacheKey, JSON.stringify(styles));
+		}
+		
+		return styles;
+		
+		// based on: https://stackoverflow.com/a/43012849
+		// modified to work with ServiceNow's ES5 Standard Mode
+		function parseCSSText(cssText) {
+			var cssTxt = cssText.replace(/\/\*(.|\s)*?\*\//g, " ").replace(/\s+/g, " ");
+			var style = {};
+			var cssMatch = cssTxt.match(/ ?(.*?) ?{([^}]*)}/);
+			var ruleName = cssMatch ? cssMatch[1] : undefined;
+			var rule = cssMatch ? cssMatch[2] : cssTxt;
+			
+			var properties = rule.split(";").map(function (o) {
+				return o.split(":").map(function (x) {
+					return x && x.trim();
+				});
+			});
+			
+			properties.forEach(function (propertyPair) {
+				var propertyName = propertyPair[0];
+				if (propertyName) {
+					style[cssToJs(propertyName)] = propertyPair[1];
+				}
+			});
+			
+			return style;
+			
+			function cssToJs(s) {
+				return s.replace(/\W+\w/g, function (match) {
+					return match.slice(-1).toUpperCase();
+				});
+			}
+		}
+	},
+	
+	/**
+	 * Checks the Field Styles (sys_ui_style) for the given table, fields and items.
+	 * For each item and field, it is checked if the field style (if one exists) matches.
+	 * If so, the result will contain the field style's sys_id will be in the result:
+	 * result[<item_sys_id>][<field_name>][<field_style_sys_id>]
+	 *
+	 * @param {string} table - the table name
+	 * @param {string[]} fields - the fields to load
+	 * @param {string[]} items - the sys_id of the items the field styles should be checked on
+	 * @returns {Map<string, Map<string, string>>} a of item sys_id to map of field to field style sys_id
+	 */
+	loadItemStyles: function (table, fields, items) {
+		var tableExt = this.util.getExtensionPointForTable(table);
+
+		var itemStyles = {};
+		var records = [];
+		items.forEach(function (i) {
+			itemStyles[i] = {};
+			var recordGr = tableExt.queryRecords(table, 'sys_id=' + i, 1);
+			if (recordGr.next()) {
+				records.push(recordGr);
+			} else {
+				throw new Error(gs.getMessage('x_376096_pxp_record_unauthorized_or_invalid_record'));
+			}
+		}, this);
+		
+		var fieldStyleScriptVariables = {
+			
+		};
+
+		var gse = new GlideScopedEvaluator();
+		var tables = new GlideTableHierarchy(table).getTables();
+		for (var i = 0; i < tables.length; i++) {
+			var styleGr = new GlideRecord('sys_ui_style');
+			styleGr.addQuery('x_376096_pxp_enabled', true);
+			styleGr.addQuery('name', tables[i]);
+			styleGr.addQuery('element', 'IN', fields);
+			styleGr.orderByDesc('sys_updated_on');
+			styleGr.query();
+			while (styleGr.next()) {
+				var field = styleGr.element.toString();
+
+				// we start with the highest level if inheritance and remove each processed field,
+				// because style field would override any lower base table field styles
+				fields.splice(fields.indexOf(field), 1);
+
+				var isScript = styleGr.value.toString().trim().startsWith('javascript:');
+				records.forEach(function (record) {
+					// before checking the field condition, first check if the field is valid and user has access to read it
+					var fieldElement = record.getElement(field);
+					if (fieldElement != null && record.canRead() && fieldElement.canRead()) {
+						var recordSysID = record.getUniqueValue();
+						var applyStyle = false;
+						if (isScript) {
+							fieldStyleScriptVariables['current'] = record;
+							applyStyle = gse.evaluateScript(styleGr, 'value', fieldStyleScriptVariables);
+						} else if (styleGr.value == record.getValue(field)) {
+							applyStyle = true;
+						}
+
+						if (applyStyle) {
+							itemStyles[recordSysID][field] = styleGr.getUniqueValue();
+						}
+					} else {
+						throw new Error(gs.getMessage('x_376096_pxp_record_unauthorized_or_invalid_record'));
+					}
+				}, this);
+			}
+		}
+		
+		return itemStyles;
+	},
+	
+	loadTableUIActions: function (table, view, rp, parent) {
+		var result = {
+			definition: {},
+			row: [],
+			head: [],
+			foot: []
+		};
+		
+		var tableExt = this.util.getExtensionPointForTable(table);
+		var gse = new GlideScopedEvaluator();
+		gse.putVariable('RP', rp);
+		gse.putVariable('current', tableExt.queryRecords(table));
+		
+		if (parent) {
+			gse.putVariable('parent', tableExt.queryRecords(table));
+		}
+		
+		var uiActionGr = new GlideRecord('sys_ui_action');
+		uiActionGr.addQuery('sys_id', 'IN', this._getListUIActions(table, view));
+		uiActionGr.query();
+		while (uiActionGr.next()) {
+			var uiActionSysID = uiActionGr.getUniqueValue();
+			result.definition[uiActionSysID] = {
+				sys_id: uiActionSysID,
+				label: uiActionGr.x_376096_pxp_list_label ? uiActionGr.x_376096_pxp_list_label.getDisplayValue() : uiActionGr.getDisplayValue(),
+				client_script: uiActionGr.x_376096_pxp_client_script.toString(),
+				scope: uiActionGr.sys_scope.scope.toString(),
+				order: +uiActionGr.order.toString()
+			};
+
+			if (uiActionGr.list_banner_button || uiActionGr.list_button) {
+				var enabled = uiActionGr.condition.nil() || (function () {
+					var scriptResult = gse.evaluateScript(uiActionGr, 'condition');
+					if (scriptResult == null) {
+						var uiActionDisplay = uiActionGr.getDisplayValue() + '(' + uiActionSysID + ')';
+						throw new Error(gs.getMessage('x_376096_pxp_ui_action_condition_evaluation_failed', [uiActionDisplay]));
+					}
+
+					return scriptResult == true;
+				})();
+
+				if (uiActionGr.list_banner_button) {
+					result.head.push({
+						sys_id: uiActionSysID,
+						enabled: enabled
+					});
+				}
+
+				if (uiActionGr.list_button) {
+					result.foot.push({
+						sys_id: uiActionSysID,
+						enabled: enabled
+					});
+				}
+			}
+
+			if (uiActionGr.list_choice) {
+				result.row.push(uiActionSysID);
+			}
+		}
+
+		return result;
+	},
+	
+	_getListUIActions: function (table, view) {
+		var cacheKey = table + '.' + view;
+		var uiActionSysIDs = sn_scoped_cache.ScopedCacheManager.get('x_376096_pxp_list_ui_actions', cacheKey);
+		if (uiActionSysIDs) {
+			uiActionSysIDs = JSON.parse(uiActionSysIDs);
+		} else {
+			uiActionSysIDs = [];
+			var uiActionNames = [];
+			var tables = new GlideTableHierarchy(table).getTables();
+			tables.push('global', '');
+			for (var i = 0; i < tables.length; i++) {
+				var uiActionGr = new GlideRecord('sys_ui_action');
+				uiActionGr.addQuery('active', true);
+				uiActionGr.addQuery('client', false);
+				uiActionGr.addQuery('x_376096_pxp_enabled', true);
+				uiActionGr.addQuery('table', tables[i]);
+				uiActionGr.addQuery('list_action', true);
+// 				uiActionGr.addQuery('list_banner_button', true) // head
+// 					.addOrCondition('list_choice', true) // body
+// 					.addOrCondition('list_button', true); // foot
+				uiActionGr.addQuery('action_name', 'NOT IN', uiActionNames);
+				uiActionGr.orderByDesc('order');
+				uiActionGr.query();
+				while (uiActionGr.next()) {
+					if (uiActionGr.action_name) {
+						uiActionNames.push(uiActionGr.action_name.toString());
+					}
+
+					if (!checkRole(uiActionGr) || !checkVisibility(uiActionGr, view)) {
+						continue;
+					}
+
+					uiActionSysIDs.push(uiActionGr.getUniqueValue());
+				}
+			}
+
+			sn_scoped_cache.ScopedCacheManager.put('x_376096_pxp_list_ui_actions', cacheKey, JSON.stringify(uiActionSysIDs));
+		}
+
+		return uiActionSysIDs;
+		
+		function checkRole(uiActionGr) {
+			var uiActionRoleGr = new GlideRecord('sys_ui_action_role');
+			uiActionRoleGr.addQuery('sys_ui_action', uiActionGr.sys_id);
+			uiActionRoleGr.query();
+			if (!uiActionRoleGr.hasNext()) {
+				return true;
+			}
+			
+			while (uiActionRoleGr.next()) {
+				if (gs.hasRole(uiActionRoleGr.sys_user_role.name)) {
+					return true;
+				}
+			}
+			
+			return false;
+		}
+		
+		function checkVisibility(uiActionGr, viewName) {
+			if (!viewName) {
+				return true;
+			}
+			
+			var uiActionViewGr = new GlideRecord('sys_ui_action_view');
+			uiActionViewGr.addQuery('sys_ui_action', uiActionGr.sys_id);
+			uiActionViewGr.addQuery('sys_ui_view.name', viewName);
+			uiActionViewGr.setLimit(1);
+			uiActionViewGr.query();
+			if (uiActionViewGr.next()) {
+				// Any exclude rule on a given view means that the action does not appear on that view.
+				return uiActionViewGr.visibility == 'visible';
+			}
+			
+			uiActionViewGr = new GlideRecord('sys_ui_action_view');
+			uiActionViewGr.addQuery('sys_ui_action', uiActionGr.sys_id);
+			uiActionViewGr.setLimit(1);
+			uiActionViewGr.query();
+			if (uiActionViewGr.next()) {
+				// If there is at least one include rule, then the action appears only on views that are specifically included.
+				if (uiActionViewGr.visibility == 'visible') {
+					return false;
+				} else {
+					return true;
+				}
+			}
+			
+			// If there are no visibility rules, the action appears on all views.
+			return true;
+		}
+	},
+	
+	loadRowUIActions: function (table, view, items, rp, parent) {
+		var rowUIActions = {};
+		var tableExt = this.util.getExtensionPointForTable(table);
+		var itemRecords = {};
+		items.forEach(function (i) {
+			rowUIActions[i] = {};
+			
+			var recordGr = tableExt.queryRecords(table, 'sys_id=' + i, 1);
+			if (recordGr.next()) {
+				itemRecords[i] = recordGr;
+			} else {
+				throw new Error(gs.getMessage('x_376096_pxp_record_unauthorized_or_invalid_record'));
+			}
+		}, this);
+		
+		var gse = new GlideScopedEvaluator();
+		gse.putVariable('RP', rp);
+		
+		if (parent) {
+			gse.putVariable('parent', parent);
+		}
+
+		var uiActionGr = new GlideRecord('sys_ui_action');
+		uiActionGr.addQuery('sys_id', 'IN', this._getListUIActions(table, view));
+		uiActionGr.addQuery('list_choice', true);
+		uiActionGr.query();
+
+		while (uiActionGr.next()) {
+			items.forEach(function (i) {
+				gse.putVariable('current', itemRecords[i]);
+				var enabled = uiActionGr.condition.nil() || (function () {
+					var scriptResult = gse.evaluateScript(uiActionGr, 'condition');
+					if (scriptResult == null) {
+						var uiActionDisplay = uiActionGr.getDisplayValue() + '(' + uiActionGr.sys_id + ')';
+						throw new Error(gs.getMessage('x_376096_pxp_ui_action_condition_evaluation_failed', [uiActionDisplay]));
+					}
+
+					return scriptResult == true;
+				})();
+				
+				rowUIActions[i][uiActionGr.getUniqueValue()] = {
+					enabled: enabled
+				};
+			}, this);
+		}
+
+		return rowUIActions;
+	},
+	
+	createFakeRP: function (table, view, type, relatedList, query, referringUrl, urlParams) {
+		var controlID = '-1';
+		var omitNew = false;
+		var omitEdit = false;
+		var viewID = '';
+		var viewName = '';
+		var listEditRefQualTag = ''; // must be injected as global variable (like current)
+		
+		var sectionGr = new GlideRecord('sys_ui_section');
+		sectionGr.addQuery('name', table);
+		sectionGr.addQuery('view.name', view);
+		sectionGr.setLimit(1);
+		sectionGr.query();
+		if (sectionGr.next()) {
+			viewID = sectionGr.getValue('view');
+			viewName = view;
+		} else {
+			// if no section for the view does exist, the OOTB mechanism is to use the 'Default View'
+			viewName = '';
+			viewID = 'Default view';
+		}
+		
+		var isO2M = type == '12M'; // one to many
+		var isM2M = type == 'M2M'; // many to many
+		if (relatedList) {
+			var listControlGr = new GlideRecord('sys_ui_list_control');
+			listControlGr.addQuery('related_list', relatedList);
+			listControlGr.setLimit(1);
+			listControlGr.query();
+			if (listControlGr.next()) {
+				listEditRefQualTag = listControlGr.list_edit_ref_qual_tag.toString();
+				omitNew = !!listControlGr.omit_new_button;
+				omitEdit = !!listControlGr.omit_edit_button;
+			}
+		}
+		
+		return {
+			getEncodedQuery: function () { return query; },
+			getListControl: function () {
+				return {
+					getControlID: function () { return controlID; },
+					isOmitEditButton: function () { return omitEdit; },
+					isOmitNewButton: function () { return omitNew; },
+					getListEditRefQualTag: function () { return listEditRefQualTag; }
+				};
+			},
+			getParameterValue: function (paramName) { return paramName in urlParams ? urlParams[paramName] : null; },
+			getReferringURL: function () { return referringUrl; },
+			getViewID: function () { return viewID; },
+			getViewName: function () { return viewName; },
+			getWindowProperties: function () { return {}; },
+			isInDevStudio: function () { return false; },
+			isInteractive: function () { return true; },
+			isOneToMany: function () { return isO2M; },
+			isManyToMany: function () { return isM2M; }, // sysparm_collection_related_file
+			isRelatedList: function () { return !!relatedList; } // sys_is_related_list
+		};
+	},
+
+    type: 'PortalListUtil'
+};]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-11-11 12:37:04</sys_created_on>
+        <sys_id>f1643bd297831190d545b18e6253af5a</sys_id>
+        <sys_name>PortalListUtil</sys_name>
+        <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
+        <sys_update_name>sys_script_include_f1643bd297831190d545b18e6253af5a</sys_update_name>
+    </sys_script_include>
+</record_update>

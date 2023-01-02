@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_376096_pxp.PortalFormUtil</api_name>
+        <caller_access/>
+        <client_callable>false</client_callable>
+        <description/>
+        <name>PortalFormUtil</name>
+        <script><![CDATA[/* global Class, GlideRecord, GlideScopedEvaluator, GlideStringUtil */
+/* global gs, x_376096_pxp, sn_scoped_cache */
+/* eslint no-undef: "error" */
+var PortalFormUtil = Class.create();
+PortalFormUtil.prototype = {
+    initialize: function() {
+		this.pxpUtil = new x_376096_pxp.PXPUtil();
+    },
+	
+	loadButtons: function (uiActionSysIDs) {
+		var uiActionGr = new GlideRecord('sys_ui_action');
+		uiActionGr.addQuery('sys_id', 'IN', uiActionSysIDs);
+		uiActionGr.addQuery('client', false);
+		uiActionGr.addQuery('x_376096_pxp_enabled', true);
+		uiActionGr.query();
+
+		var clientScripts = {};		
+		while (uiActionGr.next()) {
+			clientScripts[uiActionGr.getUniqueValue()] = uiActionGr.x_376096_pxp_client_script.toString();
+		}
+
+		return clientScripts;
+	},
+	
+	/* 
+	 * A JSON representation of records of table 'sys_ui_annotation_type' /nav_to.do?uri=%2Fsys_ui_annotation_type_list.do
+	 *
+	 * @typedef PXPAnnotationType
+	 * @property {string} name - the type's name, e.g. Info Box Blue, Line Separator
+	 * @property {boolean} omit_spacer - ???
+	 * @property {string} style - The styles for this type (CSS Style Declaration)
+	 */
+	/* 
+	 * A JSON representation of records of table 'sys_ui_annotation' /nav_to.do?uri=%2Fsys_ui_annotation_list.do
+	 * Note: The property 'is_plain_text' is not present as the rendering in 'loadAnnotations' already takes this into account
+	 *
+	 * @typedef PXPAnnotation
+	 * @property {string} sys_id - The annotations SysID (this is used to match the annotation with the DOM identifier)
+	 * @property {string} text - The rendered HTML or text (depending on the records 'is_plain_text' value)
+	 */
+	/* @typedef LoadAnnotationResult
+	 * @property {Object.<String, PXPAnnotationType} types
+	 * @property {PXPAnnotation[]} annotations
+	 */
+	/* 
+	 * Loads the annotations and types for a given table, view and record, the record does not necessarily 
+	 * have to be a GlideRecord, but it must expose all attributes and methods used by the rendered annotation.
+	 * Only annotations where the type is active will be rendered.
+	 *
+	 * @param {string|GlideElement} table
+	 * @param {string|GlideElement} view - the views name (not SysID!)
+	 * @param {Object} record - GlideRecord or object that is statisfies all properties / functions accessed by the annotations
+	 * @returns {LoadAnnotationResult}
+	 */
+	loadAnnotations: function (table, view, record) {
+		view = viewExists(table, view) ? view : '';
+		var basicAnnotationInfo = getBasicAnnotationInfo(table, view);
+		var escapeHTML = gs.getProperty('x_376096_pxp.form.annotations.escape_html', 'true') == 'true';
+		var annotations = [];
+		
+		var annotationGr = new GlideRecord('sys_ui_annotation');
+		annotationGr.addQuery('sys_id', 'IN', basicAnnotationInfo.annotationsSysIDs);
+		annotationGr.addNotNullQuery('type')
+			.addCondition('type', 'IN', Object.keys(basicAnnotationInfo.types));
+		annotationGr.query();
+		while (annotationGr.next()) {
+			var annotationSysID = annotationGr.getUniqueValue();
+			// the following translation and evaluation follows the ootb mechanism:
+			// 1.) Translate using gs.getMessage
+			// 2.) Evaluate everything within ${ and } braces
+			var annotationText = gs.getMessage(annotationGr.text.toString().trim());
+			annotationText = annotationText.replace(/\${([^]*?)}/g, evaluateAnnotationScript.bind(this, annotationGr, escapeHTML));
+			
+			// 'Plain text' vs 'HTML': Plain text replaces newlines with <br /> (afaik thats the only difference...)
+			if (annotationGr.is_plain_text) {
+				annotationText = GlideStringUtil.newLinesToBreaks(annotationText);
+			}
+			
+			annotations.push({
+				'sys_id': annotationSysID,
+				'type': annotationGr.getValue('type'),
+				'text': annotationText
+			});
+		}
+		
+		return {
+			types: basicAnnotationInfo.types,
+			annotations: annotations
+		};
+		
+		function evaluateAnnotationScript(annotationGr, escapeHTML, match, script) {
+			var extensionPoint = this.pxpUtil.getExtensionPointForScope('global');
+			extensionPoint.setTemporaryValue(annotationGr, 'text', script);
+
+			var gse = new GlideScopedEvaluator();
+			gse.putVariable('current', record);
+			var result = gse.evaluateScript(annotationGr, 'text');
+			if (result == null) {
+				var logMessage = 'Failed to evaluate annotation:\n' + annotationText + '\nPart that failed: ' + script;
+				var errorMessage = 'Script Evaluation Error, please check the error log.';
+				if (gs.hasRole('admin')) {
+					errorMessage += '\n' + logMessage;
+				}
+
+				gs.error(logMessage);
+				throw new Error(errorMessage);
+			}
+
+			if (escapeHTML) {
+				return GlideStringUtil.getHTMLValue(result);
+			}
+			
+			return result;
+		}
+		
+		function getBasicAnnotationInfo(table, view) {
+			var basicAnnotationInfo = {
+				types: {},
+				annotationsSysIDs: []
+			};
+			
+			var cachedAnnotations = sn_scoped_cache.ScopedCacheManager.get('x_376096_pxp_annotation_cache', table + '.' + view);
+			if (cachedAnnotations) {
+				basicAnnotationInfo = JSON.parse(cachedAnnotations);
+			} else {
+				var uiElementGr = new GlideRecord('sys_ui_element');
+				// never encountered a annotation with an empty element, but we can use getValue instead of toString
+				uiElementGr.addNotNullQuery('element');
+				uiElementGr.addQuery('type', 'annotation');
+				uiElementGr.addQuery('sys_ui_section.name', table);
+				uiElementGr.addQuery('sys_ui_section.view.name', view);
+				uiElementGr.query();
+				while (uiElementGr.next()) {
+					basicAnnotationInfo.annotationsSysIDs.push(uiElementGr.getValue('element'));
+				}
+
+				var annotationTypeGr = new GlideRecord('sys_ui_annotation_type');
+				annotationTypeGr.addQuery('active', true);
+				annotationTypeGr.addJoinQuery('sys_ui_annotation', 'sys_id', 'type');
+				annotationTypeGr.query();
+				while (annotationTypeGr.next()) {
+					basicAnnotationInfo.types[annotationTypeGr.getUniqueValue()] = {
+						'style': annotationTypeGr.style.toString(),
+						'name': annotationTypeGr.name.toString(),
+						'omit_spacer': !!annotationTypeGr.omit_spacer
+					};
+				}
+
+				sn_scoped_cache.ScopedCacheManager.put('x_376096_pxp_annotation_cache', table + '.' + view, JSON.stringify(basicAnnotationInfo));
+			}
+			
+			return basicAnnotationInfo;
+		}
+		
+		function viewExists(table, view) {
+			// note: we have to check if the view actually exists, if not, the default view (viewName = '') will be displayed
+			//       and we have to therefore also load the annotations for the default view		
+			var sectionGr = new GlideRecord('sys_ui_section');
+			sectionGr.addQuery('name', table);
+			sectionGr.addQuery('view.name', view);
+			sectionGr.setLimit(1);
+			sectionGr.query();
+			return sectionGr.hasNext();
+		}
+	},
+
+    type: 'PortalFormUtil'
+};]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-11-11 17:12:13</sys_created_on>
+        <sys_id>2e43342297871190d545b18e6253afca</sys_id>
+        <sys_name>PortalFormUtil</sys_name>
+        <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
+        <sys_update_name>sys_script_include_2e43342297871190d545b18e6253afca</sys_update_name>
+    </sys_script_include>
+</record_update>

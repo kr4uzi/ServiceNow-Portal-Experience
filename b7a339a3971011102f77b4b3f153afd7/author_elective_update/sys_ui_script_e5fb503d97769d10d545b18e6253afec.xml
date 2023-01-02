@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_script">
+    <sys_ui_script action="DELETE">
+        <active>true</active>
+        <description/>
+        <global>false</global>
+        <ignore_in_now_experience>false</ignore_in_now_experience>
+        <name>x_376096_pxp.catalog_item_inject</name>
+        <script><![CDATA[var x_376096_pxp = x_376096_pxp || {};
+
+x_376096_pxp.catalog_item_inject = (function() {
+	"use strict";
+	/* global setTimeout, MutationObserver */
+	/* eslint no-undef: "error" */
+	
+	if (x_376096_pxp.catalog_item_inject) {
+		return x_376096_pxp.catalog_item_inject;
+	}
+	
+	var targetWidgets = [
+		// '<Sys ID of Target Widget>', // [widget-id] <Target Widget Name> (<used page>)
+		'3c29786e87133200e0ef0cf888cb0bdf', // [widget-sc-cat-item-v2] SC Catalog Item (sc_cat_item)
+		'0fd6a6f247230200ba13a5554ee490b3', // [widget-sc-cat-item] SC Catalog Item Deprecated
+	];
+	
+	setTimeout(function () {
+		var $window = this;
+		var observer = new MutationObserver(function (mutations) {
+			for (var i = 0; i < mutations.length; i++) {
+				var mutation = mutations[i];
+				if (mutation.addedNodes) {
+					for (var j = 0; j < mutation.addedNodes.length; j++) {
+						var node = mutation.addedNodes[j];
+						if (node.classList && !node.classList.contains('pxp-catalog-item-injected')) {
+							for (var k = 0; k < targetWidgets.length; k++) {
+								if (node.classList.contains('v' + targetWidgets[k])) {
+									node.classList.add('pxp-catalog-item-injected');
+									new PXPCatalogItemInjector($window, node);
+									break;
+								}
+							}
+						}
+					}
+				}
+			}
+		});
+		
+		observer.observe($window.document, {
+			childList: true,
+			subtree: true
+		});
+	});
+
+	return {
+		type: "catalog_item_inject"
+	};
+	
+	function PXPCatalogItemInjector($window, node) {
+		var element = $window.angular.element(node);
+		var $injector = element.injector();
+		var $compile = $injector.get('$compile');
+		var i18n = $injector.get('i18n');
+		var $rootScope = $injector.get('$rootScope');
+		
+		var scope = element.scope();
+		if (scope.options.shared && scope.options.shared.pxp_options) {
+			var pxpOptions = scope.options.shared.pxp_options;
+			var g_form = $window.angular.element($window.document).find('div.form-group[field*=formModel]').first().scope().getGlideForm();
+			
+			if ('showShortDescription' in pxpOptions && pxpOptions.showShortDescription == true) {
+				// short description is hidden by default, excplitily setting showShortDescription to true is the exception 
+			} else {
+				element.find('div.panel.panel-default > div.sc-cat-item-short-description').hide();
+			}
+			
+			if ('showDescription' in pxpOptions && pxpOptions.showDescription == true) {
+				// description is hidden by default, excplitily setting showDescription to true is the exception 
+			} else {
+				element.find('div.panel.panel-default > h2').hide();
+			}
+			
+			if ('show_title' in pxpOptions && pxpOptions.show_title == true) {
+				// title is visible by default
+			} else {
+				element.find("div.panel.panel-default > div[role='region']").first().hide();
+			}
+			
+			if ('auto_redirect' in pxpOptions) {
+				scope.options.auto_redirect = String(pxpOptions.auto_redirect);
+			} else {
+				scope.options.auto_redirect = 'false';
+			}
+			
+			if ('fields' in pxpOptions) {
+				for (var field in pxpOptions.fields) {
+					g_form.setValue(field, pxpOptions.fields[field]);
+				}
+			}
+			
+			if (pxpOptions.afterSubmit) {
+				var unsubscribe = $rootScope.$on('$sp.sc_cat_item.submitted', function($event , $data) {
+					unsubscribe();
+					
+					var locals = {
+						$data: $data,
+						$event: $event,
+						g_form: g_form,
+						closeModal: function () {
+							scope.$parent.$parent.$dismiss();
+						}
+					};
+
+					$injector.invoke(pxpOptions.afterSubmit, scope, locals);
+				});
+				
+				scope.$on('$destroy', function () {
+					unsubscribe();
+				});
+			}
+			
+			if (pxpOptions.onLoad) {
+				var locals = {
+					g_form: g_form,
+					closeModal: function () {
+						scope.$parent.$parent.$dismiss();
+					}
+				};
+
+				$injector.invoke(pxpOptions.onLoad, scope, locals);
+			}
+		}
+	}
+})();
+]]></script>
+        <script_name>catalog_item_inject</script_name>
+        <sys_class_name>sys_ui_script</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-10-27 21:18:26</sys_created_on>
+        <sys_id>e5fb503d97769d10d545b18e6253afec</sys_id>
+        <sys_mod_count>7</sys_mod_count>
+        <sys_name>x_376096_pxp.catalog_item_inject</sys_name>
+        <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
+        <sys_update_name>sys_ui_script_e5fb503d97769d10d545b18e6253afec</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2022-11-25 13:42:29</sys_updated_on>
+        <ui_type>1</ui_type>
+        <use_scoped_format>true</use_scoped_format>
+    </sys_ui_script>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</application>
+        <file_path/>
+        <instance_id>2ca27526dbf6491042b321c405961935</instance_id>
+        <instance_name>dev126060</instance_name>
+        <name>sys_ui_script_e5fb503d97769d10d545b18e6253afec</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sys_ui_script"&gt;&lt;sys_ui_script action="INSERT_OR_UPDATE"&gt;&lt;active&gt;true&lt;/active&gt;&lt;description/&gt;&lt;global&gt;false&lt;/global&gt;&lt;ignore_in_now_experience&gt;false&lt;/ignore_in_now_experience&gt;&lt;name&gt;x_376096_pxp.catalog_item_inject&lt;/name&gt;&lt;script&gt;&lt;![CDATA[var x_376096_pxp = x_376096_pxp || {};
+
+x_376096_pxp.catalog_item_inject = (function() {
+	"use strict";
+	/* global setTimeout, MutationObserver */
+	/* eslint no-undef: "error" */
+	
+	if (x_376096_pxp.catalog_item_inject) {
+		return x_376096_pxp.catalog_item_inject;
+	}
+	
+	var targetWidgets = [
+		// '&lt;Sys ID of Target Widget&gt;', // [widget-id] &lt;Target Widget Name&gt; (&lt;used page&gt;)
+		'3c29786e87133200e0ef0cf888cb0bdf', // [widget-sc-cat-item-v2] SC Catalog Item (sc_cat_item)
+		'0fd6a6f247230200ba13a5554ee490b3', // [widget-sc-cat-item] SC Catalog Item Deprecated
+	];
+	
+	setTimeout(function () {
+		var $window = this;
+		var observer = new MutationObserver(function (mutations) {
+			for (var i = 0; i &lt; mutations.length; i++) {
+				var mutation = mutations[i];
+				if (mutation.addedNodes) {
+					for (var j = 0; j &lt; mutation.addedNodes.length; j++) {
+						var node = mutation.addedNodes[j];
+						if (node.classList &amp;&amp; !node.classList.contains('pxp-catalog-item-injected')) {
+							for (var k = 0; k &lt; targetWidgets.length; k++) {
+								if (node.classList.contains('v' + targetWidgets[k])) {
+									node.classList.add('pxp-catalog-item-injected');
+									new PXPCatalogItemInjector($window, node);
+									break;
+								}
+							}
+						}
+					}
+				}
+			}
+		});
+		
+		observer.observe($window.document, {
+			childList: true,
+			subtree: true
+		});
+	});
+
+	return {
+		type: "catalog_item_inject"
+	};
+	
+	function PXPCatalogItemInjector($window, node) {
+		var element = $window.angular.element(node);
+		var $injector = element.injector();
+		var $compile = $injector.get('$compile');
+		var i18n = $injector.get('i18n');
+		var $rootScope = $injector.get('$rootScope');
+		
+		var scope = element.scope();
+		if (scope.options.shared &amp;&amp; scope.options.shared.pxp_options) {
+			var pxpOptions = scope.options.shared.pxp_options;
+			var g_form = $window.angular.element($window.document).find('div.form-group[field*=formModel]').first().scope().getGlideForm();
+			
+			if ('showShortDescription' in pxpOptions &amp;&amp; pxpOptions.showShortDescription == true) {
+				// short description is hidden by default, excplitily setting showShortDescription to true is the exception 
+			} else {
+				element.find('div.panel.panel-default &gt; div.sc-cat-item-short-description').hide();
+			}
+			
+			if ('showDescription' in pxpOptions &amp;&amp; pxpOptions.showDescription == true) {
+				// description is hidden by default, excplitily setting showDescription to true is the exception 
+			} else {
+				element.find('div.panel.panel-default &gt; h2').hide();
+			}
+			
+			if ('show_title' in pxpOptions &amp;&amp; pxpOptions.show_title == true) {
+				// title is visible by default
+			} else {
+				element.find("div.panel.panel-default &gt; div[role='region']").first().hide();
+			}
+			
+			if ('auto_redirect' in pxpOptions) {
+				scope.options.auto_redirect = String(pxpOptions.auto_redirect);
+			} else {
+				scope.options.auto_redirect = 'false';
+			}
+			
+			if ('fields' in pxpOptions) {
+				for (var field in pxpOptions.fields) {
+					g_form.setValue(field, pxpOptions.fields[field]);
+				}
+			}
+			
+			if (pxpOptions.afterSubmit) {
+				var unsubscribe = $rootScope.$on('$sp.sc_cat_item.submitted', function($event , $data) {
+					unsubscribe();
+					
+					var locals = {
+						$data: $data,
+						$event: $event,
+						g_form: g_form,
+						closeModal: function () {
+							scope.$parent.$parent.$dismiss();
+						}
+					};
+
+					$injector.invoke(pxpOptions.afterSubmit, scope, locals);
+				});
+				
+				scope.$on('$destroy', function () {
+					unsubscribe();
+				});
+			}
+			
+			if (pxpOptions.onLoad) {
+				var locals = {
+					g_form: g_form,
+					closeModal: function () {
+						scope.$parent.$parent.$dismiss();
+					}
+				};
+
+				$injector.invoke(pxpOptions.onLoad, scope, locals);
+			}
+		}
+	}
+})();
+]]&gt;&lt;/script&gt;&lt;script_name&gt;catalog_item_inject&lt;/script_name&gt;&lt;sys_class_name&gt;sys_ui_script&lt;/sys_class_name&gt;&lt;sys_created_by&gt;admin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2022-10-27 21:18:26&lt;/sys_created_on&gt;&lt;sys_id&gt;e5fb503d97769d10d545b18e6253afec&lt;/sys_id&gt;&lt;sys_mod_count&gt;7&lt;/sys_mod_count&gt;&lt;sys_name&gt;x_376096_pxp.catalog_item_inject&lt;/sys_name&gt;&lt;sys_package display_value="Portal Experience" source="x_376096_pxp"&gt;b7a339a3971011102f77b4b3f153afd7&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Portal Experience"&gt;b7a339a3971011102f77b4b3f153afd7&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_ui_script_e5fb503d97769d10d545b18e6253afec&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;admin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2022-11-25 13:42:29&lt;/sys_updated_on&gt;&lt;ui_type&gt;1&lt;/ui_type&gt;&lt;use_scoped_format&gt;true&lt;/use_scoped_format&gt;&lt;/sys_ui_script&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>-699584053</payload_hash>
+        <record_name>x_376096_pxp.catalog_item_inject</record_name>
+        <reverted_from/>
+        <source>d6b4339997dfd110d545b18e6253af92</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-11-25 13:42:29</sys_created_on>
+        <sys_id>edb98ccf975f5910d545b18e6253af2e</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>184af06808c0000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2022-11-25 13:42:29</sys_updated_on>
+        <type>UI Script</type>
+        <update_guid>29b98ccff85f591057764dc31d0da92e</update_guid>
+        <update_guid_history>29b98ccff85f591057764dc31d0da92e:-699584053,40263772a45f59105ea426426340bae5:-814682833,f1f57332415f591090b0ebafcdfb1fde:1702165481,ea99e4323d53591077d359fbcd90507a:-1780100033,a239a4324f53591043343a8bc0b3aa9c:1501464542,8b10acb61513591008467e304fbb7413:-1704082825,8ac818fe7ddf1910e05e1781d31da162:402322086,6aeeedaac84b1190a9b220615f093740:-713057876,1ae125ea1b0b11903f7dd047624cd010:2049022330,434a19a62c0b11905bb3f16c35d31272:-730800653,bdc3d122080b11909c927e8c4331832f:27251835,edfb503d82769d10fbdcbc57b35387ed:-784075214</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-12-10 17:47:02</sys_created_on>
+        <sys_db_object display_value="" name="sys_ui_script">sys_ui_script</sys_db_object>
+        <sys_id>086890e0115d472d8ac8c094e23f9a79</sys_id>
+        <sys_metadata>e5fb503d97769d10d545b18e6253afec</sys_metadata>
+        <sys_name>x_376096_pxp.catalog_item_inject</sys_name>
+        <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
+        <sys_scope_delete display_value="">ca2094845f944cfc9638dcb203038e10</sys_scope_delete>
+        <sys_update_name>sys_ui_script_e5fb503d97769d10d545b18e6253afec</sys_update_name>
+        <sys_update_version display_value="sys_ui_script_e5fb503d97769d10d545b18e6253afec">edb98ccf975f5910d545b18e6253af2e</sys_update_version>
+    </sys_metadata_delete>
+</record_update>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_css">
+    <sp_css action="INSERT_OR_UPDATE">
+        <css>.pxp-annotation-row[data-annotation-type="Info Box Blue"],&#13;
+.pxp-annotation-row[data-annotation-type="Info Box Red"],&#13;
+.pxp-annotation-row[data-annotation-type="Section Details"],&#13;
+.pxp-annotation-row[data-annotation-type="Text"] {&#13;
+	display: none; &#13;
+}&#13;
+&#13;
+.pxp-annotation[data-annotation-type="Info Box Blue"] div,&#13;
+.pxp-annotation[data-annotation-type="Info Box Red"] div, &#13;
+.pxp-annotation[data-annotation-type="Section Details"] div, &#13;
+.pxp-annotation[data-annotation-type="Text"] div {&#13;
+	border: 1px solid transparent;&#13;
+	border-radius: 3px;&#13;
+	margin-bottom: 6px;&#13;
+}&#13;
+&#13;
+.pxp-annotation[data-annotation-type="Info Box Blue"] div, &#13;
+.pxp-annotation[data-annotation-type="Section Details"] div, &#13;
+.pxp-annotation[data-annotation-type="Text"] div {&#13;
+	background-color: #b5dde5;&#13;
+	border-color: #6abecf;&#13;
+	color: #1a424b; &#13;
+}&#13;
+&#13;
+.pxp-annotation[data-annotation-type="Info Box Blue"] div hr,&#13;
+.pxp-annotation[data-annotation-type="Section Details"] div hr, &#13;
+.pxp-annotation[data-annotation-type="Text"] div hr {&#13;
+	border-top-color: #57b6c9;&#13;
+}&#13;
+&#13;
+.pxp-annotation[data-annotation-type="Info Box Blue"] div .alert-link, &#13;
+.pxp-annotation[data-annotation-type="Section Details"] div .alert-link,&#13;
+.pxp-annotation[data-annotation-type="Text"] div .alert-link {&#13;
+	color: #0d2125;&#13;
+	text-decoration: underline;&#13;
+}&#13;
+&#13;
+.pxp-annotation[data-annotation-type="Info Box Red"] div {&#13;
+	background-color: #ffdadc;&#13;
+	border-color: #c83c36;&#13;
+	color: #64201a;&#13;
+}&#13;
+&#13;
+.pxp-annotation[data-annotation-type="Info Box Red"] div hr {&#13;
+	border-top-color: #b43631;&#13;
+}&#13;
+&#13;
+.pxp-annotation[data-annotation-type="Info Box Red"] div .alert-link {&#13;
+	color: #3c130f;&#13;
+	text-decoration: underline;&#13;
+}&#13;
+&#13;
+.pxp-annotation[data-annotation-type="Section Separator"] div {&#13;
+  min-height: initial;&#13;
+  margin-bottom: 10px;&#13;
+  border: medium none;&#13;
+  border-top: 1px solid #e6e9eb;&#13;
+  background: transparent;&#13;
+  color: #2e2e2e;&#13;
+  font-size: 18px;&#13;
+  padding: 16px 15px;&#13;
+}&#13;
+&#13;
+.pxp-annotation[data-annotation-type="Section Separator"] div.less-padding {&#13;
+	padding: 2px 0 0 4px;&#13;
+}</css>
+        <name>PXP Form</name>
+        <sys_class_name>sp_css</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-11-19 19:27:32</sys_created_on>
+        <sys_id>eb7d5ecd971f9110d545b18e6253afdf</sys_id>
+        <sys_name>PXP Form</sys_name>
+        <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
+        <sys_update_name>sp_css_eb7d5ecd971f9110d545b18e6253afdf</sys_update_name>
+    </sp_css>
+</record_update>

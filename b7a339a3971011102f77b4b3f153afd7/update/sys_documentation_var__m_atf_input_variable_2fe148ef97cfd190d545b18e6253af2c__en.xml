@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_documentation element="" label="Assert Type" language="en" table="var__m_atf_input_variable_2fe148ef97cfd190d545b18e6253af2c">
+        <sys_documentation action="INSERT_OR_UPDATE">
+            <element/>
+            <help/>
+            <hint/>
+            <label>Assert Type</label>
+            <language>en</language>
+            <name>var__m_atf_input_variable_2fe148ef97cfd190d545b18e6253af2c</name>
+            <plural>Assert Type</plural>
+            <sys_class_name>sys_documentation</sys_class_name>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2022-11-14 18:11:07</sys_created_on>
+            <sys_name>Assert Type</sys_name>
+            <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
+            <sys_update_name>sys_documentation_var__m_atf_input_variable_2fe148ef97cfd190d545b18e6253af2c__en</sys_update_name>
+            <url/>
+            <url_target/>
+        </sys_documentation>
+    </sys_documentation>
+</record_update>

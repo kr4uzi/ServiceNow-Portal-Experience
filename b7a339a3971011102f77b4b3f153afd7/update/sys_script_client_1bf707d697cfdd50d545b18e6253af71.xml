@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_script_client">
+    <sys_script_client action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <applies_extended>false</applies_extended>
+        <condition/>
+        <description>Any UI Action with 'Client = true' will not be loaded on the ServicePortal.&#13;
+This Client Script will warn the User if a UI Action is configured with 'Client = true' and '[Portal] Enabled = true' as those fields are mutually exclusive.</description>
+        <field>client</field>
+        <global>true</global>
+        <isolate_script>true</isolate_script>
+        <messages>x_376096_pxp_ui_action_portal_not_visible&#13;
+x_376096_pxp_ui_action_portal_visibility_instruction</messages>
+        <name>PXP UIAction - Validate ServicePortal</name>
+        <order/>
+        <script><![CDATA[function onChange(control, oldValue, newValue, isLoading, isTemplate) {
+	var classicClientScript = g_form.getBooleanValue('client');
+	if (classicClientScript) {
+		var portalEnabled = g_form.getBooleanValue('x_376096_pxp_enabled');
+		if (portalEnabled) {
+			getMessage(['x_376096_pxp_ui_action_portal_not_visible', 'x_376096_pxp_ui_action_portal_visibility_instruction'], function (messages) {
+				g_form.showFieldMsg('client', messages['x_376096_pxp_ui_action_portal_not_visible'], 'warning', false);
+				g_form.showFieldMsg('x_376096_pxp_enabled', messages['x_376096_pxp_ui_action_portal_not_visible'], 'warning', false);
+				g_form.addErrorMessage(messages['x_376096_pxp_ui_action_portal_visibility_instruction']);
+			});
+		}
+	}
+}]]></script>
+        <sys_class_name>sys_script_client</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-11-11 10:29:01</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>1bf707d697cfdd50d545b18e6253af71</sys_id>
+        <sys_name>PXP UIAction - Validate ServicePortal</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
+        <sys_update_name>sys_script_client_1bf707d697cfdd50d545b18e6253af71</sys_update_name>
+        <table>sys_ui_action</table>
+        <type>onChange</type>
+        <ui_type>10</ui_type>
+        <view/>
+    </sys_script_client>
+</record_update>

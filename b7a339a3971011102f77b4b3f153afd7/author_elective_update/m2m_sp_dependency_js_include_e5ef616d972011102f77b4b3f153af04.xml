@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="m2m_sp_dependency_js_include">
+    <m2m_sp_dependency_js_include action="DELETE">
+        <order>100</order>
+        <sp_dependency display_value="PXP Copy &amp; Paste">dfaf2d2d972011102f77b4b3f153af75</sp_dependency>
+        <sp_js_include display_value="PXP Copy &amp; Paste">23cfed2d972011102f77b4b3f153af03</sp_js_include>
+        <sys_class_name>m2m_sp_dependency_js_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-07-07 12:25:24</sys_created_on>
+        <sys_id>e5ef616d972011102f77b4b3f153af04</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>PXP Copy &amp; Paste.PXP Copy &amp; Paste</sys_name>
+        <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
+        <sys_update_name>m2m_sp_dependency_js_include_e5ef616d972011102f77b4b3f153af04</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2022-07-07 12:25:24</sys_updated_on>
+    </m2m_sp_dependency_js_include>
+<sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</application>
+        <file_path/>
+        <instance_id>2ca27526dbf6491042b321c405961935</instance_id>
+        <instance_name>dev126060</instance_name>
+        <name>m2m_sp_dependency_js_include_e5ef616d972011102f77b4b3f153af04</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="m2m_sp_dependency_js_include">
+    <m2m_sp_dependency_js_include action="INSERT_OR_UPDATE">
+        <order>100</order>
+        <sp_dependency display_value="PXP Copy &amp; Paste">dfaf2d2d972011102f77b4b3f153af75</sp_dependency>
+        <sp_js_include display_value="PXP Copy &amp; Paste">23cfed2d972011102f77b4b3f153af03</sp_js_include>
+        <sys_class_name>m2m_sp_dependency_js_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-07-07 12:25:24</sys_created_on>
+        <sys_id>e5ef616d972011102f77b4b3f153af04</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>PXP Copy &amp; Paste.PXP Copy &amp; Paste</sys_name>
+        <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
+        <sys_update_name>m2m_sp_dependency_js_include_e5ef616d972011102f77b4b3f153af04</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2022-07-07 12:25:24</sys_updated_on>
+    </m2m_sp_dependency_js_include>
+</record_update>]]></payload>
+        <payload_hash>263505135</payload_hash>
+        <record_name>PXP Copy &amp; Paste.PXP Copy &amp; Paste</record_name>
+        <reverted_from/>
+        <source>613be2a1871a151021d6fcc5dabb3525</source>
+        <source_table>sys_upgrade_history</source_table>
+        <state>previous</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-10-02 16:34:28</sys_created_on>
+        <sys_id>5a3be2a1871a151021d6fcc5dabb35f5</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>183998c8bdf0000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2022-10-02 16:34:28</sys_updated_on>
+        <type>Dependency JS Includes</type>
+        <update_guid>1a3be2a1751a1510019cc85d57a5eaf5</update_guid>
+        <update_guid_history>1a3be2a1751a1510019cc85d57a5eaf5:263505135</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="PXP Copy &amp; Paste.PXP Copy &amp; Paste">4bc2e9f797631d50d545b18e6253af88</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-12-10 14:22:51</sys_created_on>
+        <sys_db_object display_value="" name="m2m_sp_dependency_js_include">m2m_sp_dependency_js_include</sys_db_object>
+        <sys_id>262eed49a37a4826834b282bf3874171</sys_id>
+        <sys_metadata>e5ef616d972011102f77b4b3f153af04</sys_metadata>
+        <sys_name>PXP Copy &amp; Paste.PXP Copy &amp; Paste</sys_name>
+        <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
+        <sys_scope_delete display_value="">ca2094845f944cfc9638dcb203038e10</sys_scope_delete>
+        <sys_update_name>m2m_sp_dependency_js_include_e5ef616d972011102f77b4b3f153af04</sys_update_name>
+        <sys_update_version display_value="m2m_sp_dependency_js_include_e5ef616d972011102f77b4b3f153af04">5a3be2a1871a151021d6fcc5dabb35f5</sys_update_version>
+    </sys_metadata_delete>
+</record_update>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_properties">
+    <sys_properties action="DELETE">
+        <choices/>
+        <description>Approver must provide a comment when approving an item (default: no).</description>
+        <ignore_cache>true</ignore_cache>
+        <is_private>false</is_private>
+        <name>x_376096_pxp.approval.approve.mandatory_comment</name>
+        <read_roles/>
+        <suffix>approval.approve.mandatory_comment</suffix>
+        <sys_class_name>sys_properties</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-11-11 19:14:38</sys_created_on>
+        <sys_id>a67f09ea97c71190d545b18e6253afd1</sys_id>
+        <sys_mod_count>3</sys_mod_count>
+        <sys_name>x_376096_pxp.approval.approve.mandatory_comment</sys_name>
+        <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
+        <sys_update_name>sys_properties_a67f09ea97c71190d545b18e6253afd1</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2022-11-13 20:59:22</sys_updated_on>
+        <type>boolean</type>
+        <value>false</value>
+        <write_roles/>
+    </sys_properties>
+    <sys_translated_text action="DELETE" query="documentkey=a67f09ea97c71190d545b18e6253afd1"/>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</application>
+        <file_path/>
+        <instance_id>2ca27526dbf6491042b321c405961935</instance_id>
+        <instance_name>dev126060</instance_name>
+        <name>sys_properties_a67f09ea97c71190d545b18e6253afd1</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_properties"><sys_properties action="INSERT_OR_UPDATE"><choices/><description>Approver must provide a comment when approving an item (default: no).</description><ignore_cache>true</ignore_cache><is_private>false</is_private><name>x_376096_pxp.approval.approve.mandatory_comment</name><read_roles/><suffix>approval.approve.mandatory_comment</suffix><sys_class_name>sys_properties</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2022-11-11 19:14:38</sys_created_on><sys_id>a67f09ea97c71190d545b18e6253afd1</sys_id><sys_mod_count>3</sys_mod_count><sys_name>x_376096_pxp.approval.approve.mandatory_comment</sys_name><sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package><sys_policy/><sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope><sys_update_name>sys_properties_a67f09ea97c71190d545b18e6253afd1</sys_update_name><sys_updated_by>admin</sys_updated_by><sys_updated_on>2022-11-13 20:59:22</sys_updated_on><type>boolean</type><value>false</value><write_roles/></sys_properties><sys_translated_text action="delete_multiple" query="documentkey=a67f09ea97c71190d545b18e6253afd1"/></record_update>]]></payload>
+        <payload_hash>-465412746</payload_hash>
+        <record_name>x_376096_pxp.approval.approve.mandatory_comment</record_name>
+        <reverted_from/>
+        <source>394b22a187d6151021d6fcc5dabb35f4</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-11-13 20:59:22</sys_created_on>
+        <sys_id>14aab70b9703d190d545b18e6253af28</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>18472ca2b690000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2022-11-13 20:59:22</sys_updated_on>
+        <type>System Property</type>
+        <update_guid>5caab70b3303d190cd8746f3524b9b27</update_guid>
+        <update_guid_history>5caab70b3303d190cd8746f3524b9b27:-465412746,c05a7bc74303d190516ec4a859fd1044:-1901630652,22f273037903d1904e57380f59fa2a74:845101528,e27f09eaa7c71190d9d9c7d1262595d4:-1994317007</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-11-20 10:53:55</sys_created_on>
+        <sys_db_object display_value="" name="sys_properties">sys_properties</sys_db_object>
+        <sys_id>2d2a03c97f4542f093445f3851203f04</sys_id>
+        <sys_metadata>a67f09ea97c71190d545b18e6253afd1</sys_metadata>
+        <sys_name>x_376096_pxp.approval.approve.mandatory_comment</sys_name>
+        <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
+        <sys_scope_delete display_value="">ca2094845f944cfc9638dcb203038e10</sys_scope_delete>
+        <sys_update_name>sys_properties_a67f09ea97c71190d545b18e6253afd1</sys_update_name>
+        <sys_update_version display_value="sys_properties_a67f09ea97c71190d545b18e6253afd1">14aab70b9703d190d545b18e6253af28</sys_update_version>
+    </sys_metadata_delete>
+</record_update>

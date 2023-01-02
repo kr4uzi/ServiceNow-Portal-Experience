@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_atf_step_config">
+    <sys_atf_step_config action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <batch_order_constraint>stop</batch_order_constraint>
+        <can_mutate_page>false</can_mutate_page>
+        <category display_value="Service Portal">1bd1c141e7020300b2888f49c2f6a9b0</category>
+        <class_name/>
+        <class_type>script</class_type>
+        <deprecated>false</deprecated>
+        <description_generator><![CDATA[/* global step */
+/* global gs */
+/* global GlideRecord */
+/* eslint no-undef: "error" */
+(function generateDescription(step) {
+
+	if (step.inputs.button) {
+		var description = '';
+		
+		if (step.inputs.modal_values) {
+			description += gs.getMessage('Set the values within the modal:') + '\n';
+			
+			var modalValues = JSON.parse(step.inputs.modal_values);
+			Object.keys(modalValues).forEach(function (key) {
+				description += ' selector(' + key + ') = value(' + modalValues[key] + ')\n';
+			});
+		}
+		
+		description += '\n';
+		description += gs.getMessage('Click the button with the following selector:') + ' ' + step.inputs.button;
+		
+		var assertType = step.inputs.assert_type;
+		if (assertType == 'page_reloaded') {
+			description += '\n' + gs.getMessage('Assert the modal is closed and page is reloaded or redirected');
+		} else if (assertType == 'page_not_reloaded') {
+			description += '\n' + gs.getMessage('Assert the modal is closed and page not reloaded or redirected');
+		} else if (assertType == 'modal_not_closed') {
+			description += '\n' + gs.getMessage('Assert the modal is not closed');
+		}
+		
+		return description;
+	} else {
+		gs.error("'Click Modal Button (SP PXP)' description generation error, no 'Button' set");
+	}
+	
+	return gs.getMessage('Error generating the description, please check the error log!');
+	
+})(step);]]></description_generator>
+        <html_description><![CDATA[<div>
+<p>Clicks a button within a modal in the specified Form UI. Optionally sets field input fields given by their id.</p>
+</div>]]></html_description>
+        <icon>icon-article-document</icon>
+        <inputs/>
+        <name>Click Modal Button (SP PXP)</name>
+        <order>6999</order>
+        <outputs/>
+        <step_env display_value="UI">d2cb02e1870312009dccc9ded0e3ec7c</step_env>
+        <step_execution_generator><![CDATA[/* global step, stepResult, assertionObject */
+/* global g_ui_testing_util, getMessage */
+/* eslint no-undef: "error" */
+(function(step, stepResult, assertionObject) {
+	
+	// this is mostly ripped from the OOTB Test Step Config 'Click Modal Button':
+	// /nav_to.do?uri=sys_atf_step_config.do?sys_id=22aed143dfe0220062fe6c7a4df2639d
+	
+	// source of g_ui_testing_util:
+	// /scripts/app.snTestRunner/util/GUITestingUtil.js
+	
+	// All ATF Scripts:
+	// /scripts/js_includes_snTestRunner.js
+
+	var messages = {
+		'FAILED_NO_MODAL': 'FAILURE: Unable find a opened modal',
+		'BUTTON_NOT_FOUND': 'FAILURE: No Button with selector({0}) found',
+		'INPUT_NOT_FOUND': 'FAILURE: No input element with selector({0}) found',
+		'DONT_CARE': 'Successfully clicked Button with selector({0})',
+		'PAGE_RELOAD_NOT_EXPECTED': 'FAILURE: A page reload was not expected',
+		'PAGE_RELOAD_TIMEOUT': 'FAILURE: Page did not reload within {0}s',
+		'POPUP_WAITING': 'Waiting {0}s for popup',
+		'SUBMIT_WAITING': 'Waiting {0}s for submit',
+		'SUCCESS_SUBMIT': 'Successfully confirmed that the form was submitted',
+		'SUBMIT_WAIT_TIMEOUT': 'FAILURE: Wait timed out'
+	};
+	
+    assertionObject.executeStep = function(step, stepResult) {
+		getMessage(Object.values(messages), function (translatedMessages) {
+			Object.keys(messages).forEach(function (key) {
+				messages[key] = translatedMessages[messages[key]];
+			});
+			
+			var config = {
+				$window: g_ui_testing_util.getTestIFrameWindow(),
+				$timeout: g_ui_testing_util.timeout(),
+				$q: g_ui_testing_util.q(),
+				button: step.inputs.button,
+				modal_values: JSON.parse(step.inputs.modal_values || '{}'),
+				assert_type: step.inputs.assert_type,
+				timeout: step.inputs.timeout || 15,
+			};
+			
+			waitForModal(config).then(function (modalElement) {				
+				try {
+					var buttonElement = modalElement.querySelector(config.button);
+					if (buttonElement) {
+						Object.keys(config.modal_values).forEach(function (key) {
+							var inputElement = modalElement.querySelector(key);
+							if (inputElement) {
+								var angularElement = config.$window.angular.element(inputElement);
+								angularElement.val(config.modal_values[key]).trigger('input');
+							} else {
+								throw new Error(messages.INPUT_NOT_FOUND.withValues([key]));
+							}
+						});
+						
+						if (config.assert_type == 'page_reloaded') {
+							g_ui_testing_util.waitForPageReload(config.timeout, function (pageReloaded, submitted) {
+								if (pageReloaded) {
+									onSuccess(messages.DONT_CARE.withValues([config.button]));
+								} else {
+									onError(messages.PAGE_RELOAD_TIMEOUT.withValues([config.timeout]));
+								}
+							});
+						} else if (config.assert_type == 'page_not_reloaded') {
+							g_ui_testing_util.waitForPageReload(config.timeout, function (pageReloaded, submitted) {
+								if (pageReloaded) {
+									onError(messages.PAGE_RELOAD_NOT_EXPECTED);
+								} else {
+									onSuccess(messages.DONT_CARE.withValues([config.button]));
+								}
+							});
+						} else if (config.assert_type == 'modal_not_closed') {
+							message(messages.POPUP_WAITING.withValues([config.timeout]));
+							config.$timeout(function () {
+								var modalElement = checkModal(config.$window);
+								if (modalElement) {
+									onSuccess(messages.DONT_CARE.withValues([config.button]));
+								} else {
+									onError(messages.FAILED_NO_MODAL);
+								}
+							}, config.timeout * 1000);
+						} else if (config.assert_type == 'form_submitted') {
+							message(messages.SUBMIT_WAITING.withValues([config.timeout]));
+							var g_form = config.$window.g_form;
+							var submittedDeferred = config.$q.defer();
+							var timedout = config.$timeout(config.$window.angular.noop, config.timeout * 1000);
+							var submittedUnsubscribe = g_form.$rootScope.$on('sp.form.submitted', function (e, status) {
+								submittedDeferred.resolve(status.sys_id);
+							});
+							
+							config.$q.race([submittedDeferred.promise, timedout]).then(function (result) {
+								if (result) {
+									onSuccess(messages.SUCCESS_SUBMIT);
+								} else {
+									onError(messages.SUBMIT_WAIT_TIMEOUT);
+								}
+							})['finally'](submittedUnsubscribe);	
+						} else {
+							config.$timeout(function () {
+								onSuccess(messages.DONT_CARE.withValues([config.button]));
+							}, 5000);
+						}
+						
+						config.$window.angular.element(buttonElement).trigger('click');
+					} else {
+						throw new Error(messages.BUTTON_NOT_FOUND.withValues([config.button]));
+					}
+				} catch (e) {
+					onError(e.message);
+				}
+			}, onError);
+		});
+    };
+	
+    assertionObject.canMutatePage = step.can_mutate_page;
+	
+	function waitForModal(config) {
+		var deferred = config.$q.defer();
+		
+		(function _checkModal(maxTries) {
+			
+			var modalElement = checkModal(config.$window);
+			if (modalElement) {
+				deferred.resolve(modalElement);
+			} else if (!maxTries) {
+				deferred.reject(messages.FAILED_NO_MODAL);
+			} else {
+				config.$timeout(_checkModal.bind(this, --maxTries), 1000);
+			}
+			
+		})(config.timeout);
+		
+		return deferred.promise;
+	}
+	
+	function checkModal($window) {
+		return $window.document.querySelector('div.modal-dialog > div.modal-content');
+	}
+	
+	function message(msg) {
+		return g_ui_testing_util.setTestStepStatusMessage(msg);
+	}
+	
+	function onError(msg) {
+		message(msg);
+		stepResult.message = msg;
+		stepResult.success = false;
+		step.defer.reject();
+	}
+
+	function onSuccess(msg) {
+		message(msg);
+		stepResult.message = msg;
+		stepResult.success = true;
+		step.defer.resolve();
+	}
+	
+})(step, stepResult, assertionObject);]]></step_execution_generator>
+        <sys_class_name>sys_atf_step_config</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-11-18 22:09:19</sys_created_on>
+        <sys_id>9f5af9b897db5110d545b18e6253afc3</sys_id>
+        <sys_name>Click Modal Button (SP PXP)</sys_name>
+        <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
+        <sys_update_name>sys_atf_step_config_9f5af9b897db5110d545b18e6253afc3</sys_update_name>
+        <template_reminder>Click Modal Button (SP PXP)</template_reminder>
+        <type display_value="Test Step" name="sys_atf_step">a76763b375f011108c8b143dd0c59f95</type>
+        <wizard_redirect/>
+    </sys_atf_step_config>
+    <sys_translated_text action="delete_multiple" query="documentkey=9f5af9b897db5110d545b18e6253afc3"/>
+    <sys_variable_value action="delete_multiple" query="document_key=9f5af9b897db5110d545b18e6253afc3"/>
+    <sys_element_mapping action="delete_multiple" query="table=var__m_atf_input_variable_9f5af9b897db5110d545b18e6253afc3^id=9f5af9b897db5110d545b18e6253afc3"/>
+</record_update>

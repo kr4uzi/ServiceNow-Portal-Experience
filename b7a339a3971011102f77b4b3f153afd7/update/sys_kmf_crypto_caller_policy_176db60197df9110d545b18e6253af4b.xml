@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_kmf_crypto_caller_policy">
+    <sys_kmf_crypto_caller_policy action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <approval_type/>
+        <check_script_hash>false</check_script_hash>
+        <crypto_module display_value="pxp_record_encryption">a9e648cd97d39110d545b18e6253af47</crypto_module>
+        <crypto_spec/>
+        <granular_operation/>
+        <identity_group_alias/>
+        <impersonation>false</impersonation>
+        <instance_recipient/>
+        <owner>2ca27526dbf6491042b321c405961935</owner>
+        <policy_name>AutoGen-script-c7bb90c197579110d545b18e6253aff2-x_376096_pxp.pxp_record_encryption</policy_name>
+        <result>track</result>
+        <script_hash>kxQzzyCCNheideLEO5v1wYVlDFRPsA+rPSWZn0xGZn0=</script_hash>
+        <script_table>sys_script_include</script_table>
+        <signature_data/>
+        <specify_purpose>false</specify_purpose>
+        <sys_class_name>sys_kmf_crypto_caller_policy</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-11-19 21:39:50</sys_created_on>
+        <sys_id>176db60197df9110d545b18e6253af4b</sys_id>
+        <sys_name/>
+        <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
+        <sys_update_name>sys_kmf_crypto_caller_policy_176db60197df9110d545b18e6253af4b</sys_update_name>
+        <target_role/>
+        <target_scope/>
+        <target_script>c7bb90c197579110d545b18e6253aff2</target_script>
+        <type>1</type>
+        <used>false</used>
+    </sys_kmf_crypto_caller_policy>
+</record_update>

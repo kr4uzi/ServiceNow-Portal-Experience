@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_atf_step_config">
+    <sys_atf_step_config action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <batch_order_constraint>stop</batch_order_constraint>
+        <can_mutate_page>false</can_mutate_page>
+        <category display_value="Service Portal">1bd1c141e7020300b2888f49c2f6a9b0</category>
+        <class_name/>
+        <class_type>script</class_type>
+        <deprecated>false</deprecated>
+        <description_generator><![CDATA[/* global step, GlideRecord, gs */
+/* eslint no-undef: "error" */
+(function generateDescription(step) {
+	if (step.inputs.ui_action) {
+		var label = new GlideRecord(step.inputs.table).getClassDisplayValue();
+
+		var uiAction = step.inputs.ui_action.getRefRecord();
+		if (uiAction != null) {
+			var name = uiAction.name;
+			var id = uiAction.sys_id;
+			
+			if (step.inputs.assert_type === "synchronous") {
+				return gs.getMessage(
+					"Confirm that browser submits '{0}' form to server when clicking UI Action '{1}'", 
+					[name, label]
+				);
+			}
+
+			return gs.getMessage("Click UI Action '{0}' on '{1}' form", [name, label]);
+		} else {
+			gs.error("Click a UI Action description generation error, unable to find UI Action by id: '" + step.inputs.ui_action + "'");
+			return "";
+		}
+	} else {
+		gs.error("Click a UI Action description generation error, no UI Action set");
+		return "";
+	}
+	
+})(step);]]></description_generator>
+        <html_description><![CDATA[<p>Clicks a List UI Action on the current page.</p>
+<h4>Additional Considerations</h4>
+<p>In order to use this step you must have already opened a form using either the &#34;Open a Page (SP)&#34; step. After this step, you may no longer use any form steps on the currently opened form as it is expected that this step will close it or move to a different page.</p>
+<p class="p1"><span class="s1">Outputs the table and sys_id of the record on which the action was clicked.</span></p>
+<p> </p>]]></html_description>
+        <icon>icon-article-document</icon>
+        <inputs/>
+        <name>Click a List UI Action (SP PXP)</name>
+        <order>7400</order>
+        <outputs/>
+        <step_env display_value="UI">d2cb02e1870312009dccc9ded0e3ec7c</step_env>
+        <step_execution_generator><![CDATA[/* global step, stepResult, assertionObject, getMessage, g_ui_testing_util */
+/* eslint no-undef: "error" */
+(function(step, stepResult, assertionObject) {
+
+	var y = step;
+	var z = g_ui_testing_util;
+	debugger;
+    assertionObject.executeStep = function(step, stepResult) {
+		var ERROR_UNDEFINED_ACTION = "FAILURE: UI Action not defined by its Step";
+        var CLICK_ACTION = "Click UI Action '{0}' on '{1}' form";
+        var FAILED_TO_FIND_ACTION = "FAILURE: Failed to find UI Action '{0}' on '{1}' form";
+        var SUCCESS_SUBMIT = "Successfully confirmed that browser submits '{0}' form to server when clicking UI Action '{1}'";
+        var FAILED_SUBMIT = "FAILURE: Failed to submit to server when clicking UI Action '{1}'";
+
+        getMessage([
+			ERROR_UNDEFINED_ACTION, CLICK_ACTION, FAILED_TO_FIND_ACTION, SUCCESS_SUBMIT, FAILED_SUBMIT
+		], function (map) {
+			var actionId = step.inputs.ui_action;
+			if (actionId) {
+				var table = step.inputs.table;
+
+				// Set initial message
+				message(map[CLICK_ACTION].withValues([actionId, table]));
+
+				var $window = g_ui_testing_util.getTestIFrameWindow();
+				var uiActionElement = $window.document.querySelector("[data-pxp-ui-action='" + actionId + "']");
+				if (uiActionElement) {
+					var $injector = $window.angular.element($window.document.body).injector();
+					var $rootScope = $injector.get('$rootScope');
+					var $timeout = $injector.get('$timeout');
+
+					var assertType = step.inputs.assert_type;
+					var timeoutSeconds = step.timeout || 5;
+
+					if (assertType == 'synchronous') {
+						var unsubscribe = $rootScope.$on('x_376096_pxp_list_ui_action_finished', function (e, result) {
+							unsubscribe();
+							unsubscribe = null;
+
+							if (result.status == 'success') {
+								onSuccess(map[SUCCESS_SUBMIT].withValues([table, actionId]));
+							} else {
+								onError(map[FAILED_SUBMIT].withValues([actionId]));
+							}
+						});
+
+						$timeout(function () {
+							if (unsubscribe) {
+								unsubscribe();
+								onError('Timeout!');
+							}
+						}, timeoutSeconds * 1000);
+
+						uiActionElement.click();
+					} else if (assertType == 'asynchronous') {
+						uiActionElement.click();
+						onSuccess(map[SUCCESS_SUBMIT].withValues([table, actionId]));
+					}
+				} else {
+					onError(map[FAILED_TO_FIND_ACTION].withValues([actionId, table]));
+				}
+			} else {
+				onError(map[ERROR_UNDEFINED_ACTION]);
+			}
+		});
+
+        function message(msg) {
+            return g_ui_testing_util.setTestStepStatusMessage(msg);
+        }
+
+        function onError(msg) {
+            message(msg);
+            stepResult.message = msg;
+            stepResult.success = false;
+            step.defer.reject();
+        }
+
+        function onSuccess(msg) {
+            message(msg);
+            stepResult.message = msg;
+            stepResult.success = true;
+            step.defer.resolve();
+        }
+    };
+	
+    assertionObject.canMutatePage = step.can_mutate_page;
+})(step, stepResult, assertionObject);]]></step_execution_generator>
+        <sys_class_name>sys_atf_step_config</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-11-14 18:09:43</sys_created_on>
+        <sys_id>2fe148ef97cfd190d545b18e6253af2c</sys_id>
+        <sys_name>Click a List UI Action (SP PXP)</sys_name>
+        <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
+        <sys_update_name>sys_atf_step_config_2fe148ef97cfd190d545b18e6253af2c</sys_update_name>
+        <template_reminder>Click a List UI Action (Portal Experience / SP)</template_reminder>
+        <type display_value="Test Step" name="sys_atf_step">a76763b375f011108c8b143dd0c59f95</type>
+        <wizard_redirect/>
+    </sys_atf_step_config>
+    <sys_translated_text action="delete_multiple" query="documentkey=2fe148ef97cfd190d545b18e6253af2c"/>
+    <sys_variable_value action="delete_multiple" query="document_key=2fe148ef97cfd190d545b18e6253af2c"/>
+    <sys_element_mapping action="delete_multiple" query="table=var__m_atf_input_variable_2fe148ef97cfd190d545b18e6253af2c^id=2fe148ef97cfd190d545b18e6253af2c"/>
+</record_update>

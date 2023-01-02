@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_376096_pxp.PortalFormUtilClient</api_name>
+        <caller_access/>
+        <client_callable>true</client_callable>
+        <description/>
+        <name>PortalFormUtilClient</name>
+        <script><![CDATA[/* global Class, GlideStringUtil */
+/* global global, gs, x_376096_pxp */
+/* eslint no-undef: "error" */
+var PortalFormUtilClient = Class.create();
+PortalFormUtilClient.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
+	
+	initialize: function () {
+		global.AbstractAjaxProcessor.prototype.initialize.apply(this, arguments);
+		this.util = new x_376096_pxp.PortalFormUtil();
+		this.pxpUtil = new x_376096_pxp.PXPUtil();
+	},
+	
+	loadButtons: function () {
+		var result = {
+			status: 'error',
+			message: ''
+		};
+		
+		try {
+			var uiActionSysIDs = this.getParameter('ui_actions');
+			if (uiActionSysIDs) {
+				result.client_scripts = this.util.loadButtons(uiActionSysIDs);
+				result.status = 'success';
+			} else {
+				result.message = gs.getMessage('x_376096_pxp_invalid_parameters');
+			}
+		} catch (e) {
+			result.status = 'error';
+			if (gs.hasRole('admin')) {
+				result.message += e.message;
+				if (e.stack) {
+					result.message += '\n' + e.stack;
+				}
+			}
+		}
+		
+		return JSON.stringify(result);
+	},
+	
+	loadAnnotations: function () {
+		var result = {
+			status: 'error',
+			message: ''
+		};
+		
+		try {
+			var recordTable = this.getParameter('record_table');
+			var recordSysID = this.getParameter('record_sys_id');
+			var view = this.getParameter('view');
+			var encryptedRecord = this.getParameter('encrypted_record');
+			if (recordTable && (view != null) && (recordSysID != '-1' || encryptedRecord)) {
+				var annotationLoadingEnabled = gs.getProperty('glide.ui.form_annotations') == 'true' && gs.getProperty('x_376096_pxp.form.annotations') == 'true';
+				if (annotationLoadingEnabled) {
+					var record;
+					if (encryptedRecord) {
+						record = this.pxpUtil.decryptRecord(encryptedRecord);
+					} else {
+						var extensionPoint = this.pxpUtil.getExtensionPointForTable(recordTable);
+						var recordQuery = 'sys_id=' + GlideStringUtil.escapeQueryTermSeparator(recordSysID);
+						var recordGr = extensionPoint.queryRecords(recordTable, recordQuery, 1);
+						if (recordGr.next()) {
+							record = recordGr;
+						}
+					}
+
+					if (record) {
+						var renderedAnnotations = this.util.loadAnnotations(recordTable, view, record);
+						result.types = renderedAnnotations.types;
+						result.annotations = renderedAnnotations.annotations;
+						result.status = 'success';
+					} else {
+						result.message = gs.getMessage('x_376096_pxp_record_unauthorized_or_invalid_record');
+					}
+				} else {
+					result.types = {};
+					result.annotations = [];
+					result.status = 'success';
+				}
+			} else if (recordTable && (view != null) && (recordSysID == '-1' && encryptedRecord == null)) {
+				result.message = gs.getMessage('x_376096_pxp_utility_data_missing', [recordTable]);
+			} else {
+				result.message = gs.getMessage('x_376096_pxp_invalid_parameters');
+			}
+		} catch (e) {
+			result.status = 'error';
+			if (gs.hasRole('admin')) {
+				result.message += e.message;
+				if (e.stack) {
+					result.message += '\n' + e.stack;
+				}
+			}
+		}
+		
+		return JSON.stringify(result);
+	},
+
+    type: 'PortalFormUtilClient'
+});]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-07-01 08:09:50</sys_created_on>
+        <sys_id>e7db316f971011102f77b4b3f153af7a</sys_id>
+        <sys_name>PortalFormUtilClient</sys_name>
+        <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
+        <sys_update_name>sys_script_include_e7db316f971011102f77b4b3f153af7a</sys_update_name>
+    </sys_script_include>
+</record_update>

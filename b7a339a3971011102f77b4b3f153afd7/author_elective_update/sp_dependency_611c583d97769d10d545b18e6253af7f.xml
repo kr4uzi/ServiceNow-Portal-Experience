@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_dependency">
+    <sp_dependency action="DELETE">
+        <module/>
+        <name>PXP Catalog Item</name>
+        <page_load>true</page_load>
+        <sp_portals/>
+        <sys_class_name>sp_dependency</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-10-27 21:19:07</sys_created_on>
+        <sys_id>611c583d97769d10d545b18e6253af7f</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>PXP Catalog Item</sys_name>
+        <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
+        <sys_update_name>sp_dependency_611c583d97769d10d545b18e6253af7f</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2022-10-27 21:19:07</sys_updated_on>
+    </sp_dependency>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</application>
+        <file_path/>
+        <instance_id>2ca27526dbf6491042b321c405961935</instance_id>
+        <instance_name>dev126060</instance_name>
+        <name>sp_dependency_611c583d97769d10d545b18e6253af7f</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_dependency"><sp_dependency action="INSERT_OR_UPDATE"><module/><name>PXP Catalog Item</name><page_load>true</page_load><sp_portals/><sys_class_name>sp_dependency</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2022-10-27 21:19:07</sys_created_on><sys_id>611c583d97769d10d545b18e6253af7f</sys_id><sys_mod_count>0</sys_mod_count><sys_name>PXP Catalog Item</sys_name><sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package><sys_policy/><sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope><sys_update_name>sp_dependency_611c583d97769d10d545b18e6253af7f</sys_update_name><sys_updated_by>admin</sys_updated_by><sys_updated_on>2022-10-27 21:19:07</sys_updated_on></sp_dependency></record_update>]]></payload>
+        <payload_hash>-1345047337</payload_hash>
+        <record_name>PXP Catalog Item</record_name>
+        <reverted_from/>
+        <source>394b22a187d6151021d6fcc5dabb35f4</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-10-27 21:19:07</sys_created_on>
+        <sys_id>271c983d97769d10d545b18e6253af15</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>1841b5021680000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2022-10-27 21:19:07</sys_updated_on>
+        <type>Widget Dependency</type>
+        <update_guid>6f1c983de4769d106886c14dd98a4e14</update_guid>
+        <update_guid_history>6f1c983de4769d106886c14dd98a4e14:-1345047337</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="PXP Catalog Item">35a1da7797271d50d545b18e6253af2c</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-12-10 17:47:34</sys_created_on>
+        <sys_db_object display_value="" name="sp_dependency">sp_dependency</sys_db_object>
+        <sys_id>180595a30f7d4ca9b261b8978ceb2399</sys_id>
+        <sys_metadata>611c583d97769d10d545b18e6253af7f</sys_metadata>
+        <sys_name>PXP Catalog Item</sys_name>
+        <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
+        <sys_scope_delete display_value="">ca2094845f944cfc9638dcb203038e10</sys_scope_delete>
+        <sys_update_name>sp_dependency_611c583d97769d10d545b18e6253af7f</sys_update_name>
+        <sys_update_version display_value="sp_dependency_611c583d97769d10d545b18e6253af7f">271c983d97769d10d545b18e6253af15</sys_update_version>
+    </sys_metadata_delete>
+</record_update>

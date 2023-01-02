@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>public</access>
+        <active>true</active>
+        <api_name>x_376096_pxp.PXPUtil</api_name>
+        <caller_access/>
+        <client_callable>false</client_callable>
+        <description/>
+        <name>PXPUtil</name>
+        <script><![CDATA[/* global Class, GlideDuration, GlideDateTime, GlideDate, GlideRecord, GlideScriptedExtensionPoint */
+/* global gs, sn_kmf_ns */
+/* eslint no-undef: "error" */
+var PXPUtil = Class.create();
+PXPUtil.prototype = {
+    initialize: function() {
+		this.extensionCache = {
+			tables: {},
+			scopes: {}
+		};
+    },
+	
+	loadUtilityData: function (params) {
+		try {
+			var pxpData = {};
+
+			// in order to correctly evaluate annotations and conditions on new records,
+			// the default values have to be saved
+			// those default values might contain sensitive data and should never be exposed
+			// therefore they are encrypted on the client until transfered back to the server
+			// where it is decrypted (if needed at all)
+			if (params.record.isNewRecord()) {
+				pxpData.encrypted_record = this.encryptRecord(params.record);
+			}
+
+			params.scratchpad.x_376096_pxp = pxpData;
+		} catch (e) {
+			gs.error('[PXP] error loading utility data: ' + e);
+		}
+	},
+	
+	encryptRecord: function (anyGr) {
+		var recordClassName = anyGr.getRecordClassName();
+		// make sure that we can also decrypt the record be testing if an extension point for this table exists
+		// getExtensionPointForTable will throw if no such extension point exists
+		this.getExtensionPointForTable(recordClassName);
+		
+		var record = {
+			'table': anyGr.getRecordClassName(),
+			'new_record': anyGr.isNewRecord(),
+			'fields': []
+		};
+		
+		for (var attr in anyGr) {
+			var ge = anyGr.getElement(attr);
+			if (ge != null) {
+				var ed = ge.getED();
+				record.fields.push({
+					'name': attr,
+					'type': ed.getInternalType(),
+					'value': ge.toString()
+				});
+			}
+		}
+
+		
+		var symetricEncrypt = new sn_kmf_ns.KMFCryptoOperation('x_376096_pxp.pxp_record_encryption', 'SYMMETRIC_ENCRYPTION');
+		var data = gs.base64Encode(JSON.stringify(record));
+		var encryptedData = symetricEncrypt.doOperation(data);
+		return gs.base64Encode(encryptedData);
+	},
+	
+	decryptRecord: function (encryptedRecord) {
+		var symetricDecrypt = new sn_kmf_ns.KMFCryptoOperation('x_376096_pxp.pxp_record_encryption', 'SYMMETRIC_DECRYPTION');
+		var encryptedData = gs.base64Decode(encryptedRecord);
+		var data = symetricDecrypt.doOperation(encryptedData);
+		var record = JSON.parse(gs.base64Decode(data));
+		
+		var extensionPoint = this.getExtensionPointForTable(record.table);
+		var recordGr = extensionPoint.queryRecords(record.table);
+		record.fields.forEach(function (field) {
+			extensionPoint.setTemporaryValue(recordGr, field.name, field.value);
+		});
+		
+		if (record.new_record) {
+			recordGr.isNewRecord = function () { return true; };
+		}
+		
+		return recordGr;
+	},
+	
+	getExtensionPointForScope: function (scope) {
+		if (scope in this.extensionCache.scopes) {
+			return this.extensionCache.scopes[scope];
+		}
+		
+		var extensionPoints = new GlideScriptedExtensionPoint().getExtensions('PXPExtension');
+		for (var i = 0, length = extensionPoints.length; i < length; i++) {
+			var extensionPoint = extensionPoints[i];
+			if (extensionPoint.handlesScope(scope)) {
+				this.extensionCache.scopes[scope] = extensionPoint;
+				return extensionPoint;
+			}
+		}
+
+		throw new Error(gs.getMessage('x_376096_pxp_no_extension_point_available_for_scope', [scope]));
+	},
+		
+	getExtensionPointForTable: function (table) {
+		if (table in this.extensionCache.tables) {
+			return this.extensionCache.tables[table];
+		}
+		
+		var extensionPoints = new GlideScriptedExtensionPoint().getExtensions('PXPExtension');
+		for (var i = 0, length = extensionPoints.length; i < length; i++) {
+			var extensionPoint = extensionPoints[i];
+			if (extensionPoint.handlesTable(table)) {
+				this.extensionCache.tables[table] = extensionPoint;
+				return extensionPoint;
+			}
+		}
+
+		throw new Error(gs.getMessage('x_376096_pxp_no_extension_point_available_for_table', [table]));
+	},
+
+    type: 'PXPUtil'
+};]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-11-19 09:54:30</sys_created_on>
+        <sys_id>c7bb90c197579110d545b18e6253aff2</sys_id>
+        <sys_name>PXPUtil</sys_name>
+        <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
+        <sys_update_name>sys_script_include_c7bb90c197579110d545b18e6253aff2</sys_update_name>
+    </sys_script_include>
+</record_update>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_documentation element="modal_values" label="Modal values" language="en" table="var__m_atf_input_variable_9f5af9b897db5110d545b18e6253afc3">
+        <sys_documentation action="INSERT_OR_UPDATE">
+            <element>modal_values</element>
+            <help/>
+            <hint/>
+            <label>Modal values</label>
+            <language>en</language>
+            <name>var__m_atf_input_variable_9f5af9b897db5110d545b18e6253afc3</name>
+            <plural>Modal values</plural>
+            <sys_class_name>sys_documentation</sys_class_name>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2022-11-18 22:10:48</sys_created_on>
+            <sys_name>Modal values</sys_name>
+            <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
+            <sys_update_name>sys_documentation_var__m_atf_input_variable_9f5af9b897db5110d545b18e6253afc3_modal_values_en</sys_update_name>
+            <url/>
+            <url_target/>
+        </sys_documentation>
+    </sys_documentation>
+</record_update>

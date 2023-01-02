@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_properties">
+    <sys_properties action="INSERT_OR_UPDATE">
+        <choices/>
+        <description>Escape HTML in Service Portal Annotations (default: Yes)</description>
+        <ignore_cache>true</ignore_cache>
+        <is_private>false</is_private>
+        <name>x_376096_pxp.form.annotations.escape_html</name>
+        <read_roles/>
+        <suffix>form.annotations.escape_html</suffix>
+        <sys_class_name>sys_properties</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-11-26 11:52:03</sys_created_on>
+        <sys_id>1d6678139713d910d545b18e6253af64</sys_id>
+        <sys_name>x_376096_pxp.form.annotations.escape_html</sys_name>
+        <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
+        <sys_update_name>sys_properties_1d6678139713d910d545b18e6253af64</sys_update_name>
+        <type>boolean</type>
+        <value>true</value>
+        <write_roles/>
+    </sys_properties>
+    <sys_translated_text action="delete_multiple" query="documentkey=1d6678139713d910d545b18e6253af64"/>
+</record_update>

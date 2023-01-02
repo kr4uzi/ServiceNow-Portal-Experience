@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_script">
+    <sys_ui_script action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <description/>
+        <global>false</global>
+        <ignore_in_now_experience>false</ignore_in_now_experience>
+        <name>x_376096_pxp.form_inject</name>
+        <script><![CDATA[var x_376096_pxp = x_376096_pxp || {};
+x_376096_pxp.form_inject = (function() {
+	"use strict";
+	/* global setTimeout */
+	/* eslint no-undef: "error" */
+	if (x_376096_pxp.form_inject) {
+		return x_376096_pxp.form_inject;
+	}
+	
+	var ootbFormWidget = 'fd1f4ec347730200ba13a5554ee490c0';
+	
+	setTimeout(function () {
+		var $window = this;
+		var observer = new $window.MutationObserver(function (mutations) {
+			for (var i = 0; i < mutations.length; i++) {
+				var mutation = mutations[i];
+				if (mutation.addedNodes) {
+					for (var j = 0; j < mutation.addedNodes.length; j++) {
+						var node = mutation.addedNodes[j];
+						if (node.classList && node.classList.contains('v' + ootbFormWidget)) {
+							if (!node.classList.contains('pxp-form-injected')) {
+								node.classList.add('pxp-form-injected');
+								new PXPFormInject($window, node);
+							}
+						}
+					}
+				}
+			}   
+		});
+
+		observer.observe($window.document, {
+			childList: true,
+			subtree: true
+		});
+	});
+	
+	return {
+		type: 'form_inject'
+	};
+	
+	function PXPFormInject($window, node) {
+		var self = this;
+		var $element = $window.angular.element(node);
+		var $injector = $element.injector();
+		var $q = $injector.get('$q');
+		var $log = $injector.get('$log');
+		var $rootScope = $injector.get('$rootScope');
+		var spUtil = $injector.get('spUtil');
+		var glideUrlBuilder = $injector.get('glideUrlBuilder');
+		var glideUserSession = $injector.get('glideUserSession');
+		
+		var formModelScope = $element
+			.find('div[form_model]') // this contains the actual form (sp-model)
+			.children()
+			.last() // execItemScripts() div which contains the getGlideForm-function
+			.scope();
+
+		var $scope = $element.scope();
+		var ootbTriggerUIAction = $scope.triggerUIAction;
+		var clientScripts = {};
+		
+		$scope.$watch('data.f._related_lists', function (newValue) {
+			if (newValue) {
+				newValue.forEach(function (l) {
+					var config = {
+						table: l.table,
+						view: $scope.data.f.view,
+						related_list: l.type == 'REL' ? l.relationship_id : l.table + '.' + l.field,
+						refering_url: ''
+					};
+					
+					if (l.type == '12M') {
+						// trivial 
+					} else if (l.type == 'M2M') {
+						// m2m
+					} else if (l.type == 'REL') {
+						// custom relationship
+						var table = l.table;
+						var view = $scope.data.f.view;
+						var parent = l.apply_to;
+						var parentSysID = $scope.data.f._attachmentGUID;
+						var relID = l.relationship_id;
+						var applyTo = l.apply_to;
+						var filter = l.field + '=' + parentSysID + (l. filter ? '^' + l.filter : '');
+					}
+				});
+			}
+		});
+
+		$scope.$watch('data.f._ui_actions', function (newValue) {
+			if (newValue) {
+				var oldTriggerUIAction = $scope.triggerUIAction;
+				var oldGetPrimaryAction = $scope.getPrimaryAction;
+				$scope.triggerUIAction = $window.angular.noop;
+				$scope.getPrimaryAction = $window.angular.noop;
+				
+				var ga = new $window.GlideAjax('PortalFormUtilClient').setScope('x_376096_pxp');
+				ga.addParam('sysparm_name', 'loadButtons');
+				ga.addParam('ui_actions', newValue.map(function (a) { return a.sys_id; }));
+				ga.getXMLAnswer(function (answer) {
+					try {
+						var result = JSON.parse(answer);
+						if (result.status == 'success') {
+							clientScripts = result.client_scripts;
+						} else {
+							throw new Error(result.message);
+						}
+					} catch (e) {
+						$log.error(e, answer);
+						
+						if ($window.g_user_is_admin) {
+							spUtil.addErrorMessage(e.message);
+						}
+					}
+					
+					$scope.triggerUIAction = oldTriggerUIAction;
+					$scope.getPrimaryAction = oldGetPrimaryAction;
+				});
+			}
+		});
+		
+		$scope.$on('spModel.fields.rendered', function () {
+			var g_form = formModelScope.getGlideForm();
+			var g_scratchpad = $scope.data.f.g_scratchpad;
+			
+			var ga = new $window.GlideAjax('PortalFormUtilClient').setScope('x_376096_pxp');
+			ga.addParam('sysparm_name', 'loadAnnotations');
+			ga.addParam('record_table', g_form.getTableName());
+			ga.addParam('record_sys_id', g_form.getUniqueValue());
+			ga.addParam('view', $scope.data.f.view);
+			if (g_scratchpad.x_376096_pxp && g_scratchpad.x_376096_pxp.encrypted_record) {
+				ga.addParam('encrypted_record', g_scratchpad.x_376096_pxp.encrypted_record);
+			}
+			
+			ga.getXMLAnswer(function (answer) {
+				try {
+					var result = JSON.parse(answer);
+					if (result.status == 'success') {
+						var types = result.types;
+						result.annotations.forEach(function (annotation) {
+							var annotationContainer = node.querySelector('#\\.annotation\\.' + annotation.sys_id);
+							if (annotationContainer) {
+								var hasContent = annotationContainer.querySelector('div');
+								if (!hasContent) {
+									var annotationElement = $window.document.createElement('div');
+									annotationElement.classList.add('pxp-annotation');
+									annotationElement.setAttribute('data-annotation-type', types[annotation.type].name);
+									//annotationElement.style.cssText = annotation.style;
+									//annotationElement.innerHTML = annotation.text;
+									annotationContainer.append(annotationElement);
+									
+									var annotationWrapper = $window.document.createElement('div');
+									annotationWrapper.classList.add('pxp-annotation-wrapper');
+									annotationWrapper.classList.add('less-padding');
+									annotationWrapper.style.cssText = types[annotation.type].style;
+									annotationWrapper.innerHTML = annotation.text;
+									
+									if (!types[annotation.type].omit_spacer) {
+										var annotationSpacing = annotationSpacing = $window.document.createElement('input');
+										annotationSpacing.id = 'make_spacing_ok';
+										annotationSpacing.style.cssText = 'visibility:hidden; width:0px;';
+										annotationWrapper.append(annotationSpacing);
+									}
+									
+									annotationElement.append(annotationWrapper);
+								}
+							} else {
+								$log.warn('No Element for annotation found', annotation);
+							}
+						});
+					} else {
+						throw new Error(result.message);
+					}
+				} catch (e) {
+					$log.error('GlideAjax Answer: ' + answer + '\nException: ' + e);
+
+					if ($window.g_user_is_admin) {
+						spUtil.addErrorMessage(e.message);
+					}
+				}
+			});
+		});
+
+		// the save button can be hidden by creating a UI Action with action_name=sysverb_update
+		//scope.getPrimaryAction = $window.angular.noop;
+		$scope.triggerUIAction = function (action) {
+			if (action.sys_id in clientScripts) {
+				$scope.submitting = true;
+				
+				try {
+					var exceptionWatcherUnregister = x_376096_pxp.ng_exception_watcher.register(function (e, cause, handled) {
+						exceptionWatcherUnregister();
+						
+						// we land here because the exception was not handled, angular already logged the exception in this case
+						// so no need to log it once more
+						onError(e, true);
+					});
+					
+					glideUserSession
+						.loadCurrentUser()
+						.then(function (user) { return user; }, function () { return null; })
+						.then(function (user) {
+							return callPXPClientScript(action, user)['finally'](function () { exceptionWatcherUnregister(); });
+						})['finally'](function () { $scope.submitting = false; })
+					;
+				} catch (e) {
+					onError(e);
+				}
+			} else {
+				ootbTriggerUIAction(action);
+			}
+			
+			function callPXPClientScript(action, g_user) {	
+				var actionClientScript = new Function('return (' + clientScripts[action.sys_id] + ')')();			
+				var result = $injector.invoke(actionClientScript, $scope, {
+					item: undefined,
+					g_user: g_user,
+					g_form: formModelScope.getGlideForm(),
+					g_scratchpad: $scope.data.f.g_scratchpad,
+					sys_id: $scope.data.f._attachmentGUID,
+					GlideAjax: (function (scope) {
+						return function () {
+							$window.GlideAjax.prototype.constructor.apply(this, arguments);
+							this.setScope(scope);
+						};
+					})(action.scope),
+					GlideURL: glideUrlBuilder,
+					action: undefined
+				});
+
+				var promise;
+				if (result && typeof result.then === 'function') {
+					promise = result;
+				} else if (result || result === undefined) {
+					promise = $q.resolve(result);
+				} else {
+					promise = $q.reject();
+				}
+
+				if ($window.ATF) {
+					$rootScope.$broadcast('x_376096_pxp_form_ui_action_start', {
+						status: 'success'
+					});
+				}
+
+				return promise.then(ootbTriggerUIAction.bind(null, action));
+			}
+			
+			function onError(e, noLog) {
+				$scope.submitting = false;
+
+				if (!noLog) {
+					$log.error(e);
+				}
+
+				if ($window.g_user_is_admin) {
+					spUtil.addErrorMessage(e.message);
+				}
+
+				if ($window.ATF) {
+					$rootScope.$broadcast('x_376096_pxp_form_ui_action_start', {
+						status: 'error',
+						message: e.message
+					});
+				}
+			}
+		};
+		
+		if ($scope.options.shared && $scope.options.shared.pxp_options) {
+			var pxpOptions = $scope.options.shared.pxp_options;
+			if (pxpOptions.scope) {			
+				if (pxpOptions.onLoad) {
+					var locals = {
+						$scope: $scope,
+						g_form: formModelScope.getGlideForm(),
+						g_scratchpad: $scope.data.f.g_scratchpad,
+						sys_id: $scope.data.f._attachmentGUID,
+						GlideAjax: (function (scope) {
+							return function () {
+								$window.GlideAjax.prototype.constructor.apply(this, arguments);
+								this.setScope(scope);
+							};
+						})(pxpOptions.scope),
+						GlideURL: glideUrlBuilder,
+					};
+
+					$injector.invoke(pxpOptions.onLoad, $scope, locals);
+				}
+			} else {
+				$log.warn('"scope" must be set on options.pxp_options!');
+			}
+		}
+	}
+})();]]></script>
+        <script_name>form_inject</script_name>
+        <sys_class_name>sys_ui_script</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-07-01 07:41:46</sys_created_on>
+        <sys_id>94753567971011102f77b4b3f153af9a</sys_id>
+        <sys_name>x_376096_pxp.form_inject</sys_name>
+        <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
+        <sys_update_name>sys_ui_script_94753567971011102f77b4b3f153af9a</sys_update_name>
+        <ui_type>1</ui_type>
+        <use_scoped_format>true</use_scoped_format>
+    </sys_ui_script>
+</record_update>

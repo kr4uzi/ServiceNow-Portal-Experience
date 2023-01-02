@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_script">
+    <sys_ui_script action="DELETE">
+        <active>false</active>
+        <description>Enables Drag &amp; Drop (all browser) as well as Copy &amp; Paste (Chrome, Sarafi) of attachments on the Service Portal for most forms.&#13;
+Copy &amp; Paste is not working with Firefox and Internet Explorer because those browsers do not give access to the files in the clipboard.</description>
+        <global>false</global>
+        <ignore_in_now_experience>false</ignore_in_now_experience>
+        <name>x_376096_pxp.copy_paste_inject</name>
+        <script><![CDATA[var x_376096_pxp = x_376096_pxp || {};
+
+x_376096_pxp.copy_paste_inject = (function() {
+	"use strict";
+	/* global setTimeout, MutationObserver, angular */
+	/* eslint no-undef: "error" */
+	
+	if (x_376096_pxp.copy_paste_inject) {
+		return x_376096_pxp.copy_paste_inject;
+	}
+	
+	return {};
+	var targetWidgets = [
+		// '<Sys ID of Target Widget>', // <Target Widget Name> (<used page>)
+		'3c29786e87133200e0ef0cf888cb0bdf', // SC Catalog Item (sc_cat_item)
+		'85357f52cb30020000f8d856634c9c24', // Ticket Conversations (ticket)
+		'a54beb3a87f10010e0ef0cf888cb0bba', // [embedded]Standard Ticket Conversations (standard_ticket [Employee Center])
+		'fd1f4ec347730200ba13a5554ee490c0', // Form (form)
+	];
+	
+	setTimeout(function () {
+		var window = this;
+		var observer = new MutationObserver(function (mutations) {
+			for (var i = 0; i < mutations.length; i++) {
+				var mutation = mutations[i];
+				if (mutation.addedNodes) {
+					for (var j = 0; j < mutation.addedNodes.length; j++) {
+						var node = mutation.addedNodes[j];
+						for (var k = 0; k < targetWidgets.length; k++) {
+							if (node.classList && !node.classList.contains('pxp-copy-paste-injected') && node.classList.contains('v' + targetWidgets[k])) {
+								node.classList.add('pxp-copy-paste-injected');
+								inject(window, angular.element(node));
+							}
+						}
+					}
+				}
+			}
+		});
+		
+		observer.observe(window.document, {
+			childList: true,
+			subtree: true
+		});
+	});
+
+	return {
+		type: "copy_paste_inject"
+	};
+	
+	function inject(window, element) {
+		var scope = element.scope();
+		// reference: https://stackoverflow.com/a/1719157
+		var overlay = angular.element('<div style="position:fixed;top:0;left:0;width:100%;height:100%;background-color:#000;filter:alpha(opacity=50);-moz-opacity:0.5;-khtml-opacity:0.5;opacity:0.5;z-index:10000;pointer-events:none;"></div>');
+
+		var dropTarget = null;
+		// allow the drag
+		element.on('dragover.pxp', function (event) {
+			event.preventDefault();
+			event.originalEvent.dataTransfer.dropEffect = 'copy';
+		});
+
+		// add on overlay to mark the "dropzone"
+		element.on('dragenter.pxp', function (event) {
+			event.preventDefault();
+			dropTarget = event.target;
+			overlay.appendTo(window.document.body);
+		});
+
+		// remove the "dropzone" marker
+		element.on('dragleave.pxp', function (event) {
+			if (dropTarget == event.target) {
+				overlay.remove();
+			}
+		});
+
+		element.on('drop.pxp', function (event) {
+			event.preventDefault(); // prevent the browser from opening the file
+			overlay.remove();
+			var files = event.originalEvent.dataTransfer.files;
+			if (files.length) {
+				scope.attachmentHandler.onFileSelect(files);
+			}
+		});
+
+		element.on('paste.pxp', function (event) {
+			var files = event.originalEvent.clipboardData.files;
+			if (files.length) {
+				// in case a file is in the clipboard, the file should be uploaded
+				// and prevent the default behaviour which is to copy the file's name
+				// into whatever is currently selected (e.g. a input fiel)
+				event.preventDefault();
+				scope.attachmentHandler.onFileSelect(files);
+			}
+		});
+
+		scope.$on('$destroy', function () {
+			element.off('paste.pxp');
+			element.off('drop.pxp');
+			element.off('dragleave.pxp');
+			element.off('dragenter.pxp');
+			element.off('dragover.pxp');
+		});
+	}
+	
+})();
+]]></script>
+        <script_name>copy_paste_inject</script_name>
+        <sys_class_name>sys_ui_script</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-07-07 12:22:11</sys_created_on>
+        <sys_id>6e2f612d972011102f77b4b3f153af8f</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>x_376096_pxp.copy_paste_inject</sys_name>
+        <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
+        <sys_update_name>sys_ui_script_6e2f612d972011102f77b4b3f153af8f</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2022-12-10 12:36:30</sys_updated_on>
+        <ui_type>1</ui_type>
+        <use_scoped_format>true</use_scoped_format>
+    </sys_ui_script>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</application>
+        <file_path/>
+        <instance_id>2ca27526dbf6491042b321c405961935</instance_id>
+        <instance_name>dev126060</instance_name>
+        <name>sys_ui_script_6e2f612d972011102f77b4b3f153af8f</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sys_ui_script"&gt;&lt;sys_ui_script action="INSERT_OR_UPDATE"&gt;&lt;active&gt;false&lt;/active&gt;&lt;description&gt;Enables Drag &amp;amp; Drop (all browser) as well as Copy &amp;amp; Paste (Chrome, Sarafi) of attachments on the Service Portal for most forms.&amp;#13;
+Copy &amp;amp; Paste is not working with Firefox and Internet Explorer because those browsers do not give access to the files in the clipboard.&lt;/description&gt;&lt;global&gt;false&lt;/global&gt;&lt;ignore_in_now_experience&gt;false&lt;/ignore_in_now_experience&gt;&lt;name&gt;x_376096_pxp.copy_paste_inject&lt;/name&gt;&lt;script&gt;&lt;![CDATA[var x_376096_pxp = x_376096_pxp || {};
+
+x_376096_pxp.copy_paste_inject = (function() {
+	"use strict";
+	/* global setTimeout, MutationObserver, angular */
+	/* eslint no-undef: "error" */
+	
+	if (x_376096_pxp.copy_paste_inject) {
+		return x_376096_pxp.copy_paste_inject;
+	}
+	
+	return {};
+	var targetWidgets = [
+		// '&lt;Sys ID of Target Widget&gt;', // &lt;Target Widget Name&gt; (&lt;used page&gt;)
+		'3c29786e87133200e0ef0cf888cb0bdf', // SC Catalog Item (sc_cat_item)
+		'85357f52cb30020000f8d856634c9c24', // Ticket Conversations (ticket)
+		'a54beb3a87f10010e0ef0cf888cb0bba', // [embedded]Standard Ticket Conversations (standard_ticket [Employee Center])
+		'fd1f4ec347730200ba13a5554ee490c0', // Form (form)
+	];
+	
+	setTimeout(function () {
+		var window = this;
+		var observer = new MutationObserver(function (mutations) {
+			for (var i = 0; i &lt; mutations.length; i++) {
+				var mutation = mutations[i];
+				if (mutation.addedNodes) {
+					for (var j = 0; j &lt; mutation.addedNodes.length; j++) {
+						var node = mutation.addedNodes[j];
+						for (var k = 0; k &lt; targetWidgets.length; k++) {
+							if (node.classList &amp;&amp; !node.classList.contains('pxp-copy-paste-injected') &amp;&amp; node.classList.contains('v' + targetWidgets[k])) {
+								node.classList.add('pxp-copy-paste-injected');
+								inject(window, angular.element(node));
+							}
+						}
+					}
+				}
+			}
+		});
+		
+		observer.observe(window.document, {
+			childList: true,
+			subtree: true
+		});
+	});
+
+	return {
+		type: "copy_paste_inject"
+	};
+	
+	function inject(window, element) {
+		var scope = element.scope();
+		// reference: https://stackoverflow.com/a/1719157
+		var overlay = angular.element('&lt;div style="position:fixed;top:0;left:0;width:100%;height:100%;background-color:#000;filter:alpha(opacity=50);-moz-opacity:0.5;-khtml-opacity:0.5;opacity:0.5;z-index:10000;pointer-events:none;"&gt;&lt;/div&gt;');
+
+		var dropTarget = null;
+		// allow the drag
+		element.on('dragover.pxp', function (event) {
+			event.preventDefault();
+			event.originalEvent.dataTransfer.dropEffect = 'copy';
+		});
+
+		// add on overlay to mark the "dropzone"
+		element.on('dragenter.pxp', function (event) {
+			event.preventDefault();
+			dropTarget = event.target;
+			overlay.appendTo(window.document.body);
+		});
+
+		// remove the "dropzone" marker
+		element.on('dragleave.pxp', function (event) {
+			if (dropTarget == event.target) {
+				overlay.remove();
+			}
+		});
+
+		element.on('drop.pxp', function (event) {
+			event.preventDefault(); // prevent the browser from opening the file
+			overlay.remove();
+			var files = event.originalEvent.dataTransfer.files;
+			if (files.length) {
+				scope.attachmentHandler.onFileSelect(files);
+			}
+		});
+
+		element.on('paste.pxp', function (event) {
+			var files = event.originalEvent.clipboardData.files;
+			if (files.length) {
+				// in case a file is in the clipboard, the file should be uploaded
+				// and prevent the default behaviour which is to copy the file's name
+				// into whatever is currently selected (e.g. a input fiel)
+				event.preventDefault();
+				scope.attachmentHandler.onFileSelect(files);
+			}
+		});
+
+		scope.$on('$destroy', function () {
+			element.off('paste.pxp');
+			element.off('drop.pxp');
+			element.off('dragleave.pxp');
+			element.off('dragenter.pxp');
+			element.off('dragover.pxp');
+		});
+	}
+	
+})();
+]]&gt;&lt;/script&gt;&lt;script_name&gt;copy_paste_inject&lt;/script_name&gt;&lt;sys_class_name&gt;sys_ui_script&lt;/sys_class_name&gt;&lt;sys_created_by&gt;admin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2022-07-07 12:22:11&lt;/sys_created_on&gt;&lt;sys_id&gt;6e2f612d972011102f77b4b3f153af8f&lt;/sys_id&gt;&lt;sys_mod_count&gt;1&lt;/sys_mod_count&gt;&lt;sys_name&gt;x_376096_pxp.copy_paste_inject&lt;/sys_name&gt;&lt;sys_package display_value="Portal Experience" source="x_376096_pxp"&gt;b7a339a3971011102f77b4b3f153afd7&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Portal Experience"&gt;b7a339a3971011102f77b4b3f153afd7&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_ui_script_6e2f612d972011102f77b4b3f153af8f&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;admin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2022-12-10 12:36:30&lt;/sys_updated_on&gt;&lt;ui_type&gt;1&lt;/ui_type&gt;&lt;use_scoped_format&gt;true&lt;/use_scoped_format&gt;&lt;/sys_ui_script&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>1365975077</payload_hash>
+        <record_name>x_376096_pxp.copy_paste_inject</record_name>
+        <reverted_from/>
+        <source>d6b4339997dfd110d545b18e6253af92</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-12-10 12:36:30</sys_created_on>
+        <sys_id>4d7a893f97efd950d545b18e6253af09</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>184fc097a990000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2022-12-10 12:36:30</sys_updated_on>
+        <type>UI Script</type>
+        <update_guid>857a893f15efd95055831622d7b8c209</update_guid>
+        <update_guid_history>857a893f15efd95055831622d7b8c209:1365975077,3b0c26e1ad1a151005d5e65e0699da11:1317481636,5b3b66a1731a1510de6ddde2dc85e9d3:1103661468</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-12-10 18:04:22</sys_created_on>
+        <sys_db_object display_value="" name="sys_ui_script">sys_ui_script</sys_db_object>
+        <sys_id>5c2557feab424b98861665dec1f15640</sys_id>
+        <sys_metadata>6e2f612d972011102f77b4b3f153af8f</sys_metadata>
+        <sys_name>x_376096_pxp.copy_paste_inject</sys_name>
+        <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
+        <sys_scope_delete display_value="">ca2094845f944cfc9638dcb203038e10</sys_scope_delete>
+        <sys_update_name>sys_ui_script_6e2f612d972011102f77b4b3f153af8f</sys_update_name>
+        <sys_update_version display_value="sys_ui_script_6e2f612d972011102f77b4b3f153af8f">4d7a893f97efd950d545b18e6253af09</sys_update_version>
+    </sys_metadata_delete>
+</record_update>

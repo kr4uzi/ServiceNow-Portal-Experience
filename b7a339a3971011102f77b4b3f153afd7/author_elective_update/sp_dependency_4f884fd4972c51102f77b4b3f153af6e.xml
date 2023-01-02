@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_dependency">
+    <sp_dependency action="DELETE">
+        <module/>
+        <name>PXP Approval</name>
+        <page_load>true</page_load>
+        <sp_portals/>
+        <sys_class_name>sp_dependency</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-07-03 21:40:26</sys_created_on>
+        <sys_id>4f884fd4972c51102f77b4b3f153af6e</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>PXP Approval</sys_name>
+        <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
+        <sys_update_name>sp_dependency_4f884fd4972c51102f77b4b3f153af6e</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2022-07-03 21:40:26</sys_updated_on>
+    </sp_dependency>
+<sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</application>
+        <file_path/>
+        <instance_id>2ca27526dbf6491042b321c405961935</instance_id>
+        <instance_name>dev126060</instance_name>
+        <name>sp_dependency_4f884fd4972c51102f77b4b3f153af6e</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_dependency">
+    <sp_dependency action="INSERT_OR_UPDATE">
+        <module/>
+        <name>PXP Approval</name>
+        <page_load>true</page_load>
+        <sp_portals/>
+        <sys_class_name>sp_dependency</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-07-03 21:40:26</sys_created_on>
+        <sys_id>4f884fd4972c51102f77b4b3f153af6e</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>PXP Approval</sys_name>
+        <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
+        <sys_update_name>sp_dependency_4f884fd4972c51102f77b4b3f153af6e</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2022-07-03 21:40:26</sys_updated_on>
+    </sp_dependency>
+</record_update>]]></payload>
+        <payload_hash>-452790501</payload_hash>
+        <record_name>PXP Approval</record_name>
+        <reverted_from/>
+        <source>613be2a1871a151021d6fcc5dabb3525</source>
+        <source_table>sys_upgrade_history</source_table>
+        <state>previous</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-10-02 16:34:28</sys_created_on>
+        <sys_id>963b26a1871a151021d6fcc5dabb3526</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>183998c8d940000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2022-10-02 16:34:28</sys_updated_on>
+        <type>Widget Dependency</type>
+        <update_guid>563b26a1141a1510e179a498c56ca626</update_guid>
+        <update_guid_history>563b26a1141a1510e179a498c56ca626:-452790501</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="PXP Approval">6e02359d975bd110d545b18e6253af31</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-11-20 10:48:56</sys_created_on>
+        <sys_db_object display_value="" name="sp_dependency">sp_dependency</sys_db_object>
+        <sys_id>04ecdf40037b4132bf36406af61cce64</sys_id>
+        <sys_metadata>4f884fd4972c51102f77b4b3f153af6e</sys_metadata>
+        <sys_name>PXP Approval</sys_name>
+        <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
+        <sys_scope_delete display_value="">ca2094845f944cfc9638dcb203038e10</sys_scope_delete>
+        <sys_update_name>sp_dependency_4f884fd4972c51102f77b4b3f153af6e</sys_update_name>
+        <sys_update_version display_value="sp_dependency_4f884fd4972c51102f77b4b3f153af6e">963b26a1871a151021d6fcc5dabb3526</sys_update_version>
+    </sys_metadata_delete>
+</record_update>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_template">
+    <sys_template action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <global>true</global>
+        <group/>
+        <groups/>
+        <link_element/>
+        <name>PXP Confirm with Buttons</name>
+        <next/>
+        <next_child/>
+        <roles/>
+        <short_description>Example client script for a simple confirmation dialog</short_description>
+        <show_on_template_bar>true</show_on_template_bar>
+        <stand_alone>false</stand_alone>
+        <sys_class_name>sys_template</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-07-03 17:49:19</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>93a3d2d8972851102f77b4b3f153af09</sys_id>
+        <sys_name>PXP Confirm with Buttons</sys_name>
+        <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
+        <sys_update_name>sys_template_93a3d2d8972851102f77b4b3f153af09</sys_update_name>
+        <table>sys_ui_action</table>
+        <template>x_376096_pxp_client_script=/* eslint no-undef: "error" */&#13;
+function onClick(g_form, spModal, i18n) {&#13;
+    var promise = spModal&#13;
+        .open({&#13;
+            title: 'Confirm Delete',&#13;
+            message: 'Are you sure you want to delete this record?',&#13;
+            buttons: [&#13;
+                { label:'✘ ' + i18n.getMessage('No'), cancel: true },&#13;
+                { label:'✔ ' + i18n.getMessage('Yes'), primary: true }&#13;
+            ]&#13;
+        });&#13;
+&#13;
+    return promise;&#13;
+}^messages=No&#13;
+Yes^EQ</template>
+        <user/>
+        <view/>
+    </sys_template>
+</record_update>

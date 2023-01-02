@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_scoped_cache_table_pair">
+    <sys_scoped_cache_table_pair action="INSERT_OR_UPDATE">
+        <columns/>
+        <pair_type>table</pair_type>
+        <scoped_cache display_value="x_376096_pxp_list_ui_actions">7d0abe3397975d10d545b18e6253af9b</scoped_cache>
+        <sys_class_name>sys_scoped_cache_table_pair</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-11-28 12:34:04</sys_created_on>
+        <sys_id>a4d6d7b797d75d10d545b18e6253af59</sys_id>
+        <sys_name/>
+        <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
+        <sys_update_name>sys_scoped_cache_table_pair_a4d6d7b797d75d10d545b18e6253af59</sys_update_name>
+        <table>sys_ui_action_role</table>
+    </sys_scoped_cache_table_pair>
+</record_update>

@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_atf_step_config">
+    <sys_atf_step_config action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <batch_order_constraint>stop</batch_order_constraint>
+        <can_mutate_page>false</can_mutate_page>
+        <category display_value="Service Portal">1bd1c141e7020300b2888f49c2f6a9b0</category>
+        <class_name/>
+        <class_type>script</class_type>
+        <deprecated>false</deprecated>
+        <description_generator><![CDATA[/* global step */
+/* global gs */
+/* global GlideRecord */
+/* eslint no-undef: "error" */
+(function generateDescription(step) {
+
+	if (step.inputs.ui_action) {
+		var uiAction = step.inputs.ui_action.getRefRecord();
+		if (uiAction.isValidRecord()) {
+			var uiActionLabel = uiAction.getDisplayValue();
+			var tableLabel = 'any';
+		
+			if (step.inputs.table) {
+				try {
+					// if an invalid table is set, the following code will throw an exception
+					var anyGr = new GlideRecord(step.inputs.table);
+					tableLabel = anyGr.getClassDisplayValue();
+				} catch (e) {
+					gs.error('Click a UI Action description generation error, invalid Table set');
+					tableLabel = '';
+				}
+			}
+			
+			if (tableLabel) {
+				if (step.inputs.assert_type == 'form_submitted_to_server') {
+					return gs.getMessage("Confirm that browser submits '{0}' form to server when clicking UI Action '{1}'",
+						[tableLabel, uiActionLabel]
+					);
+				} else if (step.inputs.assert_type == 'form_submission_canceled_in_browser') {
+					return gs.getMessage("Confirm that browser blocks submission of '{0}' form to server when clicking UI Action '{1}'",
+						[tableLabel, uiActionLabel]
+					);
+				} else if (step.inputs.assert_type == 'popup_expected') {
+					return gs.getMessage("Confirm that browser opens a modal / popup and does not submit the '{0}' form to server when clicking UI Action '{1}'",
+						[tableLabel, uiActionLabel]
+					);
+				}
+
+				return gs.getMessage("Click UI Action '{0}' on '{1}' form", [uiActionLabel, tableLabel]);
+			}
+		} else {
+			gs.error("Click a UI Action description generation error, unable to find UI Action by id: '" + step.inputs.ui_action + "'");
+		}	
+	} else {
+		gs.error('Click a UI Action description generation error, no UI Action set');
+	}
+	
+	return gs.getMessage('Error generating the description, please check the error log!');
+})(step);]]></description_generator>
+        <html_description><![CDATA[<p><em>Note: This is a replacement for the Out of the Box ATF Step &#39;<a href="nav_to.do?uri&#61;sys_atf_step_config.do?sys_id&#61;86ec986123630300ab65ff5e17bf65a5" target="_blank" rel="noopener noreferrer nofollow">Click a UI Action (SP)</a>&#39; which cannot test client side UI Actions.</em></p>
+<p>Clicks a UI Action on the current form.</p>
+<h4>Additional Considerations</h4>
+<p>In order to use this step you must have already opened a form using either the &#34;Open a Page (SP)&#34; step. After this step, you may or may no longer use any form steps on the currently opened form depending on if it is expected that this step will close it, open a popup or move to a different page.</p>
+<p>Outputs the table and sys_id of the record on which the action was clicked.</p>]]></html_description>
+        <icon>icon-article-document</icon>
+        <inputs/>
+        <name>Click a UI Action (SP PXP)</name>
+        <order>7299</order>
+        <outputs/>
+        <step_env display_value="UI">d2cb02e1870312009dccc9ded0e3ec7c</step_env>
+        <step_execution_generator><![CDATA[/* global step, stepResult, assertionObject */
+/* global g_ui_testing_util, getMessage */
+/* eslint no-undef: "error" */
+(function(step, stepResult, assertionObject) {	
+	// this is inspired by the OOTB Test Step Config 'Click a UI Action (SP)':
+	// /nav_to.do?uri=sys_atf_step_config.do?sys_id=86ec986123630300ab65ff5e17bf65a5
+
+	var messages = {
+		'FAILED_NO_MODAL': 'FAILURE: Unable find a opened modal',
+		'POPUP_WAITING': 'Waiting {0}s for popup',
+		'FAILED_NO_G_FORM': 'FAILURE: Unable to submit form, g_form is not defined. A valid form must be open before setting values',
+		'ERROR_UNDEFINED_ACTION': 'FAILURE: UI Action not defined by its Step',
+		'CLICK_ACTION': "Click UI Action '{0}' on '{1}' form",
+		'FAILED_TO_FIND_ACTION': "FAILURE: Failed to find UI Action '{0}' on '{1}' form",
+		'SUCCESS_BLOCKED_ACTION': "Successfully confirmed that browser blocks submission of '{0}' form to server when clicking UI Action '{1}'",
+		'FAILED_BROWSER_SUBMIT': "FAILURE: Browser failed to submit '{0}' form to server when clicking UI Action '{1}'",
+		'DONT_CARE_ACTION': "Successfully clicked UI Action '{0}' on '{1}' form",
+		'SUCCESS_SUBMIT': "Successfully confirmed that browser submits '{0}' form to server when clicking UI Action '{1}'",
+		'FAILED_SUBMIT': "FAILURE: Failed to submit '{0}' form to server when clicking UI Action '{1}'",
+		'SUBMIT_WAIT_TIMEOUT': 'FAILURE: Wait timed out',
+		'SUBMIT_UNEXPECTED': "FAILURE: Submit of '{0}' form to server when clicking UI Action '{1}' was unexpected"
+	};
+	
+    assertionObject.executeStep = function(step, stepResult) {
+		getMessage(Object.values(messages), function (translatedMessages) {
+			Object.keys(messages).forEach(function (key) {
+				messages[key] = translatedMessages[messages[key]];
+			});
+			
+			var $window = g_ui_testing_util.getTestIFrameWindow();
+			if ($window.g_form) {
+				var table = step.inputs.table;
+				var actionSysID = step.inputs.ui_action;
+
+				if (actionSysID) {
+					var uiActionElement = $window.document.querySelector("[gsft_id='" + actionSysID + "']");
+					if (uiActionElement) {
+						var ga = new $window.GlideAjax('ATFUtilClient').setScope('x_376096_pxpval');
+						ga.addParam('sysparm_name', 'getUIActionInfo');
+						ga.addParam('action_sys_id', actionSysID);
+						ga.getXMLAnswer(function (answer) {
+							try {
+								var result = JSON.parse(answer);
+								if (result.status == 'success') {
+									assert(uiActionElement, {
+										$window: $window,
+										$q: g_ui_testing_util.q(),
+										$timeout: g_ui_testing_util.timeout(),
+										is_pxp_ui_action: result.info.is_pxp_ui_action,
+										timeout: step.timeout || 15,
+										assert_type: step.inputs.assert_type,
+										action_sys_id: actionSysID,
+										action_display_value: result.info.display_value
+									});
+								} else {
+									throw new Error(result.message);
+								}
+							} catch (e) {
+								onError(e.message);
+							}
+						});
+					} else {
+						onError(messages.FAILED_TO_FIND_ACTION.withValues([actionSysID, table]));
+					}
+				} else {
+					onError(messages.ERROR_UNDEFINED_ACTION);
+				}
+			} else {
+				onError(messages.FAILED_NO_G_FORM);
+			}
+		});
+    };
+	
+    assertionObject.canMutatePage = step.can_mutate_page;
+	
+	function assert(uiActionElement, config) {		
+		var $window = config.$window;
+		var $q = config.$q;
+		var $timeout = config.$timeout;
+		var g_form = $window.g_form;
+		config.record_table = stepResult.outputs.table = g_form.getTableName();
+		config.record_sys_id = stepResult.outputs.record_id = g_form.getUniqueValue();
+		
+		// add a interceptor to GlideForm::submit so that we know if the submit succeeded or failed
+		var submit = (function () {
+			var submitDeferred = $q.defer();
+			
+			var numSubmitCalls = 0;
+			var spFormSubmitted = $q.defer();
+			var ootbSubmit = g_form.submit;
+			g_form.submit = function () {
+				var submitCallId = ++numSubmitCalls;
+				
+				// g_form.submit will be called recursively in the serviceportal if a date field is present on the form
+				// this is due to Date validation (sys_script_validator), which, together with the UI Script
+				// 'sp.validation.executor' (/nav_to.do?uri=sys_ui_script.do?sys_id=df652d52e7b21300b2888f49c2f6a9f6),
+				// In Detail:
+				// 1.) g_form.submit: This is the first call initiated by the "click"-handler of the button
+				// 2.) g_form.$private.validateForm: This is a standard procedure which will call the validation scripts
+				// 3.) sp.validation.executor be called which itself calls g_form.submit
+				// 4.) g_form.submit: This is the second time g_form.submit is called. This happends recursively, meaning that the first call did not yet return!
+				if (submitCallId == 1) {
+					var submittedUnsubscribe = g_form.$rootScope.$on('sp.form.submitted', function (e, status) {
+						// a sys_id is returned in all cases, if an insert failed, the original sys_id of the record is returned
+						spFormSubmitted.resolve(status.sys_id);
+					});
+					
+					submitDeferred.promise['finally'](submittedUnsubscribe);
+				}
+				
+				// 2022-11-23 MKR: Only false (boolean) or a promise (which resolved to undefined) is returned at the moment
+				var res = ootbSubmit.apply(g_form, arguments);
+				if (submitCallId == numSubmitCalls) {
+					if (typeof res === 'boolean') {
+						res = res ? $q.resolve() : $q.reject();
+					}
+					
+					var assertType = config.assert_type;
+					res.then(function () {
+						spFormSubmitted.promise.then(submitDeferred.resolve, submitDeferred.reject); 
+					}, function () {
+						message('Form submit failed but we wait another 5s to catch asynchronous submission');
+						$q.race([spFormSubmitted.promise, $timeout($window.angular.noop, 5000)]).then(function (sysId) {
+							if (sysId) {
+								submitDeferred.resolve(sysId);
+							} else {
+								submitDeferred.reject();
+							}
+						});
+					});
+				}
+			};
+			
+			submitDeferred.promise['finally'](function () {
+				g_form.submit = ootbSubmit;
+			});
+			
+			return submitDeferred.promise;
+		})();
+		
+		var timedout = $timeout(function () { return 'timeout'; }, config.timeout * 1000);
+		if (config.assert_type == 'form_submitted_to_server') {			
+			config.$q.race([submit, timedout]).then(function (result) {
+				if (result == 'timeout') {
+					onError(messages.SUBMIT_WAIT_TIMEOUT);
+				} else {
+					config.record_sys_id = result;
+					checkRecordExists(config).then(function () {
+						stepResult.outputs.record_id = result;
+						onSuccess(messages.SUCCESS_SUBMIT.withValues([config.record_table, config.action_display_value]));
+					}, function () {
+						onError(messages.FAILED_BROWSER_SUBMIT.withValues([config.record_table, config.action_display_value]));
+					});
+				}
+			}, function () {
+				onError(messages.FAILED_BROWSER_SUBMIT.withValues([config.record_table, config.action_display_value]));
+			});
+		} else if (config.assert_type == 'form_submission_canceled_in_browser') {
+			config.$q.race([submit, timedout]).then(function (result) {
+				if (result == 'timeout') {
+					onError(messages.SUBMIT_WAIT_TIMEOUT);
+				} else if (result) {
+					onError(messages.SUBMIT_UNEXPECTED.withValues([config.record_table, config.action_display_value]));
+				} else {
+					onError(messages.FAILED_BROWSER_SUBMIT.withValues([config.record_table, config.action_display_value]));
+				}
+			}, function () {
+				onSuccess(messages.SUCCESS_BLOCKED_ACTION.withValues([config.record_table, config.action_display_value]));
+			});
+		} else if (config.assert_type == 'popup_expected') {
+			message(messages.POPUP_WAITING.withValues([config.timeout]));
+			
+			config.$q.race([submit, timedout, waitForModal(config)]).then(function (result) {
+				if (result instanceof $window.Node) {
+					// waitForModal returns the Modal-Node
+					onSuccess(messages.DONT_CARE_ACTION.withValues([config.action_display_value, config.record_table]));
+				} else if (result == 'timeout') {
+					onError(messages.SUBMIT_WAIT_TIMEOUT);
+				} else if (result) {
+					onError(messages.SUBMIT_UNEXPECTED.withValues([config.record_table, config.action_display_value]));
+				} else {
+					onError(messages.FAILED_BROWSER_SUBMIT.withValues([config.record_table, config.action_display_value]));
+				}
+			}, function () {
+				onError(messages.FAILED_BROWSER_SUBMIT.withValues([config.record_table, config.action_display_value]));
+			});
+		} else {
+			submit['finally'](function () { 
+				onSuccess(messages.DONT_CARE_ACTION.withValues([config.action_display_value, config.record_table]));
+			});
+		}
+		
+		message(messages.CLICK_ACTION.withValues([config.action_display_value, config.record_table]));
+		$timeout(function () {
+			config.$window.angular.element(uiActionElement).trigger('click');
+		});
+	}
+	
+	function waitForModal(config) {
+		var deferred = config.$q.defer();
+		
+		(function _checkModal(maxTries) {
+			
+			var modalElement = checkModal(config.$window);
+			if (modalElement) {
+				deferred.resolve(modalElement);
+			} else if (!maxTries) {
+				deferred.reject(messages.FAILED_NO_MODAL);
+			} else {
+				config.$timeout(_checkModal.bind(this, --maxTries), 1000);
+			}
+			
+		})(config.timeout);
+		
+		return deferred.promise;
+	}
+	
+	function checkModal($window) {
+		return $window.document.querySelector('div.modal-dialog > div.modal-content');
+	}
+	
+	function message(msg) {
+		return g_ui_testing_util.setTestStepStatusMessage(msg);
+	}
+	
+	function onError(msg) {
+		message(msg);
+		stepResult.message = msg;
+		stepResult.success = false;
+		step.defer.reject();
+	}
+
+	function onSuccess(msg) {
+		message(msg);
+		stepResult.message = msg;
+		stepResult.success = true;
+		step.defer.resolve();
+	}
+	
+	function checkRecordExists(config) {
+		var deferred = config.$q.defer();
+		
+		var recordExistsGA = new config.$window.GlideAjax('ATFUtilClient').setScope('x_376096_pxpval');
+		recordExistsGA.addParam('sysparm_name', 'checkRecordExists');
+		recordExistsGA.addParam('record_table', config.record_table);
+		recordExistsGA.addParam('record_sys_id', config.record_sys_id);
+		recordExistsGA.getXMLAnswer(function (answer) {
+			try {
+				var result = JSON.parse(answer);
+				if (result && result.status == 'success') {
+					if (result.record_exists) {
+						deferred.resolve();
+					} else {
+						deferred.reject();
+					}
+				} else {
+					throw new Error(result.message);
+				}
+			} catch (e) {
+				deferred.reject(e.message);
+			}
+		});
+		
+		return deferred.promise;
+	}
+	
+})(step, stepResult, assertionObject);]]></step_execution_generator>
+        <sys_class_name>sys_atf_step_config</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-11-18 18:12:54</sys_created_on>
+        <sys_id>32444d34971b5110d545b18e6253af91</sys_id>
+        <sys_name>Click a UI Action (SP PXP)</sys_name>
+        <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
+        <sys_update_name>sys_atf_step_config_32444d34971b5110d545b18e6253af91</sys_update_name>
+        <template_reminder>Click a UI Action (PXP SP)</template_reminder>
+        <type display_value="Test Step" name="sys_atf_step">a76763b375f011108c8b143dd0c59f95</type>
+        <wizard_redirect/>
+    </sys_atf_step_config>
+    <sys_translated_text action="delete_multiple" query="documentkey=32444d34971b5110d545b18e6253af91"/>
+    <sys_variable_value action="delete_multiple" query="document_key=32444d34971b5110d545b18e6253af91"/>
+    <sys_element_mapping action="delete_multiple" query="table=var__m_atf_input_variable_32444d34971b5110d545b18e6253af91^id=32444d34971b5110d545b18e6253af91"/>
+    <sys_element_mapping action="delete_multiple" query="table=var__m_atf_output_variable_32444d34971b5110d545b18e6253af91^id=32444d34971b5110d545b18e6253af91"/>
+</record_update>

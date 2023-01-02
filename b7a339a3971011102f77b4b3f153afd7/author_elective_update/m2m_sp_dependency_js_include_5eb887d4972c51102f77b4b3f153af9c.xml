@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="m2m_sp_dependency_js_include">
+    <m2m_sp_dependency_js_include action="DELETE">
+        <order>100</order>
+        <sp_dependency display_value="PXP Approval">4f884fd4972c51102f77b4b3f153af6e</sp_dependency>
+        <sp_js_include display_value="PXP Approval">93a84318972c51102f77b4b3f153af41</sp_js_include>
+        <sys_class_name>m2m_sp_dependency_js_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-07-03 21:41:05</sys_created_on>
+        <sys_id>5eb887d4972c51102f77b4b3f153af9c</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name>PXP Approval.PXP Approval</sys_name>
+        <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
+        <sys_update_name>m2m_sp_dependency_js_include_5eb887d4972c51102f77b4b3f153af9c</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2022-11-16 09:56:07</sys_updated_on>
+    </m2m_sp_dependency_js_include>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</application>
+        <file_path/>
+        <instance_id>2ca27526dbf6491042b321c405961935</instance_id>
+        <instance_name>dev126060</instance_name>
+        <name>m2m_sp_dependency_js_include_5eb887d4972c51102f77b4b3f153af9c</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="m2m_sp_dependency_js_include"><m2m_sp_dependency_js_include action="INSERT_OR_UPDATE"><order>100</order><sp_dependency display_value="PXP Approval">4f884fd4972c51102f77b4b3f153af6e</sp_dependency><sp_js_include display_value="PXP Approval">93a84318972c51102f77b4b3f153af41</sp_js_include><sys_class_name>m2m_sp_dependency_js_include</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2022-07-03 21:41:05</sys_created_on><sys_id>5eb887d4972c51102f77b4b3f153af9c</sys_id><sys_mod_count>2</sys_mod_count><sys_name>PXP Approval.PXP Approval</sys_name><sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package><sys_policy/><sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope><sys_update_name>m2m_sp_dependency_js_include_5eb887d4972c51102f77b4b3f153af9c</sys_update_name><sys_updated_by>admin</sys_updated_by><sys_updated_on>2022-11-16 09:56:07</sys_updated_on></m2m_sp_dependency_js_include></record_update>]]></payload>
+        <payload_hash>-1933516741</payload_hash>
+        <record_name>PXP Approval.PXP Approval</record_name>
+        <reverted_from/>
+        <source>394b22a187d6151021d6fcc5dabb35f4</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-11-16 09:56:07</sys_created_on>
+        <sys_id>719f7c8097939590d545b18e6253afe6</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>1847fde03810000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2022-11-16 09:56:07</sys_updated_on>
+        <type>Dependency JS Includes</type>
+        <update_guid>799f7c8007939590402526ea55eefce5</update_guid>
+        <update_guid_history>799f7c8007939590402526ea55eefce5:-1933516741,be8f7c801d939590814f2c940b21f59f:47081089,123be2a1f71a1510e06b4b7e322db8ec:1354251409</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="PXP Approval.PXP Approval">4d023d5d975bd110d545b18e6253afa7</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-11-20 10:48:51</sys_created_on>
+        <sys_db_object display_value="" name="m2m_sp_dependency_js_include">m2m_sp_dependency_js_include</sys_db_object>
+        <sys_id>3a072879d2984125a527521031f7e719</sys_id>
+        <sys_metadata>5eb887d4972c51102f77b4b3f153af9c</sys_metadata>
+        <sys_name>PXP Approval.PXP Approval</sys_name>
+        <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
+        <sys_scope_delete display_value="">ca2094845f944cfc9638dcb203038e10</sys_scope_delete>
+        <sys_update_name>m2m_sp_dependency_js_include_5eb887d4972c51102f77b4b3f153af9c</sys_update_name>
+        <sys_update_version display_value="m2m_sp_dependency_js_include_5eb887d4972c51102f77b4b3f153af9c">719f7c8097939590d545b18e6253afe6</sys_update_version>
+    </sys_metadata_delete>
+</record_update>

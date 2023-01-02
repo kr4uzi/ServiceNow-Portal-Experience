@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_kmf_key_lifecycle_default_line">
+    <sys_kmf_key_lifecycle_default_line action="INSERT_OR_UPDATE">
+        <applies_to>sys_kmf_key_metadata</applies_to>
+        <for_field>expiration_date</for_field>
+        <key_type display_value="Symmetric Data Encryption Key">1c38f324c7003300af4d43c6f097636e</key_type>
+        <lifecycle_default display_value="">fcbf0cc597179110d545b18e6253af60</lifecycle_default>
+        <order>1000</order>
+        <relative_duration>0</relative_duration>
+        <relative_duration_type/>
+        <relative_operation/>
+        <relative_to/>
+        <sys_class_name>sys_kmf_key_lifecycle_default_line</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-11-19 09:00:49</sys_created_on>
+        <sys_id>38bf0cc597179110d545b18e6253af63</sys_id>
+        <sys_name/>
+        <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
+        <sys_update_name>sys_kmf_key_lifecycle_default_line_38bf0cc597179110d545b18e6253af63</sys_update_name>
+        <type/>
+        <value/>
+    </sys_kmf_key_lifecycle_default_line>
+</record_update>

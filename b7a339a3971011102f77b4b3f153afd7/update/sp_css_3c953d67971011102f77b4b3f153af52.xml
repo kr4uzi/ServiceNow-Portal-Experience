@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_css">
+    <sp_css action="INSERT_OR_UPDATE">
+        <css>.list-head-btn-container {&#13;
+  padding-left: 1rem;&#13;
+  display:flex&#13;
+}&#13;
+&#13;
+.list-row-btn-container {&#13;
+  display:flex&#13;
+}&#13;
+&#13;
+.list-foot-btn-container {&#13;
+  display:flex&#13;
+}&#13;
+&#13;
+.list-btn {&#13;
+    margin-right: 0.5rem;&#13;
+}&#13;
+&#13;
+.list2_cell_background {&#13;
+    margin-right: 6px;&#13;
+    width: 8px;&#13;
+    height: 8px;&#13;
+    display: inline-block;&#13;
+    vertical-align: middle;&#13;
+    -moz-border-radius: 4px;&#13;
+    -webkit-border-radius: 4px;&#13;
+    border-radius: 4px;&#13;
+}&#13;
+&#13;
+.list2_cell_image {&#13;
+    width: 16px;&#13;
+    height: 16px;&#13;
+    -moz-border-radius: none;&#13;
+    -webkit-border-radius: none;&#13;
+    border-radius: none;&#13;
+    background-position-y: 2px !important;&#13;
+}</css>
+        <name>PXP List</name>
+        <sys_class_name>sp_css</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-07-01 07:42:21</sys_created_on>
+        <sys_id>3c953d67971011102f77b4b3f153af52</sys_id>
+        <sys_name>PXP List</sys_name>
+        <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
+        <sys_update_name>sp_css_3c953d67971011102f77b4b3f153af52</sys_update_name>
+    </sp_css>
+</record_update>
