@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[api.controller = function ($scope, $uibModalStack) {
+	$scope.clearFocusListCache = function() {
+		$uibModalStack.clearFocusListCache();
+	};
+};]]></client_script>
+        <controller_as>c</controller_as>
+        <css/>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description>Based on sp-modal.html (this is statically loaded and can be found via browser code-search in the ServicePortal).&#13;
+&#13;
+Example usage (e.g. in UI Action Portal Script):&#13;
+var inputOptions = {&#13;
+  message: 'CONFIRM MESSAGE',&#13;
+  text: '',&#13;
+  textPlaceholder: 'Enter a text',&#13;
+  required: true&#13;
+};&#13;
+spModal.open({&#13;
+  title: 'MODAL TITLE',&#13;
+  widget: 'x_376096_pxp_prompt',&#13;
+  shared: inputOptions,&#13;
+  backdrop: false, // disable close by click&#13;
+  onSubmit: function () {&#13;
+    if (inputOptions.required || inputOptions.text) {&#13;
+      return $q.resolve({ status: true });&#13;
+    }&#13;
+&#13;
+    return $q.resolve({ status: false, errorMessage: 'Please enter a text' });&#13;
+  }&#13;
+});</description>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>x_376096_pxp_prompt</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {
+  
+}]]></link>
+        <name>PXP Prompt</name>
+        <option_schema/>
+        <public>true</public>
+        <roles>snc_external,snc_internal</roles>
+        <script><![CDATA[(function() {
+  /* populate the 'data' object */
+  /* e.g., data.table = $sp.getValue('table'); */
+
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2023-05-27 15:09:37</sys_created_on>
+        <sys_id>4298b67197072110424f3931f053af81</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name>PXP Prompt</sys_name>
+        <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
+        <sys_update_name>sp_widget_4298b67197072110424f3931f053af81</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-05-27 15:12:33</sys_updated_on>
+        <template><![CDATA[<div class="form-group">
+  <label for="pxp_confirm_text" ng-if="options.shared.message">
+    <span class="field-decorations">
+      <span ng-if="options.shared.required" class="fa fa-asterisk mandatory" ng-class="{ 'mandatory-filled': options.shared.text.length }" title="Required" style="padding-right: .25em"></span>
+      {{options.shared.message}}
+    </span>
+  </label>
+  <input id="pxp_confirm_text" type="text" class="form-control" placeholder="{{options.shared.textPlaceholder}}"
+	autocomplete="off" aria-invalid="{{options.shared.required && !options.shared.text.length}"
+    ng-model="options.shared.text" ng-required="options.shared.required" ng-blur="clearFocusListCache()" />
+</div>]]></template>
+    </sp_widget>
+</record_update>

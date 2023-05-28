@@ -1,21 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update>
-    <sys_documentation element="x_376096_pxp_style" label="Style" language="en" table="sys_ui_style">
+    <sys_documentation element="x_376096_pxp_style" label="Portal Style" language="en" table="sys_ui_style">
         <sys_documentation action="INSERT_OR_UPDATE">
             <element>x_376096_pxp_style</element>
             <help/>
             <hint/>
-            <label>Style</label>
+            <label>Portal Style</label>
             <language>en</language>
             <name>sys_ui_style</name>
-            <plural>Styles</plural>
+            <plural>Portal Styles</plural>
             <sys_class_name>sys_documentation</sys_class_name>
             <sys_created_by>admin</sys_created_by>
             <sys_created_on>2022-11-11 11:11:10</sys_created_on>
-            <sys_name>Style</sys_name>
+            <sys_mod_count>1</sys_mod_count>
+            <sys_name>Portal Style</sys_name>
             <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
             <sys_policy/>
             <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
             <sys_update_name>sys_documentation_sys_ui_style_x_376096_pxp_style_en</sys_update_name>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2023-05-27 20:24:15</sys_updated_on>
             <url/>
             <url_target/>
         </sys_documentation>

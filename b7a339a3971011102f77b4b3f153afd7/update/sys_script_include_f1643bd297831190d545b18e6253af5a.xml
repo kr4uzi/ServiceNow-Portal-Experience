@@ -34,16 +34,21 @@ PortalListUtil.prototype = {
 	 * @returns {TableFieldStyle[]}
 	 */
 	loadTableStyles: function (table, fields) {
-		var cacheKey = table + '.' + fields.join(',');
-		var styles = sn_scoped_cache.ScopedCacheManager.get('x_376096_pxp_field_styles', cacheKey);
+		if (!gs.tableExists(table)) {
+			gs.error('[PXP] loadTableStyles for invalid table: ' + table);
+			return [];
+		}
+		
+		const cacheKey = table + '.' + fields.join(',');
+		let styles = sn_scoped_cache.ScopedCacheManager.get('x_376096_pxp_field_styles', cacheKey);
 		if (styles) {
 			styles = JSON.parse(styles);
 		} else {
 			styles = [];
 
-			var tables = new GlideTableHierarchy(table).getTables();
-			for (var i = 0; i < tables.length ; i++) {
-				var styleGr = new GlideRecord('sys_ui_style');
+			const tables = new GlideTableHierarchy(table).getTables();
+			for (let i = 0; i < tables.length ; i++) {
+				const styleGr = new GlideRecord('sys_ui_style');
 				styleGr.addQuery('x_376096_pxp_enabled', true);
 				styleGr.addQuery('name', tables[i]);
 				styleGr.addQuery('element', 'IN', fields);
@@ -67,13 +72,12 @@ PortalListUtil.prototype = {
 		// based on: https://stackoverflow.com/a/43012849
 		// modified to work with ServiceNow's ES5 Standard Mode
 		function parseCSSText(cssText) {
-			var cssTxt = cssText.replace(/\/\*(.|\s)*?\*\//g, " ").replace(/\s+/g, " ");
-			var style = {};
-			var cssMatch = cssTxt.match(/ ?(.*?) ?{([^}]*)}/);
-			var ruleName = cssMatch ? cssMatch[1] : undefined;
-			var rule = cssMatch ? cssMatch[2] : cssTxt;
-			
-			var properties = rule.split(";").map(function (o) {
+			const cssTxt = cssText.replace(/\/\*(.|\s)*?\*\//g, " ").replace(/\s+/g, " ");
+			const style = {};
+			const cssMatch = cssTxt.match(/ ?(.*?) ?{([^}]*)}/);
+			const ruleName = cssMatch ? cssMatch[1] : undefined;
+			const rule = cssMatch ? cssMatch[2] : cssTxt;
+			const properties = rule.split(";").map(function (o) {
 				return o.split(":").map(function (x) {
 					return x && x.trim();
 				});
@@ -108,13 +112,13 @@ PortalListUtil.prototype = {
 	 * @returns {Map<string, Map<string, string>>} a of item sys_id to map of field to field style sys_id
 	 */
 	loadItemStyles: function (table, fields, items) {
-		var tableExt = this.util.getExtensionPointForTable(table);
+		const tableExt = this.util.getExtensionPointForTable(table);
 
-		var itemStyles = {};
-		var records = [];
+		const itemStyles = {};
+		const records = [];
 		items.forEach(function (i) {
 			itemStyles[i] = {};
-			var recordGr = tableExt.queryRecords(table, 'sys_id=' + i, 1);
+			const recordGr = tableExt.queryRecords(table, 'sys_id=' + i, 1);
 			if (recordGr.next()) {
 				records.push(recordGr);
 			} else {
@@ -122,27 +126,27 @@ PortalListUtil.prototype = {
 			}
 		}, this);
 		
-		var fieldStyleScriptVariables = {
+		const fieldStyleScriptVariables = {
 			
 		};
 
-		var gse = new GlideScopedEvaluator();
-		var tables = new GlideTableHierarchy(table).getTables();
-		for (var i = 0; i < tables.length; i++) {
-			var styleGr = new GlideRecord('sys_ui_style');
+		const gse = new GlideScopedEvaluator();
+		const tables = new GlideTableHierarchy(table).getTables();
+		for (let i = 0; i < tables.length; i++) {
+			const styleGr = new GlideRecord('sys_ui_style');
 			styleGr.addQuery('x_376096_pxp_enabled', true);
 			styleGr.addQuery('name', tables[i]);
 			styleGr.addQuery('element', 'IN', fields);
 			styleGr.orderByDesc('sys_updated_on');
 			styleGr.query();
 			while (styleGr.next()) {
-				var field = styleGr.element.toString();
+				const field = styleGr.element.toString();
 
 				// we start with the highest level if inheritance and remove each processed field,
 				// because style field would override any lower base table field styles
 				fields.splice(fields.indexOf(field), 1);
 
-				var isScript = styleGr.value.toString().trim().startsWith('javascript:');
+				const isScript = styleGr.value.toString().trim().startsWith('javascript:');
 				records.forEach(function (record) {
 					// before checking the field condition, first check if the field is valid and user has access to read it
 					var fieldElement = record.getElement(field);
@@ -170,15 +174,15 @@ PortalListUtil.prototype = {
 	},
 	
 	loadTableUIActions: function (table, view, rp, parent) {
-		var result = {
+		const result = {
 			definition: {},
 			row: [],
 			head: [],
 			foot: []
 		};
 		
-		var tableExt = this.util.getExtensionPointForTable(table);
-		var gse = new GlideScopedEvaluator();
+		const tableExt = this.util.getExtensionPointForTable(table);
+		const gse = new GlideScopedEvaluator();
 		gse.putVariable('RP', rp);
 		gse.putVariable('current', tableExt.queryRecords(table));
 		
@@ -186,11 +190,11 @@ PortalListUtil.prototype = {
 			gse.putVariable('parent', tableExt.queryRecords(table));
 		}
 		
-		var uiActionGr = new GlideRecord('sys_ui_action');
+		const uiActionGr = new GlideRecord('sys_ui_action');
 		uiActionGr.addQuery('sys_id', 'IN', this._getListUIActions(table, view));
 		uiActionGr.query();
 		while (uiActionGr.next()) {
-			var uiActionSysID = uiActionGr.getUniqueValue();
+			const uiActionSysID = uiActionGr.getUniqueValue();
 			result.definition[uiActionSysID] = {
 				sys_id: uiActionSysID,
 				label: uiActionGr.x_376096_pxp_list_label ? uiActionGr.x_376096_pxp_list_label.getDisplayValue() : uiActionGr.getDisplayValue(),
@@ -200,10 +204,10 @@ PortalListUtil.prototype = {
 			};
 
 			if (uiActionGr.list_banner_button || uiActionGr.list_button) {
-				var enabled = uiActionGr.condition.nil() || (function () {
-					var scriptResult = gse.evaluateScript(uiActionGr, 'condition');
+				const enabled = uiActionGr.condition.nil() || (function () {
+					const scriptResult = gse.evaluateScript(uiActionGr, 'condition');
 					if (scriptResult == null) {
-						var uiActionDisplay = uiActionGr.getDisplayValue() + '(' + uiActionSysID + ')';
+						const uiActionDisplay = uiActionGr.getDisplayValue() + '(' + uiActionSysID + ')';
 						throw new Error(gs.getMessage('x_376096_pxp_ui_action_condition_evaluation_failed', [uiActionDisplay]));
 					}
 
@@ -234,16 +238,16 @@ PortalListUtil.prototype = {
 	},
 	
 	_getListUIActions: function (table, view) {
-		var cacheKey = table + '.' + view;
-		var uiActionSysIDs = sn_scoped_cache.ScopedCacheManager.get('x_376096_pxp_list_ui_actions', cacheKey);
+		const cacheKey = table + '.' + view;
+		let uiActionSysIDs = sn_scoped_cache.ScopedCacheManager.get('x_376096_pxp_list_ui_actions', cacheKey);
 		if (uiActionSysIDs) {
 			uiActionSysIDs = JSON.parse(uiActionSysIDs);
 		} else {
 			uiActionSysIDs = [];
-			var uiActionNames = [];
-			var tables = new GlideTableHierarchy(table).getTables();
+			const uiActionNames = [];
+			const tables = new GlideTableHierarchy(table).getTables();
 			tables.push('global', '');
-			for (var i = 0; i < tables.length; i++) {
+			for (let i = 0; i < tables.length; i++) {
 				var uiActionGr = new GlideRecord('sys_ui_action');
 				uiActionGr.addQuery('active', true);
 				uiActionGr.addQuery('client', false);
@@ -275,7 +279,7 @@ PortalListUtil.prototype = {
 		return uiActionSysIDs;
 		
 		function checkRole(uiActionGr) {
-			var uiActionRoleGr = new GlideRecord('sys_ui_action_role');
+			const uiActionRoleGr = new GlideRecord('sys_ui_action_role');
 			uiActionRoleGr.addQuery('sys_ui_action', uiActionGr.sys_id);
 			uiActionRoleGr.query();
 			if (!uiActionRoleGr.hasNext()) {
@@ -296,7 +300,7 @@ PortalListUtil.prototype = {
 				return true;
 			}
 			
-			var uiActionViewGr = new GlideRecord('sys_ui_action_view');
+			let uiActionViewGr = new GlideRecord('sys_ui_action_view');
 			uiActionViewGr.addQuery('sys_ui_action', uiActionGr.sys_id);
 			uiActionViewGr.addQuery('sys_ui_view.name', viewName);
 			uiActionViewGr.setLimit(1);
@@ -325,13 +329,13 @@ PortalListUtil.prototype = {
 	},
 	
 	loadRowUIActions: function (table, view, items, rp, parent) {
-		var rowUIActions = {};
-		var tableExt = this.util.getExtensionPointForTable(table);
-		var itemRecords = {};
+		const rowUIActions = {};
+		const tableExt = this.util.getExtensionPointForTable(table);
+		const itemRecords = {};
 		items.forEach(function (i) {
 			rowUIActions[i] = {};
 			
-			var recordGr = tableExt.queryRecords(table, 'sys_id=' + i, 1);
+			const recordGr = tableExt.queryRecords(table, 'sys_id=' + i, 1);
 			if (recordGr.next()) {
 				itemRecords[i] = recordGr;
 			} else {
@@ -339,7 +343,7 @@ PortalListUtil.prototype = {
 			}
 		}, this);
 		
-		var gse = new GlideScopedEvaluator();
+		const gse = new GlideScopedEvaluator();
 		gse.putVariable('RP', rp);
 		
 		if (parent) {
@@ -354,8 +358,8 @@ PortalListUtil.prototype = {
 		while (uiActionGr.next()) {
 			items.forEach(function (i) {
 				gse.putVariable('current', itemRecords[i]);
-				var enabled = uiActionGr.condition.nil() || (function () {
-					var scriptResult = gse.evaluateScript(uiActionGr, 'condition');
+				const enabled = uiActionGr.condition.nil() || (function () {
+					const scriptResult = gse.evaluateScript(uiActionGr, 'condition');
 					if (scriptResult == null) {
 						var uiActionDisplay = uiActionGr.getDisplayValue() + '(' + uiActionGr.sys_id + ')';
 						throw new Error(gs.getMessage('x_376096_pxp_ui_action_condition_evaluation_failed', [uiActionDisplay]));
@@ -374,14 +378,14 @@ PortalListUtil.prototype = {
 	},
 	
 	createFakeRP: function (table, view, type, relatedList, query, referringUrl, urlParams) {
-		var controlID = '-1';
-		var omitNew = false;
-		var omitEdit = false;
-		var viewID = '';
-		var viewName = '';
-		var listEditRefQualTag = ''; // must be injected as global variable (like current)
+		const controlID = '-1';
+		let omitNew = false;
+		let omitEdit = false;
+		let viewID = '';
+		let viewName = '';
+		let listEditRefQualTag = ''; // must be injected as global variable (like current)
 		
-		var sectionGr = new GlideRecord('sys_ui_section');
+		const sectionGr = new GlideRecord('sys_ui_section');
 		sectionGr.addQuery('name', table);
 		sectionGr.addQuery('view.name', view);
 		sectionGr.setLimit(1);
@@ -395,10 +399,10 @@ PortalListUtil.prototype = {
 			viewID = 'Default view';
 		}
 		
-		var isO2M = type == '12M'; // one to many
-		var isM2M = type == 'M2M'; // many to many
+		const isO2M = type == '12M'; // one to many
+		const isM2M = type == 'M2M'; // many to many
 		if (relatedList) {
-			var listControlGr = new GlideRecord('sys_ui_list_control');
+			const listControlGr = new GlideRecord('sys_ui_list_control');
 			listControlGr.addQuery('related_list', relatedList);
 			listControlGr.setLimit(1);
 			listControlGr.query();
@@ -438,10 +442,13 @@ PortalListUtil.prototype = {
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2022-11-11 12:37:04</sys_created_on>
         <sys_id>f1643bd297831190d545b18e6253af5a</sys_id>
+        <sys_mod_count>16</sys_mod_count>
         <sys_name>PortalListUtil</sys_name>
         <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
         <sys_update_name>sys_script_include_f1643bd297831190d545b18e6253af5a</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-05-28 15:35:41</sys_updated_on>
     </sys_script_include>
 </record_update>

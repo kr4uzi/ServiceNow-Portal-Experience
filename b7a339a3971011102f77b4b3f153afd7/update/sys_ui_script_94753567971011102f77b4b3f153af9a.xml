@@ -127,16 +127,28 @@ x_376096_pxp.form_inject = (function() {
 		});
 		
 		$scope.$on('spModel.fields.rendered', function () {
+			// the view (either requested or calculated via view rule) cannot be determined in a display business rule
+			// the only optimization possible is to load the 
 			var g_form = formModelScope.getGlideForm();
 			var g_scratchpad = $scope.data.f.g_scratchpad;
+			var utilityData = g_scratchpad.x_376096_pxp || {};
+			
+			if (utilityData.error_message) {
+				spUtil.addErrorMessage(utilityData.error_message);
+			}
+			
+			if (utilityData.utility_error) {
+				// do not load annotations if there has been an utility error
+				return;
+			}
 			
 			var ga = new $window.GlideAjax('PortalFormUtilClient').setScope('x_376096_pxp');
 			ga.addParam('sysparm_name', 'loadAnnotations');
 			ga.addParam('record_table', g_form.getTableName());
 			ga.addParam('record_sys_id', g_form.getUniqueValue());
 			ga.addParam('view', $scope.data.f.view);
-			if (g_scratchpad.x_376096_pxp && g_scratchpad.x_376096_pxp.encrypted_record) {
-				ga.addParam('encrypted_record', g_scratchpad.x_376096_pxp.encrypted_record);
+			if (utilityData.encrypted_record) {
+				ga.addParam('encrypted_record', utilityData.encrypted_record);
 			}
 			
 			ga.getXMLAnswer(function (answer) {
@@ -304,11 +316,14 @@ x_376096_pxp.form_inject = (function() {
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2022-07-01 07:41:46</sys_created_on>
         <sys_id>94753567971011102f77b4b3f153af9a</sys_id>
+        <sys_mod_count>5</sys_mod_count>
         <sys_name>x_376096_pxp.form_inject</sys_name>
         <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
         <sys_update_name>sys_ui_script_94753567971011102f77b4b3f153af9a</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-05-27 17:01:37</sys_updated_on>
         <ui_type>1</ui_type>
         <use_scoped_format>true</use_scoped_format>
     </sys_ui_script>

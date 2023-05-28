@@ -34,6 +34,14 @@ PXPUtil.prototype = {
 
 			params.scratchpad.x_376096_pxp = pxpData;
 		} catch (e) {
+			params.scratchpad.x_376096_pxp = {
+				utility_error: true
+			};
+			
+			if (gs.hasRole('admin')) {
+				params.scratchpad.x_376096_pxp.error_message = e.message;
+			}
+			
 			gs.error('[PXP] error loading utility data: ' + e);
 		}
 	},
@@ -128,10 +136,13 @@ PXPUtil.prototype = {
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2022-11-19 09:54:30</sys_created_on>
         <sys_id>c7bb90c197579110d545b18e6253aff2</sys_id>
+        <sys_mod_count>3</sys_mod_count>
         <sys_name>PXPUtil</sys_name>
         <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
         <sys_update_name>sys_script_include_c7bb90c197579110d545b18e6253aff2</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-05-27 16:29:47</sys_updated_on>
     </sys_script_include>
 </record_update>

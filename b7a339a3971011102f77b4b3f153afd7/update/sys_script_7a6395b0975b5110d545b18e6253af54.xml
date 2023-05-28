@@ -18,7 +18,7 @@
         <filter_condition/>
         <is_rest>false</is_rest>
         <message/>
-        <name>PXP - Load Portal Utility Data</name>
+        <name>PXP Task - Load Portal Utility Data</name>
         <order>100</order>
         <priority>100</priority>
         <rest_method/>
@@ -45,12 +45,15 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>7a6395b0975b5110d545b18e6253af54</sys_id>
-        <sys_name>PXP - Load Portal Utility Data</sys_name>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>PXP Task - Load Portal Utility Data</sys_name>
         <sys_overrides/>
         <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
         <sys_update_name>sys_script_7a6395b0975b5110d545b18e6253af54</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-05-28 09:10:07</sys_updated_on>
         <template/>
         <when>before_display</when>
     </sys_script>
