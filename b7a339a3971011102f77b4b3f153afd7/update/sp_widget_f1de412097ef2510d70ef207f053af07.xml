@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[api.controller=function() {
+  /* widget controller */
+  var c = this;
+};]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.process-breadcrumb {&#13;
+  list-style: none;&#13;
+  padding-left: 0;&#13;
+  white-space: nowrap;&#13;
+  height: 46px;&#13;
+  width: 100%;&#13;
+  padding-right: 45px;&#13;
+  display: table; &#13;
+}&#13;
+&#13;
+.process-breadcrumb &gt; li {&#13;
+  display: table-cell;&#13;
+  position: relative;&#13;
+}&#13;
+&#13;
+.process-breadcrumb &gt; li &gt; a {&#13;
+  display: block;&#13;
+  padding: 14px 15px 12px 38px;&#13;
+  transition: all 1s;&#13;
+  text-align: center;&#13;
+}&#13;
+&#13;
+.process-breadcrumb &gt; li &gt; a, .process-breadcrumb &gt; li &gt; a:visited, .process-breadcrumb &gt; li &gt; a:hover {&#13;
+  color: #2e2e2e;&#13;
+  text-decoration: none;&#13;
+}&#13;
+&#13;
+.process-breadcrumb &gt; li:first-child &gt; a {&#13;
+	padding-left: 15px;&#13;
+}&#13;
+&#13;
+.process-breadcrumb &gt; li:last-child:after {&#13;
+	display: none;&#13;
+}&#13;
+&#13;
+.process-breadcrumb &gt; li:after {&#13;
+  display: block;&#13;
+  height: 32px;&#13;
+  width: 32px;&#13;
+  position: absolute;&#13;
+  top: 6px;&#13;
+  right: -18px;&#13;
+  border-top: 1px solid #cbcbcb;&#13;
+  border-right: 1px solid #cbcbcb;&#13;
+  background-color: transparent;&#13;
+  content: ' ';&#13;
+  -moz-transform: rotate(45deg);&#13;
+  -ms-transform: rotate(45deg);&#13;
+  -webkit-transform: rotate(45deg);&#13;
+  transform: rotate(45deg);&#13;
+}&#13;
+&#13;
+.process-breadcrumb &gt; li.active &gt; a:before, .process-breadcrumb &gt; li &gt; a:hover:before {&#13;
+  position: absolute;&#13;
+  bottom: 0;&#13;
+  left: 3px;&#13;
+  right: -3px;&#13;
+  top: auto;&#13;
+  height: 3px;&#13;
+  background-color: #1f8476;&#13;
+  display: inline-block;&#13;
+  content: ' ';&#13;
+  transform: skewX(-45deg);&#13;
+}&#13;
+&#13;
+.process-breadcrumb &gt; li.disabled &gt; a, .process-breadcrumb &gt; li.disabled &gt; a:visited, .process-breadcrumb &gt; li.disabled &gt; a:hover {&#13;
+  border-bottom-color: transparent;&#13;
+  cursor: default;&#13;
+}&#13;
+&#13;
+.process-breadcrumb &gt; li.disabled &gt; a:before, .process-breadcrumb &gt; li.disabled &gt; a:visited:before, .process-breadcrumb &gt; li.disabled &gt; a:hover:before {&#13;
+	display: none;&#13;
+}&#13;
+&#13;
+.process-breadcrumb &gt; li.completed &gt; a:after {&#13;
+  font-family: "retina_icons";&#13;
+  display: inline-block;&#13;
+  vertical-align: middle;&#13;
+  line-height: 1;&#13;
+  font-weight: normal;&#13;
+  font-style: normal;&#13;
+  speak: none;&#13;
+  text-decoration: inherit;&#13;
+  text-transform: none;&#13;
+  text-rendering: optimizeLegibility;&#13;
+  -webkit-font-smoothing: antialiased;&#13;
+  -moz-osx-font-smoothing: grayscale;&#13;
+  content: "";&#13;
+  color: #1f8476;&#13;
+  vertical-align: text-bottom;&#13;
+  margin-left: 5px;&#13;
+}&#13;
+&#13;
+.process-breadcrumb.process-breadcrumb-border {&#13;
+	border: 1px solid #cbcbcb;&#13;
+}&#13;
+&#13;
+HTML[data-doctype=true].rtl .process-breadcrumb &gt; li:before {&#13;
+  display: block;&#13;
+  height: 32px;&#13;
+  width: 32px;&#13;
+  position: absolute;&#13;
+  top: 6px;&#13;
+  right: -18px;&#13;
+  border-top: 1px solid #cbcbcb;&#13;
+  border-right: 1px solid #cbcbcb;&#13;
+  background-color: transparent;&#13;
+  content: ' ';&#13;
+  -moz-transform: rotate(225deg);&#13;
+  -ms-transform: rotate(225deg);&#13;
+  -webkit-transform: rotate(225deg);&#13;
+  transform: rotate(225deg);&#13;
+}&#13;
+&#13;
+HTML[data-doctype=true].rtl .process-breadcrumb &gt; li:first-child:before {&#13;
+  display: none;&#13;
+}&#13;
+&#13;
+HTML[data-doctype=true].rtl .process-breadcrumb &gt; li:after {&#13;
+  display: none;&#13;
+}&#13;
+&#13;
+HTML[data-doctype=true].rtl .process-breadcrumb &gt; li.active &gt; a:before, HTML[data-doctype=true].rtl .process-breadcrumb &gt; li &gt; a:hover:before {&#13;
+  transform: skewX(45deg);&#13;
+  left: 0;&#13;
+}&#13;
+&#13;
+HTML[data-doctype=true].rtl .msie9 .process-breadcrumb &gt; li:before {&#13;
+  -ms-transform: rotate(315deg);&#13;
+}&#13;
+&#13;
+HTML[data-doctype=true].rtl .windows .process-breadcrumb &gt; li.active &gt; a:before, HTML[data-doctype=true].rtl a:hover:before {&#13;
+  left: 3px;&#13;
+}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id/>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {
+  
+}]]></link>
+        <name>PXP Process Flow</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+	
+	data.steps = options.f.g_scratchpad.x_376096_pxp.process_flow;
+	
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2023-06-17 07:20:11</sys_created_on>
+        <sys_id>f1de412097ef2510d70ef207f053af07</sys_id>
+        <sys_mod_count>6</sys_mod_count>
+        <sys_name>PXP Process Flow</sys_name>
+        <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
+        <sys_update_name>sp_widget_f1de412097ef2510d70ef207f053af07</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-06-17 07:53:34</sys_updated_on>
+        <template><![CDATA[<table ng-if="data.steps" style="width: 100%" role="presentation">
+  <tr>
+    <td>
+      <ol tabindex="0" class="process-breadcrumb process-breadcrumb-border">
+        <li ng-repeat="step in data.steps" ng-class="{ past: 'completed disabled', current: 'active', future: 'disabled'}[step.state]" data-state="{{step.state}}">
+          <a ng-if="step.state == 'past'" tabindex="-1" role="presentation" aria-disabled="true"
+             aria-label="${gs.getMessage('Current stage')} {{step.label}} {{$index + 1}} ${gs.getMessage('of')} {{data.steps.length}}">{{step.label}}
+          </a>
+          <a ng-if="step.state == 'current'" tabindex="-1" role="presentation" aria-disabled="true"
+             aria-label="${gs.getMessage('Previous stage')} {{step.label}} {{$index + 1}} ${gs.getMessage('of')} {{data.steps.length}}">{{step.label}}
+          </a>
+          <a ng-if="step.state == 'future'" tabindex="-1" role="presentation" aria-disabled="true"
+             aria-label="${gs.getMessage('Next stage')} {{step.label}} {{$index + 1}} ${gs.getMessage('of')} {{data.steps.length}}">{{step.label}}
+          </a>
+        </li>
+      </ol>
+    </td>
+  </tr>
+</table>]]></template>
+    </sp_widget>
+</record_update>

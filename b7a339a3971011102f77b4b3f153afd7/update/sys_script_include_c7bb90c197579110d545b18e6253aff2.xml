@@ -31,6 +31,8 @@ PXPUtil.prototype = {
 			if (params.record.isNewRecord()) {
 				pxpData.encrypted_record = this.encryptRecord(params.record);
 			}
+			
+			pxpData.process_flow = this.getProcessFlow(params.record);
 
 			params.scratchpad.x_376096_pxp = pxpData;
 		} catch (e) {
@@ -44,6 +46,24 @@ PXPUtil.prototype = {
 			
 			gs.error('[PXP] error loading utility data: ' + e);
 		}
+	},
+	
+	getProcessFlow: function (anyGr) {
+		const recordClassName = anyGr.getRecordClassName();
+		const extensionPoint = this.getExtensionPointForTable(recordClassName);
+		const processFlow = extensionPoint.getProcessFlow(anyGr);
+		
+		const states = [];
+		for (let i = 0, size = processFlow.getSize(); i < size; i++) {
+			const choice = processFlow.getChoice(i);
+			states.push({
+				value: choice.getValue(),
+				label: choice.getLabel(),
+				state: choice.getParameter('state')
+			});
+		}
+		
+		return states;
 	},
 	
 	encryptRecord: function (anyGr) {
@@ -136,13 +156,13 @@ PXPUtil.prototype = {
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2022-11-19 09:54:30</sys_created_on>
         <sys_id>c7bb90c197579110d545b18e6253aff2</sys_id>
-        <sys_mod_count>3</sys_mod_count>
+        <sys_mod_count>5</sys_mod_count>
         <sys_name>PXPUtil</sys_name>
         <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
         <sys_update_name>sys_script_include_c7bb90c197579110d545b18e6253aff2</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2023-05-27 16:29:47</sys_updated_on>
+        <sys_updated_on>2023-06-17 07:48:38</sys_updated_on>
     </sys_script_include>
 </record_update>
