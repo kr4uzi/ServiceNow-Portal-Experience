@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="m2m_sp_theme_js_include">
+    <m2m_sp_theme_js_include action="DELETE">
+        <order/>
+        <sp_js_include display_value="PXP Embedded Includes">6273a73397276110d70ef207f053af25</sp_js_include>
+        <sp_theme display_value="PXP Embedded Theme">c763673397276110d70ef207f053af2e</sp_theme>
+        <sys_class_name>m2m_sp_theme_js_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2023-06-27 19:56:24</sys_created_on>
+        <sys_id>9583233397276110d70ef207f053af0e</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>PXP Embedded Includes.PXP Embedded Theme</sys_name>
+        <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
+        <sys_update_name>m2m_sp_theme_js_include_9583233397276110d70ef207f053af0e</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-06-27 19:56:24</sys_updated_on>
+    </m2m_sp_theme_js_include>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</application>
+        <file_path/>
+        <instance_id>071f9d4fdb9a159c3050ac44d496190e</instance_id>
+        <instance_name>dev139763</instance_name>
+        <name>m2m_sp_theme_js_include_9583233397276110d70ef207f053af0e</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="m2m_sp_theme_js_include"><m2m_sp_theme_js_include action="INSERT_OR_UPDATE"><order/><sp_js_include display_value="PXP Embedded Includes">6273a73397276110d70ef207f053af25</sp_js_include><sp_theme display_value="PXP Embedded Theme">c763673397276110d70ef207f053af2e</sp_theme><sys_class_name>m2m_sp_theme_js_include</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2023-06-27 19:56:24</sys_created_on><sys_id>9583233397276110d70ef207f053af0e</sys_id><sys_mod_count>0</sys_mod_count><sys_name>PXP Embedded Includes.PXP Embedded Theme</sys_name><sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package><sys_policy/><sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope><sys_update_name>m2m_sp_theme_js_include_9583233397276110d70ef207f053af0e</sys_update_name><sys_updated_by>admin</sys_updated_by><sys_updated_on>2023-06-27 19:56:24</sys_updated_on></m2m_sp_theme_js_include></record_update>]]></payload>
+        <payload_hash>659808213</payload_hash>
+        <record_name>PXP Embedded Includes.PXP Embedded Theme</record_name>
+        <reverted_from/>
+        <source>a28c2e6397232110d70ef207f053af54</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2023-06-27 19:56:24</sys_created_on>
+        <sys_id>dd83233397276110d70ef207f053af10</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>188fe6dbd690000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-06-27 19:56:24</sys_updated_on>
+        <type>JS Includes</type>
+        <update_guid>158323336e27611085664b780f2fb610</update_guid>
+        <update_guid_history>158323336e27611085664b780f2fb610:659808213</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="PXP Embedded Includes.PXP Embedded Theme">897afff797676110d70ef207f053afc2</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2023-06-27 21:36:36</sys_created_on>
+        <sys_db_object display_value="" name="m2m_sp_theme_js_include">m2m_sp_theme_js_include</sys_db_object>
+        <sys_id>3d9cd9b6ff3c4e3c98a7849345a38d31</sys_id>
+        <sys_metadata>9583233397276110d70ef207f053af0e</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>PXP Embedded Includes.PXP Embedded Theme</sys_name>
+        <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
+        <sys_scope_delete display_value="">ca2094845f944cfc9638dcb203038e10</sys_scope_delete>
+        <sys_update_name>m2m_sp_theme_js_include_9583233397276110d70ef207f053af0e</sys_update_name>
+        <sys_update_version display_value="m2m_sp_theme_js_include_9583233397276110d70ef207f053af0e">dd83233397276110d70ef207f053af10</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-06-27 21:36:36</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

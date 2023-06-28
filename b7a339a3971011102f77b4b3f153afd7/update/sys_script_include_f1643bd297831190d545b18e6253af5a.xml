@@ -149,10 +149,10 @@ PortalListUtil.prototype = {
 				const isScript = styleGr.value.toString().trim().startsWith('javascript:');
 				records.forEach(function (record) {
 					// before checking the field condition, first check if the field is valid and user has access to read it
-					var fieldElement = record.getElement(field);
+					const fieldElement = record.getElement(field);
 					if (fieldElement != null && record.canRead() && fieldElement.canRead()) {
-						var recordSysID = record.getUniqueValue();
-						var applyStyle = false;
+						const recordSysID = record.getUniqueValue();
+						let applyStyle = false;
 						if (isScript) {
 							fieldStyleScriptVariables['current'] = record;
 							applyStyle = gse.evaluateScript(styleGr, 'value', fieldStyleScriptVariables);
@@ -248,7 +248,7 @@ PortalListUtil.prototype = {
 			const tables = new GlideTableHierarchy(table).getTables();
 			tables.push('global', '');
 			for (let i = 0; i < tables.length; i++) {
-				var uiActionGr = new GlideRecord('sys_ui_action');
+				const uiActionGr = new GlideRecord('sys_ui_action');
 				uiActionGr.addQuery('active', true);
 				uiActionGr.addQuery('client', false);
 				uiActionGr.addQuery('x_376096_pxp_enabled', true);
@@ -264,19 +264,28 @@ PortalListUtil.prototype = {
 					if (uiActionGr.action_name) {
 						uiActionNames.push(uiActionGr.action_name.toString());
 					}
-
-					if (!checkRole(uiActionGr) || !checkVisibility(uiActionGr, view)) {
-						continue;
-					}
-
+					
 					uiActionSysIDs.push(uiActionGr.getUniqueValue());
 				}
 			}
 
 			sn_scoped_cache.ScopedCacheManager.put('x_376096_pxp_list_ui_actions', cacheKey, JSON.stringify(uiActionSysIDs));
 		}
+		
+		const uiActionGr = new GlideRecord('sys_ui_action');
+		uiActionGr.addQuery('sys_id', 'IN', uiActionSysIDs);
+		uiActionGr.query();
+		
+		const userVisibleUIActions = [];
+		while (uiActionGr.next()) {
+			if (!checkRole(uiActionGr) || !checkVisibility(uiActionGr, view)) {
+				continue;
+			}
+			
+			userVisibleUIActions.push(uiActionGr.getUniqueValue());
+		}
 
-		return uiActionSysIDs;
+		return userVisibleUIActions;
 		
 		function checkRole(uiActionGr) {
 			const uiActionRoleGr = new GlideRecord('sys_ui_action_role');
@@ -350,7 +359,7 @@ PortalListUtil.prototype = {
 			gse.putVariable('parent', parent);
 		}
 
-		var uiActionGr = new GlideRecord('sys_ui_action');
+		const uiActionGr = new GlideRecord('sys_ui_action');
 		uiActionGr.addQuery('sys_id', 'IN', this._getListUIActions(table, view));
 		uiActionGr.addQuery('list_choice', true);
 		uiActionGr.query();
@@ -361,7 +370,7 @@ PortalListUtil.prototype = {
 				const enabled = uiActionGr.condition.nil() || (function () {
 					const scriptResult = gse.evaluateScript(uiActionGr, 'condition');
 					if (scriptResult == null) {
-						var uiActionDisplay = uiActionGr.getDisplayValue() + '(' + uiActionGr.sys_id + ')';
+						const uiActionDisplay = uiActionGr.getDisplayValue() + '(' + uiActionGr.sys_id + ')';
 						throw new Error(gs.getMessage('x_376096_pxp_ui_action_condition_evaluation_failed', [uiActionDisplay]));
 					}
 
@@ -442,13 +451,13 @@ PortalListUtil.prototype = {
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2022-11-11 12:37:04</sys_created_on>
         <sys_id>f1643bd297831190d545b18e6253af5a</sys_id>
-        <sys_mod_count>16</sys_mod_count>
+        <sys_mod_count>17</sys_mod_count>
         <sys_name>PortalListUtil</sys_name>
         <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
         <sys_update_name>sys_script_include_f1643bd297831190d545b18e6253af5a</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2023-05-28 15:35:41</sys_updated_on>
+        <sys_updated_on>2023-06-28 06:21:41</sys_updated_on>
     </sys_script_include>
 </record_update>
