@@ -4,15 +4,14 @@
         <description/>
         <global>false</global>
         <ignore_in_now_experience>false</ignore_in_now_experience>
-        <name>x_376096_pxp.sputil_interceptors</name>
+        <name>x_376096_pxp.sputil_interceptor</name>
         <script><![CDATA[var x_376096_pxp = x_376096_pxp || {};
-x_376096_pxp.sputil_interceptors = (function() {
+x_376096_pxp.sputil_interceptor = (function() {
 	"use strict";
 	/* global setTimeout */
 	/* eslint no-undef: "error" */
-	
-	if (x_376096_pxp.sputil_interceptors) {
-		return x_376096_pxp.sputil_interceptors;
+	if (x_376096_pxp.sputil_interceptor) {
+		return x_376096_pxp.sputil_interceptor;
 	}
 	
 	var interceptors = [];
@@ -23,10 +22,11 @@ x_376096_pxp.sputil_interceptors = (function() {
 		var $window = this;
 		$window.angular
 			.module('sn.$sp')
-			.config(['$provide, $timeout, $q', function ($provide, $timeout, $q) {
-				$provide.decorator('spUtil', function (spUtil) {
-					var custom = $window.angular.copy(spUtil);
-					custom.update = function ($scope) {
+			.config(['$provide', '$injector', function ($provide, $injector) {
+				$provide.decorator('spUtil', ['$delegate', '$q', '$timeout', function ($delegate, $q, $timeout) {
+					var originalUpdate = $delegate.update;
+					$delegate.update = function ($scope) {
+						var updateArgs = arguments;
 						var deferred = $q.defer();
 						
 						var now = new Date();
@@ -46,19 +46,21 @@ x_376096_pxp.sputil_interceptors = (function() {
 									}
 
 									if (interceptor.scope == $scope) {
-										return spUtil.get($scope).then(function (result) {
-											var data = result.data;
-											return interceptor
-												.callback(data)['finally'](function () {
-													$window.angular.extend($scope.data, data);
-													deferred.resolve(data);
-												})
-											;
+										// Note: The original update will extend the underlying object right away (using anuglar.extend)
+										// To delay potential triggers of $watch, we do a non-modifying spUtil.get
+										$delegate.get($scope, $scope.data).then(function (result) {
+											var data = result ? result.data : {};
+											var cb = $q.resolve(interceptor.callback(data));
+											cb['finally'](function () {
+												$window.angular.extend($scope.data, data);
+												deferred.resolve(data);
+											});
 										});
+										return;
 									}
 								}
 								
-								return spUtil.update.apply(spUtil, arguments);
+								originalUpdate.apply($delegate, updateArgs).then(deferred.resolve, deferred.reject);
 							} else {
 								deferred.reject();
 							}
@@ -66,7 +68,9 @@ x_376096_pxp.sputil_interceptors = (function() {
 						
 						return deferred.promise;
 					};
-				});
+					
+					return $delegate;
+				}]);
 			}])
 		;
 	});
@@ -77,6 +81,7 @@ x_376096_pxp.sputil_interceptors = (function() {
 				throw new Error('$scope ' + $scope + ' already has an interceptor registered');
 			} else {
 				var obj = { scope: $scope, callback: cb };
+				interceptors.push(obj);
 				return function deregister() {
 					var index = interceptors.indexOf(obj);
 					if (index !== -1) {
@@ -87,20 +92,23 @@ x_376096_pxp.sputil_interceptors = (function() {
 			}
 		},
 		
-		type: 'sputil_interceptors'
+		type: 'sputil_interceptor'
 	};
 })();
 ]]></script>
-        <script_name>sputil_interceptors</script_name>
+        <script_name>sputil_interceptor</script_name>
         <sys_class_name>sys_ui_script</sys_class_name>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2022-11-16 13:04:40</sys_created_on>
         <sys_id>ffbae98897179590d545b18e6253af2b</sys_id>
-        <sys_name>x_376096_pxp.sputil_interceptors</sys_name>
+        <sys_mod_count>21</sys_mod_count>
+        <sys_name>x_376096_pxp.sputil_interceptor</sys_name>
         <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
         <sys_update_name>sys_ui_script_ffbae98897179590d545b18e6253af2b</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-06-30 07:36:37</sys_updated_on>
         <ui_type>1</ui_type>
         <use_scoped_format>true</use_scoped_format>
     </sys_ui_script>

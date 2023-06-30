@@ -93,7 +93,7 @@ x_376096_pxp.list_inject = (function() {
 		}
 		
 		// widget-data-table is loaded asynchronously, this means core dependencies like '$scope.data.fields' isn't initially available!
-		var loadingDataUnsubscribe = $scope.$watch('loadingData', function (newValue) {
+		/*var loadingDataUnsubscribe = $scope.$watch('loadingData', function (newValue) {
 			if (newValue == false) {
 				loadingDataUnsubscribe();
 
@@ -127,39 +127,47 @@ x_376096_pxp.list_inject = (function() {
 					$scope.loadingData = false;
 				});
 			}
+		});*/
+		
+		var unregisterInterceptor = x_376096_pxp.sputil_interceptor.register($scope, function (data) {
+			return $q.all([
+				loadTableUIActions(data),
+				loadTableStyles(data)
+			]).then(function (results) {
+				var uiActions = results[0];
+
+				uiActions.head.forEach(function (uiAction) {
+					uiAction.ui_action = uiActions.definition[uiAction.sys_id];
+				});
+
+				uiActions.row = uiActions.row.map(function (uiActionSysID) {
+					return uiActions.definition[uiActionSysID];
+				});
+
+				uiActions.foot.forEach(function (uiAction) {
+					uiAction.ui_action = uiActions.definition[uiAction.sys_id];
+				});
+
+				$scope.x_376096_pxp_ui_actions = results[0];
+				tableStyles = results[1];
+
+				return loadItemData(data);
+			}).then(function () {
+				// if no filter is set, the record watcher will not be initialized ...
+				if (!data.filter) {
+					// ... by using a dummy filter here, the record watcher is properly initialized (in the next cycle) ...
+					data.filter = 'sys_id!=x';
+					
+					$timeout(function () {
+						// ... and before the rendering takes place, we clear out the data again so the 'sys_id!=x' doesn't appear in the breadcrumbs
+						data.filter = '';
+					});
+				}
+			});
 		});
 		
-		var waitingUtilUpdateDeferreds = [];
-		var lastUpdate;
-		var ootbUpdate = spUtil.update;
-		spUtil.update = function (scope) {
-			if (scope == $scope) {
-				var now = new Date();
-				lastUpdate = now;
-				
-				var deferred = $q.defer();
-				$timeout(function () {
-					if (now == lastUpdate) {						
-						spUtil.get($scope, $scope.data).then(function (result) {
-							var data = result.data;
-							loadItemData(data)['finally'](function () {
-								$window.angular.extend($scope.data, data);
-								deferred.resolve(data);
-							});
-						});
-					} else {
-						deferred.reject();
-					}
-				}, 100);
-				
-				return deferred.promise;
-			}
-			
-			return ootbUpdate.apply(spUtil, arguments);
-		};
-		
 		$scope.$on('$destroy', function () {
-			spUtil.update = ootbUpdate;
+			unregisterInterceptor();
 		});
 		
 		$scope.x_376096_pxp_enableUIActions = 'enable_ui_actions' in $scope.data ? 
@@ -197,7 +205,7 @@ x_376096_pxp.list_inject = (function() {
 			// this item is needed to inject the field style
 			.replace('<td', '<td ng-style="item[field].x_376096_pxp_styles"')
 		
-			// disable two-way binding on widget-data-table
+			// enable two-way binding on widget-data-table
 			.replace(/::item\[field\]/g, 'item[field]')
 		
 			// this replacement is needed to inject the field style class
@@ -415,7 +423,7 @@ x_376096_pxp.list_inject = (function() {
 		}
 		
 		function loadItemStyles(data) {
-			if (data.list.length > 0) {
+			if (data.list && data.list.length > 0) {
 				var deferred = $q.defer();
 				var ga = new $window.GlideAjax('PortalListUtilClient').setScope('x_376096_pxp');
 				ga.addParam('sysparm_name', 'loadItemStyles');
@@ -516,11 +524,11 @@ x_376096_pxp.list_inject = (function() {
 	
 		function loadRowUIActions(data) {
 			var deferred = $q.defer();
-			if ($scope.data.list.length > 0) {
+			if (data.list && data.list.length > 0) {
 				var ga = new $window.GlideAjax('PortalListUtilClient').setScope('x_376096_pxp');
 				ga.addParam('sysparm_name', 'loadRowUIActions');
 				addGlideAjaxParams(ga, data);
-				ga.addParam('items', $scope.data.list.map(function (i) { return i.sys_id; }).join(','));
+				ga.addParam('items', data.list.map(function (i) { return i.sys_id; }).join(','));
 				ga.getXMLAnswer(function (answer) {
 					try {
 						var result = JSON.parse(answer);
@@ -546,6 +554,10 @@ x_376096_pxp.list_inject = (function() {
 		}
 		
 		function loadItemData(data) {
+			if (!data.list) {
+				return $q.resolve();
+			}
+			
 			return $q.all([
 				loadItemStyles(data),
 				loadRowUIActions(data)
@@ -553,7 +565,7 @@ x_376096_pxp.list_inject = (function() {
 				var itemStyles = results[0];
 				var itemUIActions = results[1];
 
-				$scope.data.list.forEach(function (item) {
+				data.list.forEach(function (item) {
 					item.x_376096_pxp_ui_actions = itemUIActions[item.sys_id];
 
 					var cellStyles = itemStyles[item.sys_id];
@@ -597,14 +609,14 @@ x_376096_pxp.list_inject = (function() {
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2022-07-01 07:41:43</sys_created_on>
         <sys_id>af653967971011102f77b4b3f153afa1</sys_id>
-        <sys_mod_count>9</sys_mod_count>
+        <sys_mod_count>26</sys_mod_count>
         <sys_name>x_376096_pxp.list_inject</sys_name>
         <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
         <sys_update_name>sys_ui_script_af653967971011102f77b4b3f153afa1</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2023-06-28 07:58:30</sys_updated_on>
+        <sys_updated_on>2023-06-30 12:32:18</sys_updated_on>
         <ui_type>1</ui_type>
         <use_scoped_format>true</use_scoped_format>
     </sys_ui_script>
