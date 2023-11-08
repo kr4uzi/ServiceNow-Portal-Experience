@@ -8,11 +8,14 @@
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2022-11-11 09:26:28</sys_created_on>
         <sys_id>c3c8431a97cfdd50d545b18e6253afd2</sys_id>
+        <sys_mod_count>0</sys_mod_count>
         <sys_name>x_376096_pxp_enabled</sys_name>
         <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
         <sys_update_name>sys_ui_policy_action_c3c8431a97cfdd50d545b18e6253afd2</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-11-08 22:56:49</sys_updated_on>
         <table>sys_ui_action</table>
         <ui_policy display_value="PXP UI Action - Validate Portal">08b8cfd697cfdd50d545b18e6253afe0</ui_policy>
         <visible>ignore</visible>

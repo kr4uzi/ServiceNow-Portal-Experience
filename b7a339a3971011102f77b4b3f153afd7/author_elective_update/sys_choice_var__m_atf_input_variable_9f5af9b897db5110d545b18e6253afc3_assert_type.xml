@@ -6,11 +6,15 @@
             <sys_class_name>sys_choice_set</sys_class_name>
             <sys_created_by>admin</sys_created_by>
             <sys_created_on>2022-11-18 22:11:50</sys_created_on>
+            <sys_id>57d1d68b971ef1103c2d3f56f053afc3</sys_id>
+            <sys_mod_count>0</sys_mod_count>
             <sys_name>assert_type</sys_name>
             <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
             <sys_policy/>
             <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
             <sys_update_name>sys_choice_var__m_atf_input_variable_9f5af9b897db5110d545b18e6253afc3_assert_type</sys_update_name>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2023-11-08 22:56:52</sys_updated_on>
         </sys_choice_set>
         <sys_choice action="INSERT_OR_UPDATE">
             <dependent_value/>
@@ -26,6 +30,10 @@
             <sys_created_on>2022-11-18 22:11:50</sys_created_on>
             <sys_domain>global</sys_domain>
             <sys_domain_path>/</sys_domain_path>
+            <sys_id>53d1d68b971ef1103c2d3f56f053afc4</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2023-11-08 22:56:52</sys_updated_on>
             <value>page_reloaded</value>
         </sys_choice>
         <sys_choice action="INSERT_OR_UPDATE">
@@ -42,6 +50,10 @@
             <sys_created_on>2022-11-18 22:12:08</sys_created_on>
             <sys_domain>global</sys_domain>
             <sys_domain_path>/</sys_domain_path>
+            <sys_id>dfd1d68b971ef1103c2d3f56f053afc4</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2023-11-08 22:56:52</sys_updated_on>
             <value>page_not_reloaded</value>
         </sys_choice>
         <sys_choice action="INSERT_OR_UPDATE">
@@ -58,6 +70,10 @@
             <sys_created_on>2022-11-18 22:12:19</sys_created_on>
             <sys_domain>global</sys_domain>
             <sys_domain_path>/</sys_domain_path>
+            <sys_id>6fd1d68b971ef1103c2d3f56f053afc5</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2023-11-08 22:56:52</sys_updated_on>
             <value>modal_not_closed</value>
         </sys_choice>
         <sys_choice action="INSERT_OR_UPDATE">
@@ -74,6 +90,10 @@
             <sys_created_on>2022-11-23 16:16:03</sys_created_on>
             <sys_domain>global</sys_domain>
             <sys_domain_path>/</sys_domain_path>
+            <sys_id>ebd1d68b971ef1103c2d3f56f053afc6</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2023-11-08 22:56:52</sys_updated_on>
             <value>form_submitted</value>
         </sys_choice>
     </sys_choice>

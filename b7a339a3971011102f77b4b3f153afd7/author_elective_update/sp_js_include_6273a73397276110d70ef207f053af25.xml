@@ -43,7 +43,7 @@
         <update_guid_history>1583233339276110c082713c2a67a60d:-1395231076</update_guid_history>
     </sys_update_version>
     <sys_metadata_delete action="INSERT_OR_UPDATE">
-        <sys_audit_delete display_value="PXP Embedded Includes">d17afff797676110d70ef207f053afc8</sys_audit_delete>
+        <sys_audit_delete display_value="">d17afff797676110d70ef207f053afc8</sys_audit_delete>
         <sys_class_name>sys_metadata_delete</sys_class_name>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2023-06-27 21:36:37</sys_created_on>

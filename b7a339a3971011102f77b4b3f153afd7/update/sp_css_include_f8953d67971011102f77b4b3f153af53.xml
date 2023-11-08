@@ -1,17 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sp_css_include">
     <sp_css_include action="INSERT_OR_UPDATE">
+        <lazy_load>false</lazy_load>
         <name>PXP List</name>
+        <rtl_css_file_url/>
         <source>local</source>
         <sp_css display_value="PXP List">3c953d67971011102f77b4b3f153af52</sp_css>
         <sys_class_name>sp_css_include</sys_class_name>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2022-07-01 07:42:21</sys_created_on>
         <sys_id>f8953d67971011102f77b4b3f153af53</sys_id>
+        <sys_mod_count>0</sys_mod_count>
         <sys_name>PXP List</sys_name>
         <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
         <sys_update_name>sp_css_include_f8953d67971011102f77b4b3f153af53</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-11-08 22:56:43</sys_updated_on>
         <url/>
     </sp_css_include>
 </record_update>

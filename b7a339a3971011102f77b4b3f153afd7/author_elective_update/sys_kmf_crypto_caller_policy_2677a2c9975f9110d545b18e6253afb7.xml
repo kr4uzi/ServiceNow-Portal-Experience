@@ -67,6 +67,7 @@
         <sys_db_object display_value="" name="sys_kmf_crypto_caller_policy">sys_kmf_crypto_caller_policy</sys_db_object>
         <sys_id>79b6c2a10d774594bbe917289f00f390</sys_id>
         <sys_metadata>2677a2c9975f9110d545b18e6253afb7</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
         <sys_name/>
         <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
         <sys_parent/>
@@ -75,5 +76,7 @@
         <sys_scope_delete display_value="">ca2094845f944cfc9638dcb203038e10</sys_scope_delete>
         <sys_update_name>sys_kmf_crypto_caller_policy_2677a2c9975f9110d545b18e6253afb7</sys_update_name>
         <sys_update_version display_value="sys_kmf_crypto_caller_policy_2677a2c9975f9110d545b18e6253afb7">757b26cd975f9110d545b18e6253af0e</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-11-08 22:56:52</sys_updated_on>
     </sys_metadata_delete>
 </record_update>

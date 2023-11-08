@@ -2,6 +2,7 @@
     <sp_column action="INSERT_OR_UPDATE">
         <class_name/>
         <order>1</order>
+        <semantic_tag/>
         <size>12</size>
         <size_lg>12</size_lg>
         <size_sm>12</size_sm>

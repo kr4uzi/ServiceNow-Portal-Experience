@@ -49,6 +49,7 @@
         <sys_db_object display_value="" name="sys_properties_category_m2m">sys_properties_category_m2m</sys_db_object>
         <sys_id>9167114a6b3844fbb1b0f40bd49199e1</sys_id>
         <sys_metadata>401933c79703d190d545b18e6253af66</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
         <sys_name>x_376096_pxp.approval.reject.mandatory_comment.Approval Properties</sys_name>
         <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
         <sys_parent/>
@@ -57,5 +58,7 @@
         <sys_scope_delete display_value="">ca2094845f944cfc9638dcb203038e10</sys_scope_delete>
         <sys_update_name>sys_properties_category_m2m_401933c79703d190d545b18e6253af66</sys_update_name>
         <sys_update_version display_value="sys_properties_category_m2m_401933c79703d190d545b18e6253af66">677afbc79703d190d545b18e6253af68</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-11-08 22:56:53</sys_updated_on>
     </sys_metadata_delete>
 </record_update>

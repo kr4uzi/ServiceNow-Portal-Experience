@@ -52,6 +52,7 @@
         <sys_db_object display_value="" name="sys_ui_message">sys_ui_message</sys_db_object>
         <sys_id>8eea12e786764714acb3ff57699edaf9</sys_id>
         <sys_metadata>00e8c16697c71190d545b18e6253af2a</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
         <sys_name>x_376096_pxp_approval_not_requested</sys_name>
         <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
         <sys_parent/>
@@ -60,5 +61,7 @@
         <sys_scope_delete display_value="">ca2094845f944cfc9638dcb203038e10</sys_scope_delete>
         <sys_update_name>sys_ui_message_00e8c16697c71190d545b18e6253af2a</sys_update_name>
         <sys_update_version display_value="sys_ui_message_00e8c16697c71190d545b18e6253af2a">c8e8c16697c71190d545b18e6253af2c</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-11-08 22:56:54</sys_updated_on>
     </sys_metadata_delete>
 </record_update>

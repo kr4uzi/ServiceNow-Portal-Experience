@@ -50,6 +50,7 @@
         <sys_db_object display_value="" name="sys_scoped_cache_table_pair">sys_scoped_cache_table_pair</sys_db_object>
         <sys_id>57ce2aa96a004e0ca25991ee07983e90</sys_id>
         <sys_metadata>d221923b97d35d10d545b18e6253af2d</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
         <sys_name/>
         <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
         <sys_parent/>
@@ -58,5 +59,7 @@
         <sys_scope_delete display_value="">ca2094845f944cfc9638dcb203038e10</sys_scope_delete>
         <sys_update_name>sys_scoped_cache_table_pair_d221923b97d35d10d545b18e6253af2d</sys_update_name>
         <sys_update_version display_value="sys_scoped_cache_table_pair_d221923b97d35d10d545b18e6253af2d">ad31d23b97d35d10d545b18e6253afef</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-11-08 22:56:53</sys_updated_on>
     </sys_metadata_delete>
 </record_update>

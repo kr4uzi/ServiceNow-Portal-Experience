@@ -46,7 +46,7 @@
         <update_guid_history>f07323334d276110d3aa2becf09a6509:-1604861357</update_guid_history>
     </sys_update_version>
     <sys_metadata_delete action="INSERT_OR_UPDATE">
-        <sys_audit_delete display_value="PXP Embedded Theme">608a333b97676110d70ef207f053af87</sys_audit_delete>
+        <sys_audit_delete display_value="">608a333b97676110d70ef207f053af87</sys_audit_delete>
         <sys_class_name>sys_metadata_delete</sys_class_name>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2023-06-27 21:36:50</sys_created_on>

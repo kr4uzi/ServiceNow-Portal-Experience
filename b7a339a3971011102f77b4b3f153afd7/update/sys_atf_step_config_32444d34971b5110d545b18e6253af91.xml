@@ -56,7 +56,7 @@
 	
 	return gs.getMessage('Error generating the description, please check the error log!');
 })(step);]]></description_generator>
-        <html_description><![CDATA[<p><em>Note: This is a replacement for the Out of the Box ATF Step &#39;<a href="nav_to.do?uri&#61;sys_atf_step_config.do?sys_id&#61;86ec986123630300ab65ff5e17bf65a5" target="_blank" rel="noopener noreferrer nofollow">Click a UI Action (SP)</a>&#39; which cannot test client side UI Actions.</em></p>
+        <html_description><![CDATA[<p><em>Note: This is a replacement for the Out of the Box ATF Step &#39;<a href="nav_to.do?uri&#61;sys_atf_step_config.do?sys_id&#61;86ec986123630300ab65ff5e17bf65a5" target="_blank" rel="nofollow noopener noreferrer">Click a UI Action (SP)</a>&#39; which cannot test client side UI Actions.</em></p>
 <p>Clicks a UI Action on the current form.</p>
 <h4>Additional Considerations</h4>
 <p>In order to use this step you must have already opened a form using either the &#34;Open a Page (SP)&#34; step. After this step, you may or may no longer use any form steps on the currently opened form depending on if it is expected that this step will close it, open a popup or move to a different page.</p>
@@ -338,13 +338,16 @@
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2022-11-18 18:12:54</sys_created_on>
         <sys_id>32444d34971b5110d545b18e6253af91</sys_id>
+        <sys_mod_count>0</sys_mod_count>
         <sys_name>Click a UI Action (SP PXP)</sys_name>
         <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
         <sys_update_name>sys_atf_step_config_32444d34971b5110d545b18e6253af91</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-11-08 22:56:44</sys_updated_on>
         <template_reminder>Click a UI Action (PXP SP)</template_reminder>
-        <type display_value="Test Step" name="sys_atf_step">a76763b375f011108c8b143dd0c59f95</type>
+        <type display_value="Test Step" name="sys_atf_step">cf50cdd1b9d03110d0adbb64e3a1e917</type>
         <wizard_redirect/>
     </sys_atf_step_config>
     <sys_translated_text action="delete_multiple" query="documentkey=32444d34971b5110d545b18e6253af91"/>

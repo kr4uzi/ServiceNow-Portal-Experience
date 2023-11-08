@@ -186,6 +186,7 @@ PortalApprovalUtilClient.prototype = Object.extendsObject(global.AbstractAjaxPro
         <sys_db_object display_value="" name="sys_script_include">sys_script_include</sys_db_object>
         <sys_id>075fde7cd68940ce80d697fbd0c424a9</sys_id>
         <sys_metadata>d237b6d097a851102f77b4b3f153af4c</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
         <sys_name>PortalApprovalUtilClient</sys_name>
         <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
         <sys_parent/>
@@ -194,5 +195,7 @@ PortalApprovalUtilClient.prototype = Object.extendsObject(global.AbstractAjaxPro
         <sys_scope_delete display_value="">ca2094845f944cfc9638dcb203038e10</sys_scope_delete>
         <sys_update_name>sys_script_include_d237b6d097a851102f77b4b3f153af4c</sys_update_name>
         <sys_update_version display_value="sys_script_include_d237b6d097a851102f77b4b3f153af4c">7b1ef30f9703d190d545b18e6253af92</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-11-08 22:56:54</sys_updated_on>
     </sys_metadata_delete>
 </record_update>

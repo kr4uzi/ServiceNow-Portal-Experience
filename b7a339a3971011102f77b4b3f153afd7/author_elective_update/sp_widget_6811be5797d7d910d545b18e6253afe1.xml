@@ -81,13 +81,14 @@
         <update_guid_history>aa21fe57abd7d910cb8fdb98197a74b6:1875701150,e7117e57edd7d91059e65033690adbdf:-792320551</update_guid_history>
     </sys_update_version>
     <sys_metadata_delete action="INSERT_OR_UPDATE">
-        <sys_audit_delete display_value="PXP Load Annotations">a29b8f9f971bd910d545b18e6253af57</sys_audit_delete>
+        <sys_audit_delete display_value="">a29b8f9f971bd910d545b18e6253af57</sys_audit_delete>
         <sys_class_name>sys_metadata_delete</sys_class_name>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2022-11-26 22:28:06</sys_created_on>
         <sys_db_object display_value="" name="sp_widget">sp_widget</sys_db_object>
         <sys_id>27a7bedd6de147b2aa36faf7594f3719</sys_id>
         <sys_metadata>6811be5797d7d910d545b18e6253afe1</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
         <sys_name>PXP Load Annotations</sys_name>
         <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
         <sys_parent/>
@@ -96,5 +97,7 @@
         <sys_scope_delete display_value="">ca2094845f944cfc9638dcb203038e10</sys_scope_delete>
         <sys_update_name>sp_widget_6811be5797d7d910d545b18e6253afe1</sys_update_name>
         <sys_update_version display_value="sp_widget_6811be5797d7d910d545b18e6253afe1">6221fe5797d7d910d545b18e6253afb7</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-11-08 22:56:51</sys_updated_on>
     </sys_metadata_delete>
 </record_update>

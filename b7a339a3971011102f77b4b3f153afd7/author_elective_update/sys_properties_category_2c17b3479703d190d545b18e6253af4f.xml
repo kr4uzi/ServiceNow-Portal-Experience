@@ -51,6 +51,7 @@
         <sys_db_object display_value="" name="sys_properties_category">sys_properties_category</sys_db_object>
         <sys_id>980aa7ad4f6646b496da82a8fefd3144</sys_id>
         <sys_metadata>2c17b3479703d190d545b18e6253af4f</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
         <sys_name>Approval Properties</sys_name>
         <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
         <sys_parent/>
@@ -59,5 +60,7 @@
         <sys_scope_delete display_value="">ca2094845f944cfc9638dcb203038e10</sys_scope_delete>
         <sys_update_name>sys_properties_category_2c17b3479703d190d545b18e6253af4f</sys_update_name>
         <sys_update_version display_value="sys_properties_category_2c17b3479703d190d545b18e6253af4f">3a2b3f0b9703d190d545b18e6253afca</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-11-08 22:56:53</sys_updated_on>
     </sys_metadata_delete>
 </record_update>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
-    <element attributes="all_tables.text_index_translations=true,update_synch=true" audit="true" db_object_id="6f70e733753011108c8b143dd0c59f3e" extends="sys_metadata" label="UI Action" max_length="40" name="sys_ui_action" read_roles="ui_action_admin" text_index="true" type="collection">
+    <element attributes="all_tables.text_index_translations=true,update_synch=true" audit="true" db_object_id="e78bf411b9103110d0adbb64e3a1e99a" extends="sys_metadata" label="UI Action" max_length="40" name="sys_ui_action" read_roles="ui_action_admin" text_index="true" type="collection">
         <element attributes="client_script=true,edge_encryption_enabled=true" default="/* eslint no-undef: &quot;error&quot; */&#13;&#10;function onClick(g_form) {&#13;&#10;&#13;&#10;    // Activate the &quot;Template Bar&quot; (... - Button on the top right)&#13;&#10;    // for some example scripts&#13;&#10;&#13;&#10;}" label="Client script" max_length="8000" name="x_376096_pxp_client_script" type="script"/>
         <element hint="Enable Portal Experience features on this UI Action" label="Enabled" max_length="40" name="x_376096_pxp_enabled" type="boolean"/>
         <element label="List disabled condition" max_length="40" name="x_376096_pxp_list_disabled_condition" type="condition_string"/>

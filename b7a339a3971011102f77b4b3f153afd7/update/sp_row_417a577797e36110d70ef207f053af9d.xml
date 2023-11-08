@@ -2,6 +2,7 @@
     <sp_row action="INSERT_OR_UPDATE">
         <class_name/>
         <order>1</order>
+        <semantic_tag/>
         <sp_column/>
         <sp_container display_value="x_376096_pxp_data_table_embedded - Container 1">017a577797e36110d70ef207f053af9a</sp_container>
         <sys_class_name>sp_row</sys_class_name>

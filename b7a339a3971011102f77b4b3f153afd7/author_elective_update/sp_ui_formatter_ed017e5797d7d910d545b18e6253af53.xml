@@ -41,13 +41,14 @@
         <update_guid_history>e531729732d7d910ac9622f8bc8fe497:337426838,e531729732d7d910ac9622f8bc8fe497:337426838</update_guid_history>
     </sys_update_version>
     <sys_metadata_delete action="INSERT_OR_UPDATE">
-        <sys_audit_delete display_value="x_376096_pxp_enable_portal_annotations.xml">32bbcb5f971bd910d545b18e6253af38</sys_audit_delete>
+        <sys_audit_delete display_value="">32bbcb5f971bd910d545b18e6253af38</sys_audit_delete>
         <sys_class_name>sys_metadata_delete</sys_class_name>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2022-11-26 22:28:39</sys_created_on>
         <sys_db_object display_value="" name="sp_ui_formatter">sp_ui_formatter</sys_db_object>
         <sys_id>543854ea575a410985061818d1c4b331</sys_id>
         <sys_metadata>ed017e5797d7d910d545b18e6253af53</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
         <sys_name>x_376096_pxp_enable_portal_annotations.xml</sys_name>
         <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
         <sys_parent/>
@@ -56,5 +57,7 @@
         <sys_scope_delete display_value="">ca2094845f944cfc9638dcb203038e10</sys_scope_delete>
         <sys_update_name>sp_ui_formatter_ed017e5797d7d910d545b18e6253af53</sys_update_name>
         <sys_update_version display_value="sp_ui_formatter_ed017e5797d7d910d545b18e6253af53">2e9b8f9f971bd910d545b18e6253af55</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-11-08 22:56:51</sys_updated_on>
     </sys_metadata_delete>
 </record_update>

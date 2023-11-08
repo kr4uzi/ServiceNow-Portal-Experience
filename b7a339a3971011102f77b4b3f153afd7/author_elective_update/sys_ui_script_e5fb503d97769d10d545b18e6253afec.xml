@@ -305,6 +305,7 @@ x_376096_pxp.catalog_item_inject = (function() {
         <sys_db_object display_value="" name="sys_ui_script">sys_ui_script</sys_db_object>
         <sys_id>086890e0115d472d8ac8c094e23f9a79</sys_id>
         <sys_metadata>e5fb503d97769d10d545b18e6253afec</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
         <sys_name>x_376096_pxp.catalog_item_inject</sys_name>
         <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
         <sys_parent/>
@@ -313,5 +314,7 @@ x_376096_pxp.catalog_item_inject = (function() {
         <sys_scope_delete display_value="">ca2094845f944cfc9638dcb203038e10</sys_scope_delete>
         <sys_update_name>sys_ui_script_e5fb503d97769d10d545b18e6253afec</sys_update_name>
         <sys_update_version display_value="sys_ui_script_e5fb503d97769d10d545b18e6253afec">edb98ccf975f5910d545b18e6253af2e</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-11-08 22:56:55</sys_updated_on>
     </sys_metadata_delete>
 </record_update>

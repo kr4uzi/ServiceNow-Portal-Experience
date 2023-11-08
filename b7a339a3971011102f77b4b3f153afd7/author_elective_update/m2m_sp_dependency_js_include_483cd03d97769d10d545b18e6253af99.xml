@@ -42,13 +42,14 @@
         <update_guid_history>083cd03d90769d1024a4114e455e079b:662400138</update_guid_history>
     </sys_update_version>
     <sys_metadata_delete action="INSERT_OR_UPDATE">
-        <sys_audit_delete display_value="PXP Catalog Item.PXP Catalog Item">00a11e7797271d50d545b18e6253af28</sys_audit_delete>
+        <sys_audit_delete display_value="">00a11e7797271d50d545b18e6253af28</sys_audit_delete>
         <sys_class_name>sys_metadata_delete</sys_class_name>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2022-12-10 17:47:28</sys_created_on>
         <sys_db_object display_value="" name="m2m_sp_dependency_js_include">m2m_sp_dependency_js_include</sys_db_object>
         <sys_id>336ec95a8fb6407b8d877f493b4e39c1</sys_id>
         <sys_metadata>483cd03d97769d10d545b18e6253af99</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
         <sys_name>PXP Catalog Item.PXP Catalog Item</sys_name>
         <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
         <sys_parent/>
@@ -57,5 +58,7 @@
         <sys_scope_delete display_value="">ca2094845f944cfc9638dcb203038e10</sys_scope_delete>
         <sys_update_name>m2m_sp_dependency_js_include_483cd03d97769d10d545b18e6253af99</sys_update_name>
         <sys_update_version display_value="m2m_sp_dependency_js_include_483cd03d97769d10d545b18e6253af99">cc3cd03d97769d10d545b18e6253af9b</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-11-08 22:56:49</sys_updated_on>
     </sys_metadata_delete>
 </record_update>
