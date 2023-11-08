@@ -17,7 +17,8 @@ x_376096_pxp.sputil_interceptor = (function() {
 	var interceptors = [];
 	setTimeout(function () {
 		var minTimeBetweenUpdates = 100; // minimum time between updates in [ms]
-		var lastUpdate;
+		// scope updates are throttled
+		var lastScopeUpdates = {};
 		
 		var $window = this;
 		$window.angular
@@ -30,10 +31,10 @@ x_376096_pxp.sputil_interceptor = (function() {
 						var deferred = $q.defer();
 						
 						var now = new Date();
-						lastUpdate = now;
+						lastScopeUpdates[$scope.$id] = now;
 						
 						$timeout(function () {
-							if (now == lastUpdate) {
+							if (lastScopeUpdates[$scope.$id] == now) {
 								for (var i = 0, length = interceptors.length; i < length; i++) {
 									var interceptor = interceptors[i];
 
@@ -53,6 +54,7 @@ x_376096_pxp.sputil_interceptor = (function() {
 											var cb = $q.resolve(interceptor.callback(data));
 											cb['finally'](function () {
 												$window.angular.extend($scope.data, data);
+												delete lastScopeUpdates[$scope.$id];
 												deferred.resolve(data);
 											});
 										});
@@ -101,14 +103,14 @@ x_376096_pxp.sputil_interceptor = (function() {
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2022-11-16 13:04:40</sys_created_on>
         <sys_id>ffbae98897179590d545b18e6253af2b</sys_id>
-        <sys_mod_count>21</sys_mod_count>
+        <sys_mod_count>24</sys_mod_count>
         <sys_name>x_376096_pxp.sputil_interceptor</sys_name>
         <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
         <sys_update_name>sys_ui_script_ffbae98897179590d545b18e6253af2b</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2023-06-30 07:36:37</sys_updated_on>
+        <sys_updated_on>2023-11-08 23:26:50</sys_updated_on>
         <ui_type>1</ui_type>
         <use_scoped_format>true</use_scoped_format>
     </sys_ui_script>
