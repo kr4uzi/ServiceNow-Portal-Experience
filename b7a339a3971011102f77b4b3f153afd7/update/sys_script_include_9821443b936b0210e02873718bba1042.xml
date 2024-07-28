@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_376096_pxp.PXPExtension</api_name>
+        <caller_access/>
+        <client_callable>false</client_callable>
+        <description>Implements extension point x_376096_pxp.PXPExtension</description>
+        <name>PXPExtension</name>
+        <script><![CDATA[/* global Class, gs, GlideRecordSecure, GlideRecord, GlideScopedEvaluator, GlideChoiceList, GlideChoice, GlideController, GlideFilter */
+/* eslint no-undef: "error" */
+var PXPExtension = Class.create();
+PXPExtension.prototype = {
+	initialize: function() {
+		const scriptGr = new GlideRecord('sys_rte_eb_script_operation');
+		scriptGr.addQuery('sys_id', '7162407f936b0210e02873718bba108a');
+		scriptGr.setLimit(1);
+		scriptGr.query();
+		if (scriptGr.next()) {
+			this.scriptGr = scriptGr;
+		} else {
+			throw new Error(this.type + ' does not function without script injection');
+		}
+
+		this.tableScopes = [];
+    },
+
+	_getTableScope: function (tableName) {
+		if (tableName in this.tableScopes) {
+			return this.tableScopes[tableName];
+		}
+
+		const tableGr = new GlideRecord('sys_db_object');
+		tableGr.addQuery('name', tableName);
+		tableGr.setLimit(1);
+		tableGr.query();
+		if (tableGr.next()) {
+			const scope = tableGr.getValue('sys_scope') || '';
+			this.tableScopes[tableName] = scope;
+			return scope;
+		}
+
+		throw new Error(gs.getMessage('x_376096_pxp_invalid_table', [tableName]));
+	},
+	
+	/**
+	 * Wether this Extension Point can query on the given table
+	 * without creating additional cross scope privileges
+	 *
+	 * @param {string} table - the table's name (not label!)
+	 * @returns {boolean}
+	 */
+	handlesTable: function (table) {
+		return gs.tableExists(table);
+	},
+	
+	/**
+	 * Wether this Extension Point can execute scripts on the given scope
+	 * without creating additional cross scope privileges
+	 *
+	 * @param {string} table - the scope's name (e.g. global or x_mycompany_app)
+	 * @returns {boolean}
+	 */
+	handlesScope: function (scopeName) {
+		return true;
+	},
+
+	/**
+	 * This method is used to query on a certain table once it has been determined,
+	 * that this Extension Point is suitable (by handlesScope).
+	 * The records returned by this query will be used only to evaluate conditions of UI Action, Field Styles and Annotations.
+	 *
+	 * @param {string} table - The table to be queried on
+	 * @param {string} encodedQuery - The encoded query to be executed
+	 * @param {number} [limit] - if an limit is known for certain (e.g. sys_id=x), this parameter is set
+	 * @returns {GlideRecord}
+	 */
+    queryRecords: function (table, encodedQuery, limit) {
+		this.scriptGr.sys_scope = this._getTableScope(table);
+		this.scriptGr.script = `
+			(function (table, encodedQuery, limit) {
+				var recordGr = new GlideRecord(table);
+		
+				if (encodedQuery) {
+					recordGr.addEncodedQuery(encodedQuery);
+
+					if (limit) {
+						recordGr.setLimit(limit);
+					}
+
+					recordGr.query();
+				}
+				
+				return recordGr;
+			})(table, encodedQuery, limit);
+		`;
+
+		return new GlideScopedEvaluator().evaluateScript(this.scriptGr, 'script', {
+			table: table,
+			encodedQuery: encodedQuery || '',
+			limit: limit || 0
+		});
+	},
+	
+	/**
+	 * This method is used to query on a certain table once it has been determined,
+	 * that this Extension Point is suitable (by handlesScope).
+	 *
+	 * @param {string} table - The table to be queried on
+	 * @param {string} encodedQuery - The encoded query to be executed
+	 * @param {number} [limit] - if an limit is known for certain (e.g. sys_id=x), this parameter is set
+	 * @returns {GlideRecord}
+	 */
+    queryRecordsSecure: function (table, encodedQuery, limit) {
+		this.scriptGr.sys_scope = this._getTableScope(table);
+		this.scriptGr.script = `
+			(function (table, encodedQuery, limit) {
+				var recordGr = new GlideRecordSecure(table);
+		
+				if (encodedQuery) {
+					recordGr.addEncodedQuery(encodedQuery);
+
+					if (limit) {
+						recordGr.setLimit(limit);
+					}
+
+					recordGr.query();
+				}
+				
+				return recordGr;
+			})(table, encodedQuery, limit);
+		`;
+
+		return new GlideScopedEvaluator().evaluateScript(this.scriptGr, 'script', {
+			table: table,
+			encodedQuery: encodedQuery || '',
+			limit: limit || 0
+		});
+	},
+	
+	/**
+	 * This method is used to set a temporary value on a record once it has been determined
+	 * that this Extension Point is suitable (by handlesTable).
+	 * This is required in order to evaluate annotations on new records.
+	 *
+	 * Note: The Portal Experience App will not perform any database changes on its own!
+	 *
+	 * @param {GlideRecord} anyGr
+	 * @param {string} fieldName
+	 * @param {string} fieldValue
+	 */
+	setTemporaryValue: function (anyGr, fieldName, fieldValue) {
+		this.scriptGr.sys_scope = this._getTableScope(anyGr.getRecordClassName());
+		this.scriptGr.script = `
+			(function (anyGr, fieldName, fieldValue) {
+				if (fieldName == 'sys_id') {
+					anyGr.setNewGuidValue(fieldValue);
+				} else {
+					anyGr[fieldName] = fieldValue;
+				}
+			})(anyGr, fieldName, fieldValue);
+		`;
+
+		const gse = new GlideScopedEvaluator();
+		gse.putVariable('anyGr', anyGr);
+		gse.putVariable('fieldValue', fieldValue);
+		gse.evaluateScript(this.scriptGr, 'script', {
+			fieldName: fieldName
+		});
+	},
+	
+	/**
+	 * This method is used to generate the process flow for a given record.
+	 * The Extension Point will be tested via handlesTable.
+	 *
+	 * @param {GlideRecord} anyGr
+	 * @returns {GlideChoiceList}
+	 */
+	getProcessFlow: function (anyGr) {
+		const tableName = anyGr.getRecordClassName();
+
+		this.scriptGr.sys_scope = 'global';
+		this.scriptGr.script = `
+			(function (tableName) {
+				var functionName = tableName + '_ProcessFlowList';
+				var func = GlideController.getGlobal(functionName);
+				if (typeof func == 'function') {
+					var current = anyGr;
+					return func();
+				}
+			})(tableName);
+		`;
+
+		const gse = new GlideScopedEvaluator();
+		gse.putVariable('anyGr', anyGr);
+		const res = gse.evaluateScript(this.scriptGr, 'script', {
+			tableName: tableName
+		});
+
+		if (res) {
+			return res;
+		}
+
+		var processFlowGr = new GlideRecord('sys_process_flow');
+		processFlowGr.addQuery('table', tableName);
+		processFlowGr.addQuery('active', true);
+		processFlowGr.orderBy('order');
+		processFlowGr.query();
+
+		var hasCurrent = false;
+		var list = new GlideChoiceList();
+		while (processFlowGr.next()) {
+			var choice = new GlideChoice(processFlowGr.name, processFlowGr.getDisplayValue('label'));
+			var match = GlideFilter.checkRecord(anyGr, processFlowGr.condition);
+			if (match) {
+				choice.setParameter('state', 'current');
+				hasCurrent = true;
+			} else {
+				choice.setParameter('state', hasCurrent ? 'future' : 'past');
+			}
+
+			list.add(choice);
+		}
+
+		return list;
+	},
+
+    type: 'PXPExtension'
+};]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2024-07-28 19:49:35</sys_created_on>
+        <sys_id>9821443b936b0210e02873718bba1042</sys_id>
+        <sys_mod_count>3</sys_mod_count>
+        <sys_name>PXPExtension</sys_name>
+        <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
+        <sys_update_name>sys_script_include_9821443b936b0210e02873718bba1042</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2024-07-28 21:17:07</sys_updated_on>
+    </sys_script_include>
+</record_update>

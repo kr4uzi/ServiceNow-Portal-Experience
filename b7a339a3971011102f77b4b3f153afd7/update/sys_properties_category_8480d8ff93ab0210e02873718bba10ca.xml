@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_properties_category">
+    <sys_properties_category action="INSERT_OR_UPDATE">
+        <name>Process Flow Properties</name>
+        <sys_class_name>sys_properties_category</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2024-07-28 20:56:53</sys_created_on>
+        <sys_id>8480d8ff93ab0210e02873718bba10ca</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>Process Flow Properties</sys_name>
+        <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
+        <sys_update_name>sys_properties_category_8480d8ff93ab0210e02873718bba10ca</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2024-07-28 21:05:07</sys_updated_on>
+        <title><![CDATA[<p><strong>Process Flow Properties</strong></p>
+<hr />]]></title>
+    </sys_properties_category>
+    <sys_translated_text action="delete_multiple" query="documentkey=8480d8ff93ab0210e02873718bba10ca"/>
+</record_update>

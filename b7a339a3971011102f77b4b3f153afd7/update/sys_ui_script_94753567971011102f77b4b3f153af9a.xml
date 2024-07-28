@@ -4,18 +4,17 @@
         <description/>
         <global>false</global>
         <ignore_in_now_experience>false</ignore_in_now_experience>
-        <name>x_376096_pxp.form_inject</name>
+        <name>x_376096_pxp.form_infuse</name>
         <script><![CDATA[var x_376096_pxp = x_376096_pxp || {};
-x_376096_pxp.form_inject = (function() {
+x_376096_pxp.form_infuse = (function() {
 	"use strict";
 	/* global setTimeout */
 	/* eslint no-undef: "error" */
-	if (x_376096_pxp.form_inject) {
-		return x_376096_pxp.form_inject;
+	if (x_376096_pxp.form_infuse) {
+		return x_376096_pxp.form_infuse;
 	}
 	
-	var ootbFormWidget = 'fd1f4ec347730200ba13a5554ee490c0';
-	
+	const ootbFormWidget = 'fd1f4ec347730200ba13a5554ee490c0';
 	setTimeout(function () {
 		var $window = this;
 		var observer = new $window.MutationObserver(function (mutations) {
@@ -25,8 +24,8 @@ x_376096_pxp.form_inject = (function() {
 					for (var j = 0; j < mutation.addedNodes.length; j++) {
 						var node = mutation.addedNodes[j];
 						if (node.classList && node.classList.contains('v' + ootbFormWidget)) {
-							if (!node.classList.contains('pxp-form-injected')) {
-								node.classList.add('pxp-form-injected');
+							if (!node.classList.contains('pxp-form-infused')) {
+								node.classList.add('pxp-form-infused');
 								new PXPFormInject($window, node);
 							}
 						}
@@ -42,7 +41,7 @@ x_376096_pxp.form_inject = (function() {
 	});
 	
 	return {
-		type: 'form_inject'
+		type: 'form_infuse'
 	};
 	
 	function PXPFormInject($window, node) {
@@ -97,7 +96,7 @@ x_376096_pxp.form_inject = (function() {
 		});
 
 		$scope.$watch('data.f._ui_actions', function (newValue) {
-			if (newValue) {
+			if (newValue && newValue.length) {
 				var oldTriggerUIAction = $scope.triggerUIAction;
 				var oldGetPrimaryAction = $scope.getPrimaryAction;
 				$scope.triggerUIAction = $window.angular.noop;
@@ -327,8 +326,28 @@ x_376096_pxp.form_inject = (function() {
 			url += '&view=' + $scope.data.f.view;
 			return $sce.trustAsResourceUrl(url);
 		};
-		
+
+		// replace the second nav (= related lists)
 		$scope.widget.template = $scope.widget.template
+			.replace(/(<nav)(?!.*\1)/s, '$1 ng-if="options.pxp_relatedListStyle != \'tabs\'" ');
+
+		$scope.widget.template = $scope.widget.template
+			.replace(/(<\/nav>)(?!.*\1)/s, '$1<div ng-if="options.pxp_relatedListStyle == \'tabs\'">'
+				+ '<ul class="nav nav-tabs">'
+				+ '<li ng-repeat="rl in data.f._related_lists" ng-class="$first && \'active\'">'
+				+ '<a ng-if="rl.visible && rl.type != \'REL\'" data-toggle="tab" href="#pxp_rl{{::$index}}">{{rl.plural}}</a>'
+				+ '<a ng-if="rl.visible && rl.type == \'REL\'" data-toggle="tab" href="#pxp_rl{{::$index}}">{{rl.label}}</a>'
+				+ '</li>'
+				+ '</ul>'
+				+ '<div class="tab-content">'
+				+ '<div ng-repeat="rl in data.f._related_lists" id="pxp_rl{{::$index}}" class="tab-pane" ng-class="$first && \'active\'">'
+				+ '<iframe ng-if="rl.type != \'REL\'" ng-src="{{::relatedListURL(rl)}}" style="width:100%;border:none;"></iframe>'
+				+ '<iframe ng-if="rl.type == \'REL\'" ng-src="{{::relatedListURL(rl)}}" style="width:100%;border:none;"></iframe>'
+				+ '</div>'
+				+ '</div>'
+				+ '</div>');
+		
+		/*$scope.widget.template = $scope.widget.template
 			.replace(/(<nav.*?)(<nav.*?\/nav>)/s, '$1' // replace the second nav (= related lists)
 				+ '<ul class="nav nav-tabs">'
 				+ '<li ng-repeat="rl in data.f._related_lists" ng-class="$first && \'active\'">'
@@ -341,25 +360,25 @@ x_376096_pxp.form_inject = (function() {
 				+ '<iframe ng-if="rl.type != \'REL\'" ng-src="{{::relatedListURL(rl)}}" style="width:100%;border:none;"></iframe>'
 				+ '<iframe ng-if="rl.type == \'REL\'" ng-src="{{::relatedListURL(rl)}}" style="width:100%;border:none;"></iframe>'
 				+ '</div>'
-				+ '</div>');
+				+ '</div>');*/
 		
 		$element.html($scope.widget.template);
 		$compile($element.contents())($scope);
 	}
 })();]]></script>
-        <script_name>form_inject</script_name>
+        <script_name>form_infuse</script_name>
         <sys_class_name>sys_ui_script</sys_class_name>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2022-07-01 07:41:46</sys_created_on>
         <sys_id>94753567971011102f77b4b3f153af9a</sys_id>
-        <sys_mod_count>44</sys_mod_count>
-        <sys_name>x_376096_pxp.form_inject</sys_name>
+        <sys_mod_count>56</sys_mod_count>
+        <sys_name>x_376096_pxp.form_infuse</sys_name>
         <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
         <sys_update_name>sys_ui_script_94753567971011102f77b4b3f153af9a</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2023-06-27 21:14:29</sys_updated_on>
+        <sys_updated_on>2024-07-28 23:37:09</sys_updated_on>
         <ui_type>1</ui_type>
         <use_scoped_format>true</use_scoped_format>
     </sys_ui_script>

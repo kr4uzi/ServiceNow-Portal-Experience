@@ -12,7 +12,6 @@
 /* eslint no-undef: "error" */
 var PortalFormUtilClient = Class.create();
 PortalFormUtilClient.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
-	
 	initialize: function () {
 		global.AbstractAjaxProcessor.prototype.initialize.apply(this, arguments);
 		this.util = new x_376096_pxp.PortalFormUtil();
@@ -103,19 +102,19 @@ PortalFormUtilClient.prototype = Object.extendsObject(global.AbstractAjaxProcess
 		return JSON.stringify(result);
 	},
 
-    type: 'PortalFormUtilClient'
+	type: 'PortalFormUtilClient'
 });]]></script>
         <sys_class_name>sys_script_include</sys_class_name>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2022-07-01 08:09:50</sys_created_on>
         <sys_id>e7db316f971011102f77b4b3f153af7a</sys_id>
-        <sys_mod_count>1</sys_mod_count>
+        <sys_mod_count>3</sys_mod_count>
         <sys_name>PortalFormUtilClient</sys_name>
         <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
-        <sys_policy>read</sys_policy>
+        <sys_policy/>
         <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
         <sys_update_name>sys_script_include_e7db316f971011102f77b4b3f153af7a</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2023-05-27 16:09:44</sys_updated_on>
+        <sys_updated_on>2024-07-28 21:47:37</sys_updated_on>
     </sys_script_include>
 </record_update>

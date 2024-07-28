@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_message">
+    <sys_ui_message action="INSERT_OR_UPDATE">
+        <application/>
+        <code/>
+        <commented_message/>
+        <key>x_376096_pxp_invalid_table</key>
+        <language>en</language>
+        <message>Invalid table - {0} does not exist!</message>
+        <sys_class_name>sys_ui_message</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2024-07-28 19:45:09</sys_created_on>
+        <sys_id>1f10443b936b0210e02873718bba103a</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_376096_pxp_invalid_table</sys_name>
+        <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
+        <sys_update_name>sys_ui_message_1f10443b936b0210e02873718bba103a</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2024-07-28 19:45:09</sys_updated_on>
+    </sys_ui_message>
+</record_update>

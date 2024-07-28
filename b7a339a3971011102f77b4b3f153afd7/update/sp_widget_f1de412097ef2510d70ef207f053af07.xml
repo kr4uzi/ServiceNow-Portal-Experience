@@ -2,8 +2,7 @@
     <sp_widget action="INSERT_OR_UPDATE">
         <category>custom</category>
         <client_script><![CDATA[api.controller=function() {
-  /* widget controller */
-  var c = this;
+	var c = this;
 };]]></client_script>
         <controller_as>c</controller_as>
         <css>.process-breadcrumb {&#13;
@@ -155,24 +154,24 @@ HTML[data-doctype=true].rtl .windows .process-breadcrumb &gt; li.active &gt; a:b
         <option_schema/>
         <public>false</public>
         <roles/>
-        <script><![CDATA[(function() {
+        <script><![CDATA[(function(data, input, options) {
 	
-	data.steps = options.f.g_scratchpad.x_376096_pxp.process_flow;
+	data.steps = options.f.g_scratchpad.x_376096_pxp?.process_flow;
 	
-})();]]></script>
+})(data, input, options);]]></script>
         <servicenow>false</servicenow>
         <sys_class_name>sp_widget</sys_class_name>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2023-06-17 07:20:11</sys_created_on>
         <sys_id>f1de412097ef2510d70ef207f053af07</sys_id>
-        <sys_mod_count>6</sys_mod_count>
+        <sys_mod_count>7</sys_mod_count>
         <sys_name>PXP Process Flow</sys_name>
         <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
         <sys_update_name>sp_widget_f1de412097ef2510d70ef207f053af07</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2023-06-17 07:53:34</sys_updated_on>
+        <sys_updated_on>2024-07-28 21:13:43</sys_updated_on>
         <template><![CDATA[<table ng-if="data.steps" style="width: 100%" role="presentation">
   <tr>
     <td>
