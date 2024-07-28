@@ -59,11 +59,14 @@
         <sys_class_name>atf_input_variable</sys_class_name>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2022-11-18 18:55:54</sys_created_on>
+        <sys_id>592cfbe3936b0210e02873718bba101c</sys_id>
         <sys_name>Assert type</sys_name>
         <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
         <sys_update_name>atf_input_variable_601e81f8971b5110d545b18e6253af16</sys_update_name>
+        <sys_updated_by>system</sys_updated_by>
+        <sys_updated_on>2024-07-28 19:27:49</sys_updated_on>
         <table_reference>false</table_reference>
         <text_index>false</text_index>
         <unique>false</unique>

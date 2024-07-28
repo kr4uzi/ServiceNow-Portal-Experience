@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
-    <element attributes="all_tables.text_index_translations=true,update_synch=true" db_object_id="1e698731e821211076da10591ad287e7" extends="sys_metadata" label="Style" max_length="40" name="sys_ui_style" read_roles="personalize_styles" text_index="true" type="collection">
+    <element attributes="all_tables.text_index_translations=true,update_synch=true" db_object_id="ca2bb722f832021008dd9cfea425acf4" extends="sys_metadata" label="Style" max_length="40" name="sys_ui_style" read_roles="personalize_styles" text_index="true" type="collection">
         <element label="CSS class" max_length="120" name="x_376096_pxp_css_class" type="string"/>
-        <element label="Enabled" max_length="40" name="x_376096_pxp_enabled" type="boolean"/>
         <element label="Portal Style" max_length="1000" name="x_376096_pxp_style" type="string"/>
+        <element label="Enabled" max_length="40" name="x_376096_pxp_enabled" type="boolean"/>
     </element>
 </database>

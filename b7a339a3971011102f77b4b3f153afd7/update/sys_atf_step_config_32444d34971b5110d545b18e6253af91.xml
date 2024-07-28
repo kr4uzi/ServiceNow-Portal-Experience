@@ -66,6 +66,7 @@
         <name>Click a UI Action (SP PXP)</name>
         <order>7299</order>
         <outputs/>
+        <performance_include>false</performance_include>
         <step_env display_value="UI">d2cb02e1870312009dccc9ded0e3ec7c</step_env>
         <step_execution_generator><![CDATA[/* global step, stepResult, assertionObject */
 /* global g_ui_testing_util, getMessage */
@@ -338,13 +339,16 @@
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2022-11-18 18:12:54</sys_created_on>
         <sys_id>32444d34971b5110d545b18e6253af91</sys_id>
+        <sys_mod_count>0</sys_mod_count>
         <sys_name>Click a UI Action (SP PXP)</sys_name>
         <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
         <sys_update_name>sys_atf_step_config_32444d34971b5110d545b18e6253af91</sys_update_name>
+        <sys_updated_by>system</sys_updated_by>
+        <sys_updated_on>2024-07-28 19:27:51</sys_updated_on>
         <template_reminder>Click a UI Action (PXP SP)</template_reminder>
-        <type display_value="Test Step" name="sys_atf_step">a76763b375f011108c8b143dd0c59f95</type>
+        <type display_value="Test Step" name="sys_atf_step">ac014076f8f2021008dd9cfea425acf2</type>
         <wizard_redirect/>
     </sys_atf_step_config>
     <sys_translated_text action="delete_multiple" query="documentkey=32444d34971b5110d545b18e6253af91"/>

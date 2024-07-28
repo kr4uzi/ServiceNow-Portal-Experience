@@ -8,6 +8,7 @@
         <container_class_name/>
         <name>x_376096_pxp_data_table_embedded - Container 1</name>
         <order>1</order>
+        <semantic_tag/>
         <sp_page display_value="x_376096_pxp_data_table_embedded">4c3ad37797e36110d70ef207f053af86</sp_page>
         <subheader>false</subheader>
         <sys_class_name>sp_container</sys_class_name>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sys_scoped_cache">
     <sys_scoped_cache action="INSERT_OR_UPDATE">
         <active>true</active>
+        <always_compress>false</always_compress>
         <cache_name>x_376096_pxp_list_ui_actions</cache_name>
         <cache_name_with_scope>x_376096_pxp_list_ui_actions.x_376096_pxp</cache_name_with_scope>
         <max_entries>1000</max_entries>
@@ -8,10 +9,13 @@
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2022-11-28 10:28:27</sys_created_on>
         <sys_id>7d0abe3397975d10d545b18e6253af9b</sys_id>
+        <sys_mod_count>0</sys_mod_count>
         <sys_name>x_376096_pxp_list_ui_actions</sys_name>
         <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
         <sys_update_name>sys_scoped_cache_7d0abe3397975d10d545b18e6253af9b</sys_update_name>
+        <sys_updated_by>system</sys_updated_by>
+        <sys_updated_on>2024-07-28 19:27:53</sys_updated_on>
     </sys_scoped_cache>
 </record_update>
