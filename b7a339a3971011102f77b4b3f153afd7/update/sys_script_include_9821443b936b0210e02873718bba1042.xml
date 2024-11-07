@@ -6,14 +6,16 @@
         <caller_access/>
         <client_callable>false</client_callable>
         <description>Implements extension point x_376096_pxp.PXPExtension</description>
+        <mobile_callable>false</mobile_callable>
         <name>PXPExtension</name>
+        <sandbox_callable>false</sandbox_callable>
         <script><![CDATA[/* global Class, gs, GlideRecordSecure, GlideRecord, GlideScopedEvaluator, GlideChoiceList, GlideChoice, GlideController, GlideFilter */
 /* eslint no-undef: "error" */
 var PXPExtension = Class.create();
 PXPExtension.prototype = {
 	initialize: function() {
-		const scriptGr = new GlideRecord('sys_rte_eb_script_operation');
-		scriptGr.addQuery('sys_id', '7162407f936b0210e02873718bba108a');
+		const scriptGr = new GlideRecord('clone_cleanup_script');
+		scriptGr.addQuery('sys_scope', 'global');
 		scriptGr.setLimit(1);
 		scriptGr.query();
 		if (scriptGr.next()) {
@@ -76,7 +78,7 @@ PXPExtension.prototype = {
 	 * @returns {GlideRecord}
 	 */
     queryRecords: function (table, encodedQuery, limit) {
-		this.scriptGr.sys_scope = this._getTableScope(table);
+		//this.scriptGr.sys_scope = this._getTableScope(table);
 		this.scriptGr.script = `
 			(function (table, encodedQuery, limit) {
 				var recordGr = new GlideRecord(table);
@@ -112,7 +114,7 @@ PXPExtension.prototype = {
 	 * @returns {GlideRecord}
 	 */
     queryRecordsSecure: function (table, encodedQuery, limit) {
-		this.scriptGr.sys_scope = this._getTableScope(table);
+		//this.scriptGr.sys_scope = this._getTableScope(table);
 		this.scriptGr.script = `
 			(function (table, encodedQuery, limit) {
 				var recordGr = new GlideRecordSecure(table);
@@ -150,7 +152,7 @@ PXPExtension.prototype = {
 	 * @param {string} fieldValue
 	 */
 	setTemporaryValue: function (anyGr, fieldName, fieldValue) {
-		this.scriptGr.sys_scope = this._getTableScope(anyGr.getRecordClassName());
+		//this.scriptGr.sys_scope = this._getTableScope(anyGr.getRecordClassName());
 		this.scriptGr.script = `
 			(function (anyGr, fieldName, fieldValue) {
 				if (fieldName == 'sys_id') {
@@ -179,7 +181,7 @@ PXPExtension.prototype = {
 	getProcessFlow: function (anyGr) {
 		const tableName = anyGr.getRecordClassName();
 
-		this.scriptGr.sys_scope = 'global';
+		//this.scriptGr.sys_scope = 'global';
 		this.scriptGr.script = `
 			(function (tableName) {
 				var functionName = tableName + '_ProcessFlowList';
@@ -231,13 +233,24 @@ PXPExtension.prototype = {
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2024-07-28 19:49:35</sys_created_on>
         <sys_id>9821443b936b0210e02873718bba1042</sys_id>
-        <sys_mod_count>3</sys_mod_count>
+        <sys_mod_count>4</sys_mod_count>
         <sys_name>PXPExtension</sys_name>
         <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
         <sys_update_name>sys_script_include_9821443b936b0210e02873718bba1042</sys_update_name>
-        <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2024-07-28 21:17:07</sys_updated_on>
+        <sys_updated_by>markus.kraus</sys_updated_by>
+        <sys_updated_on>2024-11-01 10:45:34</sys_updated_on>
     </sys_script_include>
+    <sys_es_latest_script action="INSERT_OR_UPDATE">
+        <id>9821443b936b0210e02873718bba1042</id>
+        <sys_created_by>markus.kraus</sys_created_by>
+        <sys_created_on>2024-11-01 10:45:27</sys_created_on>
+        <sys_id>2d3d9caa8325d6900971c810feaad39d</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>markus.kraus</sys_updated_by>
+        <sys_updated_on>2024-11-01 10:45:27</sys_updated_on>
+        <table>sys_script_include</table>
+        <use_es_latest>true</use_es_latest>
+    </sys_es_latest_script>
 </record_update>
