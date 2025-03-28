@@ -20,6 +20,19 @@ x_376096_pxp.list_infuse = (function() {
 	
 	setTimeout(function () {
 		var $window = this;
+		var scopedObjectGenerator = new $window.Promise(function(resolve, reject) {
+			var xhr = new $window.XMLHttpRequest();
+			xhr.open('GET', '/scripts/scoped_object_generators.js', true);
+			xhr.onload = function () {
+				if (xhr.readyState === xhr.DONE && xhr.status === 200) {
+					resolve(xhr.responseText);
+				} else {
+					reject(xhr.responseText);
+				}
+			};
+			xhr.send(null);
+		});
+
 		var observer = new $window.MutationObserver(function (mutations) {
 			for (var i = 0; i < mutations.length; i++) {
 				var mutation = mutations[i];
@@ -30,7 +43,7 @@ x_376096_pxp.list_infuse = (function() {
 							&& node.classList.contains('v' + ootbDataTableWidget)
 							&& !node.classList.contains('pxp-list-infused')) {
 							node.classList.add('pxp-list-infused');
-							new ListInject($window, node);
+							new ListInject($window, node, scopedObjectGenerator);
 						}
 					}
 				}
@@ -47,7 +60,7 @@ x_376096_pxp.list_infuse = (function() {
 		type: 'list_infuse'
 	};
 	
-	function ListInject($window, node) {
+	function ListInject($window, node, scopedObjectGenerator) {
 		var $element = $window.angular.element(node);
 		var $scope = $element.scope();
 		var $injector = $element.injector();
@@ -63,6 +76,22 @@ x_376096_pxp.list_infuse = (function() {
 		var $q = $injector.get('$q');
 		var $http = $injector.get('$http');
 		var $rootScope = $injector.get('$rootScope');
+
+		var scopedGlideAjaxGeneratorPromise = (function () {
+			var deferred = $q.defer();
+			scopedObjectGenerator.then(function (script) {
+				script += 'function ScopedGFormGenerator() {}' // TODO: implement
+					+ 'function ScopedGlideDialogWindowGenerator() {}' // TODO: implement
+					+ 'function notifyFromWrappedScopedObject(options) {'
+					+ '$rootScope.$broadcast("$$uiNotification", { type: options.attributes.type, message: options.text });'
+					+ '}'
+					+ 'return ScopedGlideAjaxGenerator;';
+
+				deferred.resolve(new Function ('$rootScope', script)($rootScope));
+			});
+
+			return deferred.promise;
+		})();
 		
 		var tableStyles = {};
 		$scope.x_376096_pxp_ui_actions = {
@@ -302,43 +331,43 @@ x_376096_pxp.list_infuse = (function() {
 			try {
 				var actionClientScript = (new Function('return (' + action.client_script + ')'))();
 				glideUserSession.loadCurrentUser().then(function (user) {
-					var actionParameters = {};
-					var result = $injector.invoke(actionClientScript, $scope, {
-						item: item,
-						g_user: user,
-						g_form: formModelScope ? formModelScope.getGlideForm() : undefined,
-						g_scratchpad: formScope ? formScope.data.f.g_scratchpad : undefined,
-						sys_id: formScope ? formScope.data.f._attachmentGUID : undefined,
-						GlideAjax: (function (scope) {
-							return function () {
-								$window.GlideAjax.prototype.constructor.apply(this, arguments);
-								this.setScope(scope);
-							};
-						})(action.scope),
-						GlideURL: glideUrlBuilder,
-						action: {
-							getURLParameter: function (name) {
-								return actionParameters[name];
-							},
-							setURLParameter: function (name, value) {
-								actionParameters[name] = value;
+					return scopedGlideAjaxGeneratorPromise.then(
+						function (scopedGlideAjaxGenerator) { return action.scope && action.scope != 'global' ? scopedGlideAjaxGenerator(action.scope) : $window.GlideAjax; },
+						function () { return $window.GlideAjax; }
+					).then(function (GlideAjax) {
+						var actionParameters = {};
+						var result = $injector.invoke(actionClientScript, $scope, {
+							item: item,
+							g_user: user,
+							g_form: formModelScope ? formModelScope.getGlideForm() : undefined,
+							g_scratchpad: formScope ? formScope.data.f.g_scratchpad : undefined,
+							sys_id: formScope ? formScope.data.f._attachmentGUID : undefined,
+							GlideAjax: GlideAjax,
+							GlideURL: glideUrlBuilder,
+							action: {
+								getURLParameter: function (name) {
+									return actionParameters[name];
+								},
+								setURLParameter: function (name, value) {
+									actionParameters[name] = value;
+								}
 							}
-						}
-					});
+						});
 
-					var promise;
-					if (result && typeof result.then === 'function') {
-						promise = result;
-					} else if (result || result === undefined) {
-						promise = $q.resolve(result);
-					} else {
-						promise = $q.reject();
-					}
-
-					return promise.then(function (result) {
-						if (result || result === undefined) {
-							return submitUIAction(item, action, actionParameters);
+						var promise;
+						if (result && typeof result.then === 'function') {
+							promise = result;
+						} else if (result || result === undefined) {
+							promise = $q.resolve(result);
+						} else {
+							promise = $q.reject();
 						}
+
+						return promise.then(function (result) {
+							if (result || result === undefined) {
+								return submitUIAction(item, action, actionParameters);
+							}
+						});
 					});
 				})['catch'](function (e) {
 					if (e != undefined) {
@@ -609,14 +638,14 @@ x_376096_pxp.list_infuse = (function() {
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2022-07-01 07:41:43</sys_created_on>
         <sys_id>af653967971011102f77b4b3f153afa1</sys_id>
-        <sys_mod_count>27</sys_mod_count>
+        <sys_mod_count>30</sys_mod_count>
         <sys_name>x_376096_pxp.list_infuse</sys_name>
         <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
         <sys_update_name>sys_ui_script_af653967971011102f77b4b3f153afa1</sys_update_name>
-        <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2024-07-28 20:33:03</sys_updated_on>
+        <sys_updated_by>kr4uzi@gmail.com</sys_updated_by>
+        <sys_updated_on>2025-03-28 21:22:55</sys_updated_on>
         <ui_type>1</ui_type>
         <use_scoped_format>true</use_scoped_format>
     </sys_ui_script>

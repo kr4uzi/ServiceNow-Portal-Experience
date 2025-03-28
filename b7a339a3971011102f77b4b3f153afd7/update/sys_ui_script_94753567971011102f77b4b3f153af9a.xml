@@ -17,6 +17,19 @@ x_376096_pxp.form_infuse = (function() {
 	const ootbFormWidget = 'fd1f4ec347730200ba13a5554ee490c0';
 	setTimeout(function () {
 		var $window = this;
+		var scopedObjectGenerator = new $window.Promise(function(resolve, reject) {
+			var xhr = new $window.XMLHttpRequest();
+			xhr.open('GET', '/scripts/scoped_object_generators.js', true);
+			xhr.onload = function () {
+				if (xhr.readyState === xhr.DONE && xhr.status === 200) {
+					resolve(xhr.responseText);
+				} else {
+					reject(xhr.responseText);
+				}
+			};
+			xhr.send(null);
+		});
+
 		var observer = new $window.MutationObserver(function (mutations) {
 			for (var i = 0; i < mutations.length; i++) {
 				var mutation = mutations[i];
@@ -26,7 +39,7 @@ x_376096_pxp.form_infuse = (function() {
 						if (node.classList && node.classList.contains('v' + ootbFormWidget)) {
 							if (!node.classList.contains('pxp-form-infused')) {
 								node.classList.add('pxp-form-infused');
-								new PXPFormInject($window, node);
+								new PXPFormInject($window, node, scopedObjectGenerator);
 							}
 						}
 					}
@@ -44,7 +57,7 @@ x_376096_pxp.form_infuse = (function() {
 		type: 'form_infuse'
 	};
 	
-	function PXPFormInject($window, node) {
+	function PXPFormInject($window, node, scopedObjectGenerator) {
 		var self = this;
 		var $element = $window.angular.element(node);
 		var $injector = $element.injector();
@@ -56,6 +69,22 @@ x_376096_pxp.form_infuse = (function() {
 		var spUtil = $injector.get('spUtil');
 		var glideUrlBuilder = $injector.get('glideUrlBuilder');
 		var glideUserSession = $injector.get('glideUserSession');
+
+		var scopedGlideAjaxGeneratorPromise = (function () {
+			var deferred = $q.defer();
+			scopedObjectGenerator.then(function (script) {
+				script += 'function ScopedGFormGenerator() {}' // TODO: implement
+					+ 'function ScopedGlideDialogWindowGenerator() {}' // TODO: implement
+					+ 'function notifyFromWrappedScopedObject(options) {'
+					+ '$rootScope.$broadcast("$$uiNotification", { type: options.attributes.type, message: options.text });'
+					+ '}'
+					+ 'return ScopedGlideAjaxGenerator;';
+
+				deferred.resolve(new Function ('$rootScope', script)($rootScope));
+			});
+
+			return deferred.promise;
+		})();
 		
 		var formModelScope = $element
 			.find('div[form_model]') // this contains the actual form (sp-model)
@@ -65,7 +94,7 @@ x_376096_pxp.form_infuse = (function() {
 
 		var $scope = $element.scope();
 		var ootbTriggerUIAction = $scope.triggerUIAction;
-		var clientScripts = {};
+		var buttons = {};
 		
 		$scope.$watch('data.f._related_lists', function (newValue) {
 			if (newValue) {
@@ -109,7 +138,7 @@ x_376096_pxp.form_infuse = (function() {
 					try {
 						var result = JSON.parse(answer);
 						if (result.status == 'success') {
-							clientScripts = result.client_scripts;
+							buttons = result.buttons;
 						} else {
 							throw new Error(result.message);
 						}
@@ -204,7 +233,7 @@ x_376096_pxp.form_infuse = (function() {
 		// the save button can be hidden by creating a UI Action with action_name=sysverb_update
 		//scope.getPrimaryAction = $window.angular.noop;
 		$scope.triggerUIAction = function (action) {
-			if (action.sys_id in clientScripts) {
+			if (action.sys_id in buttons) {
 				$scope.submitting = true;
 				
 				try {
@@ -220,7 +249,7 @@ x_376096_pxp.form_infuse = (function() {
 						.loadCurrentUser()
 						.then(function (user) { return user; }, function () { return null; })
 						.then(function (user) {
-							return callPXPClientScript(action, user)['finally'](function () { exceptionWatcherUnregister(); });
+							return callPXPClientScript(action, buttons[action.sys_id], user)['finally'](function () { exceptionWatcherUnregister(); });
 						})['finally'](function () { $scope.submitting = false; })
 					;
 				} catch (e) {
@@ -230,40 +259,40 @@ x_376096_pxp.form_infuse = (function() {
 				ootbTriggerUIAction(action);
 			}
 			
-			function callPXPClientScript(action, g_user) {	
-				var actionClientScript = new Function('return (' + clientScripts[action.sys_id] + ')')();			
-				var result = $injector.invoke(actionClientScript, $scope, {
-					item: undefined,
-					g_user: g_user,
-					g_form: formModelScope.getGlideForm(),
-					g_scratchpad: $scope.data.f.g_scratchpad,
-					sys_id: $scope.data.f._attachmentGUID,
-					GlideAjax: (function (scope) {
-						return function () {
-							$window.GlideAjax.prototype.constructor.apply(this, arguments);
-							this.setScope(scope);
-						};
-					})(action.scope),
-					GlideURL: glideUrlBuilder,
-					action: undefined
-				});
-
-				var promise;
-				if (result && typeof result.then === 'function') {
-					promise = result;
-				} else if (result || result === undefined) {
-					promise = $q.resolve(result);
-				} else {
-					promise = $q.reject();
-				}
-
-				if ($window.ATF) {
-					$rootScope.$broadcast('x_376096_pxp_form_ui_action_start', {
-						status: 'success'
+			function callPXPClientScript(action, button, g_user) {
+				return scopedGlideAjaxGeneratorPromise.then(
+					function (scopedGlideAjaxGenerator) { return button.scope && button.scope != 'global' ? scopedGlideAjaxGenerator(button.scope) : $window.GlideAjax; },
+					function () { return $window.GlideAjax; }
+				).then(function (GlideAjax) {
+					var actionClientScript = new Function('return (' + button.script + ')')();			
+					var result = $injector.invoke(actionClientScript, $scope, {
+						item: undefined,
+						g_user: g_user,
+						g_form: formModelScope.getGlideForm(),
+						g_scratchpad: $scope.data.f.g_scratchpad,
+						sys_id: $scope.data.f._attachmentGUID,
+						GlideAjax: GlideAjax,
+						GlideURL: glideUrlBuilder,
+						action: undefined
 					});
-				}
 
-				return promise.then(ootbTriggerUIAction.bind(null, action));
+					var promise;
+					if (result && typeof result.then === 'function') {
+						promise = result;
+					} else if (result || result === undefined) {
+						promise = $q.resolve(result);
+					} else {
+						promise = $q.reject();
+					}
+
+					if ($window.ATF) {
+						$rootScope.$broadcast('x_376096_pxp_form_ui_action_start', {
+							status: 'success'
+						});
+					}
+
+					return promise.then(ootbTriggerUIAction.bind(null, action));
+				});
 			}
 			
 			function onError(e, noLog) {
@@ -290,21 +319,21 @@ x_376096_pxp.form_infuse = (function() {
 			var pxpOptions = $scope.options.shared.pxp_options;
 			if (pxpOptions.scope) {			
 				if (pxpOptions.onLoad) {
-					var locals = {
-						$scope: $scope,
-						g_form: formModelScope.getGlideForm(),
-						g_scratchpad: $scope.data.f.g_scratchpad,
-						sys_id: $scope.data.f._attachmentGUID,
-						GlideAjax: (function (scope) {
-							return function () {
-								$window.GlideAjax.prototype.constructor.apply(this, arguments);
-								this.setScope(scope);
-							};
-						})(pxpOptions.scope),
-						GlideURL: glideUrlBuilder,
-					};
+					scopedGlideAjaxGeneratorPromise.then(
+						function (scopedGlideAjaxGenerator) { return pxpOptions.scope != 'global' ? scopedGlideAjaxGenerator(pxpOptions.scope) : $window.GlideAjax; },
+						function () { return $window.GlideAjax; }
+					).then(function (GlideAjax) {
+						var locals = {
+							$scope: $scope,
+							g_form: formModelScope.getGlideForm(),
+							g_scratchpad: $scope.data.f.g_scratchpad,
+							sys_id: $scope.data.f._attachmentGUID,
+							GlideAjax: GlideAjax,
+							GlideURL: glideUrlBuilder,
+						};
 
-					$injector.invoke(pxpOptions.onLoad, $scope, locals);
+						$injector.invoke(pxpOptions.onLoad, $scope, locals);
+					});
 				}
 			} else {
 				$log.warn('"scope" must be set on options.pxp_options!');
@@ -371,14 +400,14 @@ x_376096_pxp.form_infuse = (function() {
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2022-07-01 07:41:46</sys_created_on>
         <sys_id>94753567971011102f77b4b3f153af9a</sys_id>
-        <sys_mod_count>56</sys_mod_count>
+        <sys_mod_count>66</sys_mod_count>
         <sys_name>x_376096_pxp.form_infuse</sys_name>
         <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
         <sys_update_name>sys_ui_script_94753567971011102f77b4b3f153af9a</sys_update_name>
-        <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2024-07-28 23:37:09</sys_updated_on>
+        <sys_updated_by>kr4uzi@gmail.com</sys_updated_by>
+        <sys_updated_on>2025-03-28 21:22:58</sys_updated_on>
         <ui_type>1</ui_type>
         <use_scoped_format>true</use_scoped_format>
     </sys_ui_script>

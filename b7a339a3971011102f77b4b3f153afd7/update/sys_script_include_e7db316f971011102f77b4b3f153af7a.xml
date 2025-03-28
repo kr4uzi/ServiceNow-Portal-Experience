@@ -6,7 +6,9 @@
         <caller_access/>
         <client_callable>true</client_callable>
         <description/>
+        <mobile_callable>false</mobile_callable>
         <name>PortalFormUtilClient</name>
+        <sandbox_callable>true</sandbox_callable>
         <script><![CDATA[/* global Class, GlideStringUtil */
 /* global global, gs, x_376096_pxp */
 /* eslint no-undef: "error" */
@@ -27,7 +29,7 @@ PortalFormUtilClient.prototype = Object.extendsObject(global.AbstractAjaxProcess
 		try {
 			var uiActionSysIDs = this.getParameter('ui_actions');
 			if (uiActionSysIDs) {
-				result.client_scripts = this.util.loadButtons(uiActionSysIDs);
+				result.buttons = this.util.loadButtons(uiActionSysIDs);
 				result.status = 'success';
 			} else {
 				result.message = gs.getMessage('x_376096_pxp_invalid_parameters');
@@ -108,13 +110,13 @@ PortalFormUtilClient.prototype = Object.extendsObject(global.AbstractAjaxProcess
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2022-07-01 08:09:50</sys_created_on>
         <sys_id>e7db316f971011102f77b4b3f153af7a</sys_id>
-        <sys_mod_count>3</sys_mod_count>
+        <sys_mod_count>4</sys_mod_count>
         <sys_name>PortalFormUtilClient</sys_name>
         <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
         <sys_update_name>sys_script_include_e7db316f971011102f77b4b3f153af7a</sys_update_name>
-        <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2024-07-28 21:47:37</sys_updated_on>
+        <sys_updated_by>kr4uzi@gmail.com</sys_updated_by>
+        <sys_updated_on>2025-03-28 21:05:02</sys_updated_on>
     </sys_script_include>
 </record_update>
