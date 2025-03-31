@@ -270,6 +270,7 @@ x_376096_pxp.form_infuse = (function() {
 						g_user: g_user,
 						g_form: formModelScope.getGlideForm(),
 						g_scratchpad: $scope.data.f.g_scratchpad,
+						g_ui_scripts: $window.uiScriptFactory.create($scope.data.f.ui_scripts || [], $q),
 						sys_id: $scope.data.f._attachmentGUID,
 						GlideAjax: GlideAjax,
 						GlideURL: glideUrlBuilder,
@@ -327,6 +328,7 @@ x_376096_pxp.form_infuse = (function() {
 							$scope: $scope,
 							g_form: formModelScope.getGlideForm(),
 							g_scratchpad: $scope.data.f.g_scratchpad,
+							g_ui_scripts: $window.uiScriptFactory.create($scope.data.f.ui_scripts || [], $q),
 							sys_id: $scope.data.f._attachmentGUID,
 							GlideAjax: GlideAjax,
 							GlideURL: glideUrlBuilder,
@@ -400,14 +402,14 @@ x_376096_pxp.form_infuse = (function() {
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2022-07-01 07:41:46</sys_created_on>
         <sys_id>94753567971011102f77b4b3f153af9a</sys_id>
-        <sys_mod_count>66</sys_mod_count>
+        <sys_mod_count>67</sys_mod_count>
         <sys_name>x_376096_pxp.form_infuse</sys_name>
         <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
         <sys_update_name>sys_ui_script_94753567971011102f77b4b3f153af9a</sys_update_name>
         <sys_updated_by>kr4uzi@gmail.com</sys_updated_by>
-        <sys_updated_on>2025-03-28 21:22:58</sys_updated_on>
+        <sys_updated_on>2025-03-31 16:21:11</sys_updated_on>
         <ui_type>1</ui_type>
         <use_scoped_format>true</use_scoped_format>
     </sys_ui_script>

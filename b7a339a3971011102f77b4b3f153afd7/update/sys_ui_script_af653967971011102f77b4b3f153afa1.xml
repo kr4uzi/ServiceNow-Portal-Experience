@@ -341,6 +341,7 @@ x_376096_pxp.list_infuse = (function() {
 							g_user: user,
 							g_form: formModelScope ? formModelScope.getGlideForm() : undefined,
 							g_scratchpad: formScope ? formScope.data.f.g_scratchpad : undefined,
+							g_ui_scripts: $window.uiScriptFactory.create((formScope && formScope.data.f.ui_scripts) || [], $q),
 							sys_id: formScope ? formScope.data.f._attachmentGUID : undefined,
 							GlideAjax: GlideAjax,
 							GlideURL: glideUrlBuilder,
@@ -638,14 +639,14 @@ x_376096_pxp.list_infuse = (function() {
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2022-07-01 07:41:43</sys_created_on>
         <sys_id>af653967971011102f77b4b3f153afa1</sys_id>
-        <sys_mod_count>30</sys_mod_count>
+        <sys_mod_count>31</sys_mod_count>
         <sys_name>x_376096_pxp.list_infuse</sys_name>
         <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
         <sys_update_name>sys_ui_script_af653967971011102f77b4b3f153afa1</sys_update_name>
         <sys_updated_by>kr4uzi@gmail.com</sys_updated_by>
-        <sys_updated_on>2025-03-28 21:22:55</sys_updated_on>
+        <sys_updated_on>2025-03-31 16:25:08</sys_updated_on>
         <ui_type>1</ui_type>
         <use_scoped_format>true</use_scoped_format>
     </sys_ui_script>
