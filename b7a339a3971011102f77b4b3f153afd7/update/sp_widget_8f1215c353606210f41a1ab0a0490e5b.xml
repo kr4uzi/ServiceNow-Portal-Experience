@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[api.controller = function ($log, $scope, $http, $location, $httpParamSerializer, $sce) {
+	/* global api, window, XMLSerializer, DOMParser */
+	/* eslint no-undef: "error" */
+	if (this.data.ui_page) {
+		$scope.loading = true;
+
+		const uiPage = this.data.ui_page;
+		const xmlDoc = window.document.implementation.createDocument(null, '');
+		const sec = xmlDoc.createElement('section');
+		sec.setAttribute('name', uiPage);
+		xmlDoc.appendChild(sec);
+
+		const preferences = {
+			sysparm_scope: 'global',
+			table: uiPage,
+			renderer: 'RenderForm',
+			type: 'direct',
+		};
+
+		for (const [name, value] of Object.entries(preferences)) {
+			const pref = xmlDoc.createElement('preference');
+			pref.setAttribute('name', name);
+			pref.setAttribute('value', value);
+			sec.appendChild(pref);
+		}
+
+		if (this.data.preferences) {
+			for (const [name, value] of Object.entries(this.data.preferences)) {
+				const pref = xmlDoc.createElement('preference');
+				pref.setAttribute('name', name);
+				pref.setAttribute('value', value);
+				sec.appendChild(pref);
+			}
+		}
+
+		// replicate a call to GlideModal(uiPageName)
+		$http({
+			method: 'POST',
+			url: '/xmlhttp.do',
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+			},
+			data: $httpParamSerializer({
+				sysparm_processor: 'RenderInfo',
+				sysparm_scope: 'global',
+				sysparm_want_session_messages: true,
+				sysparm_value: new XMLSerializer().serializeToString(xmlDoc),
+				sysparm_name: 'glide_confirm',
+				'ni.nolog.x_referer': 'ignore',
+				x_referer: $location.url()
+			})
+		}).then(function (resp) {
+			$scope.loading = false;
+			if (resp.data) {
+				// the response is an xml with the first node being the rendered ui page
+				const parser = new DOMParser();
+				const doc = parser.parseFromString(resp.data, resp.headers('Content-Type'));
+				$scope.uiPageContent = $sce.trustAsHtml(doc.querySelector('html').outerHTML);
+			}
+		}, function (err) {
+			$log.error('failed to execute RenderInfo', err);
+		});
+	}
+};]]></client_script>
+        <controller_as>c</controller_as>
+        <css/>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description>Allows for simple UI Pages to be displayed in the Service Portal.&#13;
+UI Pages that are direct=false might not be displayed correctly as most scripts loaded in the Classic UI are not present in the Service Portal environment.</description>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>pxp-uipage</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {
+  
+}]]></link>
+        <name>PXP UI Page Renderer</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+	if (options) {
+		data.ui_page = options.ui_page;
+		data.preferences = options.preferences;
+	}
+
+	if (input) {
+		data.ui_page = input.ui_page;
+		data.preferences = input.preferences;
+	}
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>kr4uzi@gmail.com</sys_created_by>
+        <sys_created_on>2025-04-01 08:04:33</sys_created_on>
+        <sys_id>8f1215c353606210f41a1ab0a0490e5b</sys_id>
+        <sys_mod_count>20</sys_mod_count>
+        <sys_name>PXP UI Page Renderer</sys_name>
+        <sys_package display_value="Portal Experience" source="x_376096_pxp">b7a339a3971011102f77b4b3f153afd7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Portal Experience">b7a339a3971011102f77b4b3f153afd7</sys_scope>
+        <sys_update_name>sp_widget_8f1215c353606210f41a1ab0a0490e5b</sys_update_name>
+        <sys_updated_by>kr4uzi@gmail.com</sys_updated_by>
+        <sys_updated_on>2025-04-01 18:44:50</sys_updated_on>
+        <template><![CDATA[<iframe style="border:none;width:100%" srcdoc="{{::uiPageContent}}"></iframe>]]></template>
+    </sp_widget>
+</record_update>
